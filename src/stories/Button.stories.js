@@ -1,12 +1,14 @@
 import React from 'react';
-import {  Button } from "@chakra-ui/core";
-// import { styled } from "./../style/stitches.config";
+import {  Box, SkeletonText ,Skeleton, SkeletonCircle} from "@chakra-ui/core";
 
 const  App = () => { 
   return (
-    <Button colorScheme="teal" variant="outline">
-      Button
-    </Button>
+    <>
+      <Box padding="6" boxShadow="lg" bg="white">
+        <SkeletonCircle size="10" />
+        <SkeletonText mt="4" noOfLines={4} spacing="4" />
+      </Box>
+    </>
   )
 }
 
