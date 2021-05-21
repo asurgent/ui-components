@@ -26,6 +26,8 @@ const useUrlState = (stateKey = 'q', initalState, trigger) => {
   const [current, setCurrent] = useState(null);
 
   const iface = {
+    prev,
+    current,
     setState: (newState) => {
       setPrev(current);
       setCurrent(newState);

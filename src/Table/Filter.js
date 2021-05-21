@@ -108,52 +108,6 @@ const FilterContent = ({ filterKey, configuration }) => {
 
 FilterContent.defaultProps = defaultPropsFilterContent;
 
-const FilterDrawer = ({ children }) => {
-  const { isOpen, onOpen, onClose } = useDisclosure();
-  const btnRef = React.useRef();
-
-  return (
-    <>
-      <Tooltip hasArrow label="Change filter" placement="auto">
-        <IconButton
-          colorScheme="blue"
-          aria-label="Search database"
-          icon={<MdiIcon path={mdiFilter} size={0.6} />}
-          onClick={onOpen}
-        />
-      </Tooltip>
-      <Drawer
-        isOpen={isOpen}
-        placement="right"
-        onClose={onClose}
-        finalFocusRef={btnRef}
-      >
-        <DrawerOverlay />
-        <DrawerContent>
-          <DrawerCloseButton />
-          <DrawerHeader>Apply filter for...</DrawerHeader>
-
-          <DrawerBody>
-            {children}
-          </DrawerBody>
-
-          <DrawerFooter>
-            <Flex w="100%">
-              <Button variant="outline" onClick={onClose}>
-                Cancel
-              </Button>
-              <Spacer />
-              <Button colorScheme="blue">
-                Apply Filter
-              </Button>
-            </Flex>
-          </DrawerFooter>
-        </DrawerContent>
-      </Drawer>
-    </>
-  );
-};
-
 export const TableFilter = ({ label, filterKey, configuration }) => (
   <>
     <Popover placement="top-start">
@@ -183,12 +137,4 @@ export const TableFilter = ({ label, filterKey, configuration }) => (
       )}
     </Popover>
   </>
-);
-
-export const TableFilterDrawer = ({ children }) => (
-  <GridItem width={8}>
-    <FilterDrawer>
-      {children}
-    </FilterDrawer>
-  </GridItem>
 );

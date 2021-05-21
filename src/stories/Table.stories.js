@@ -8,11 +8,12 @@ import {
   TableSearchProvider,
   TablePagination,
   TableHeader,
-  TableGrid,
-  TableGridHeader,
   TableFilterCollection,
   TableFilter,
-  TableFilterDrawer,
+  TableDrawer,
+  TableBody,
+  TableBodyHeader,
+  TableResultCount,
 } from '../Table';
 
 export default {
@@ -75,7 +76,11 @@ const Template = () => (
         { label: 'Created', value: 'created_at' },
       ]}
       />
-      <TableFilterDrawer>
+      <TableDrawer
+        notify={(state) => !!Object.values(state?.filter || {}).flat().length}
+        title="Apply filter for"
+        tooltip="View all filters"
+      >
         <TableFilter
           configuration={(filter) => ({
             title: `hej ${filter.label}`,
@@ -85,7 +90,7 @@ const Template = () => (
           label="Customers"
           filterKey="customer"
         />
-      </TableFilterDrawer>
+      </TableDrawer>
     </TableHeader>
     <TableFilter
       configuration={(filter) => ({
@@ -97,16 +102,17 @@ const Template = () => (
       filterKey="customer"
     />
     <TableFilterCollection />
-    <TableGrid columns={[
+    <TableResultCount />
+    <TableBody columns={[
       { label: 'one', size: 'minmax(500px, 1fr)' },
       { label: 'two' },
       { label: 'three' },
     ]}
     >
-      <TableGridHeader />
+      <TableBodyHeader />
       <TableRows configuration={(row) => [row.value, 'hej', 'abc']} />
       <TableRowCards component={CardComp} />
-    </TableGrid>
+    </TableBody>
     <TablePagination delta={3} />
   </TableSearchProvider>
 );

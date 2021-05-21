@@ -29,37 +29,37 @@ const stateHandler = (mutate, dataFetcher) => ({ setKey }, current, prev) => {
   }
 };
 
-export const TableSearchProvider = ({
-  children,
-  dataFetcher,
-}) => {
-  const [rows, setRows] = useState([]);
+export const TableSearchProvider = ({ children, dataFetcher }) => {
+  const [rows, setRows] = useState(null);
+  const [itemCount, setItemCount] = useState(0);
   const [pageCount, setPageCount] = useState(0);
+
   const filterQuery = useMutation(dataFetcher, {});
-  const {
-    data,
-    isSuccess,
-    isLoading,
-    mutate,
-    isError,
-  } = useMutation(dataFetcher, {
+  const rowsQuery = useMutation(dataFetcher, {
     onSuccess: (result) => {
       setRows(result?.result || []);
       setPageCount(result?.total_pages || 0);
+      setItemCount(result?.total_count || 0);
+    },
+    onError: () => {
+      setRows([]);
+      setPageCount(0);
+      setItemCount(0);
     },
   });
-  const state = useUrlState('test', initalState, stateHandler(mutate, dataFetcher));
+  const state = useUrlState('test', initalState, stateHandler(rowsQuery.mutate, dataFetcher));
 
   return (
     <TableContext.Provider
       value={{
         state,
         filterQuery,
-        pageCount,
         rows,
-        isError,
-        isLoading,
-        isInitialized: ((isSuccess || isError) && data !== undefined),
+        itemCount,
+        pageCount,
+        isError: rowsQuery.isError,
+        isLoading: rowsQuery.isLoading,
+        isInitialized: ((rowsQuery.isSuccess || rowsQuery.isError) && rows !== null),
       }}
     >
       {children}

@@ -6,7 +6,7 @@ import {
   GridItem,
   Skeleton,
 } from '@chakra-ui/react';
-import { TableContext, TableGridContext } from './data/context';
+import { TableContext, TableBodyContext } from './data/context';
 
 export const TableRowCards = ({ component: CardComponent }) => {
   const {
@@ -14,7 +14,7 @@ export const TableRowCards = ({ component: CardComponent }) => {
     isInitialized,
     isLoading,
   } = useContext(TableContext);
-  const headers = useContext(TableGridContext);
+  const headers = useContext(TableBodyContext);
 
   const hasNoData = isInitialized && !isLoading && !(rows?.length);
 
@@ -53,7 +53,7 @@ export const TableRows = ({ configuration }) => {
     isInitialized,
     isLoading,
   } = useContext(TableContext);
-  const headers = useContext(TableGridContext);
+  const headers = useContext(TableBodyContext);
   const hasNoData = isInitialized && !isLoading && !(rows?.length);
 
   if (hasNoData) {

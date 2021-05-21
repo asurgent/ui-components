@@ -4,10 +4,10 @@ import {
   Divider,
   Heading,
 } from '@chakra-ui/react';
-import { TableGridContext } from './data/context';
+import { TableBodyContext } from './data/context';
 
-export const TableGridHeader = () => {
-  const headers = useContext(TableGridContext);
+export const TableBodyHeader = () => {
+  const headers = useContext(TableBodyContext);
 
   return headers.map(({ label }) => (
     <Flex justify="right" direction="column" key={label}>

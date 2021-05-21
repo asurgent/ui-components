@@ -4,10 +4,12 @@ import { TableRowCards, TableRows } from './Rows';
 import { TableSearchProvider } from './Providers';
 import { TablePagination } from './Pagination';
 import { TableHeader } from './Header';
-import { TableGrid } from './Grid';
-import { TableGridHeader } from './GridHeader';
+import { TableBody } from './Body';
+import { TableBodyHeader } from './BodyHeader';
 import { TableFilterCollection } from './FilterCollection';
-import { TableFilter, TableFilterDrawer } from './Filter';
+import { TableFilter } from './Filter';
+import { TableResultCount } from './ResultCount';
+import { TableDrawer } from './Drawer';
 
 export {
   TableSort,
@@ -17,9 +19,10 @@ export {
   TableSearchProvider,
   TablePagination,
   TableHeader,
-  TableGrid,
-  TableGridHeader,
+  TableBody,
+  TableBodyHeader,
   TableFilterCollection,
   TableFilter,
-  TableFilterDrawer,
+  TableResultCount,
+  TableDrawer,
 };
