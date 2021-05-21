@@ -34,7 +34,7 @@ export const TableSearchProvider = ({ children, dataFetcher }) => {
   const [itemCount, setItemCount] = useState(0);
   const [pageCount, setPageCount] = useState(0);
 
-  const filterQuery = useMutation(dataFetcher, {});
+  const dataSource = useMutation(dataFetcher, {});
   const rowsQuery = useMutation(dataFetcher, {
     onSuccess: (result) => {
       setRows(result?.result || []);
@@ -47,16 +47,17 @@ export const TableSearchProvider = ({ children, dataFetcher }) => {
       setItemCount(0);
     },
   });
+
   const state = useUrlState('test', initalState, stateHandler(rowsQuery.mutate, dataFetcher));
 
   return (
     <TableContext.Provider
       value={{
         state,
-        filterQuery,
         rows,
         itemCount,
         pageCount,
+        dataSource,
         isError: rowsQuery.isError,
         isLoading: rowsQuery.isLoading,
         isInitialized: ((rowsQuery.isSuccess || rowsQuery.isError) && rows !== null),

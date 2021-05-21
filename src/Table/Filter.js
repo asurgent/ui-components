@@ -1,19 +1,8 @@
 import React, { useContext, useEffect } from 'react';
 import {
   Flex,
-  Spacer,
-  Drawer,
-  DrawerBody,
-  DrawerContent,
-  DrawerOverlay,
-  IconButton,
-  DrawerFooter,
-  DrawerCloseButton,
-  DrawerHeader,
   Button,
-  Tooltip,
   Code,
-  useDisclosure,
   Popover,
   PopoverTrigger,
   PopoverContent,
@@ -23,10 +12,13 @@ import {
   PopoverBody,
   Center,
   Spinner,
-  GridItem,
   Input,
   Box,
   Divider,
+  Tooltip,
+  Tag,
+  TagLabel,
+  TagCloseButton,
 } from '@chakra-ui/react';
 import MdiIcon from '@mdi/react';
 import { mdiFilter, mdiCheck } from '@mdi/js';
@@ -38,8 +30,8 @@ const defaultPropsFilterContent = {
 };
 
 const FilterContent = ({ filterKey, configuration }) => {
-  const { filterQuery, state } = useContext(TableContext);
-  const { mutate, data, isLoading } = filterQuery;
+  const { dataSource, state } = useContext(TableContext);
+  const { mutate, data, isLoading } = dataSource;
 
   useEffect(() => {
     mutate({ filterKey, state: state.getKey(FILTER_KEY) });
@@ -108,7 +100,39 @@ const FilterContent = ({ filterKey, configuration }) => {
 
 FilterContent.defaultProps = defaultPropsFilterContent;
 
-export const TableFilter = ({ label, filterKey, configuration }) => (
+export const TableFilterTag = ({ value, filterKey, color }) => {
+  const { state } = useContext(TableContext);
+
+  const handleRemoveFilterItem = () => {
+    const { [filterKey]: target, ...current } = state.getKey(FILTER_KEY);
+
+    state.setKey(FILTER_KEY, {
+      ...current,
+      [filterKey]: target.filter((label) => label !== value),
+    });
+  };
+
+  return (
+    <Tooltip hasArrow label="Remove applied filter" placement="auto">
+      <Tag
+        size="sm"
+        key={`${filterKey}:${value}`}
+        borderRadius="full"
+        variant="solid"
+        colorScheme={color}
+      >
+        <TagLabel>{`${filterKey}:${value}`}</TagLabel>
+        <TagCloseButton onClick={handleRemoveFilterItem} />
+      </Tag>
+    </Tooltip>
+  );
+};
+
+export const TableFilter = ({
+  label,
+  filterKey,
+  configuration,
+}) => (
   <>
     <Popover placement="top-start">
       {({ isOpen }) => (

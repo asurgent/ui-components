@@ -4,37 +4,24 @@ import {
   Tooltip,
   Wrap,
   WrapItem,
-  Tag,
-  TagLabel,
-  TagCloseButton,
 } from '@chakra-ui/react';
 import { FILTER_KEY } from './data/constants';
 import { TableContext } from './data/context';
+import { TableFilterTag } from './Filter';
 
-const prefixTags = ([key, tags]) => tags.map((tag) => ({ label: `${key}:${tag}` }));
+const prefixTags = ([key, tags]) => tags.map((tag) => ({ key, tag }));
 const getFilterState = (state) => Object.entries(state.getKey(FILTER_KEY) || {});
 
-export const TableFilterCollection = () => {
+export const TableFilterCollection = ({ colors }) => {
   const { state } = useContext(TableContext);
   const appliedFilters = getFilterState(state).map(prefixTags).flat();
 
   return (
     <Wrap spacing={2} mt={2}>
       {
-        appliedFilters.map(({ label, color }, idx) => (
-          <WrapItem key={idx + label}>
-            <Tooltip hasArrow label="Remove applied filter" placement="auto">
-              <Tag
-                size="sm"
-                key={label}
-                borderRadius="full"
-                variant="solid"
-                colorScheme={color}
-              >
-                <TagLabel>{label}</TagLabel>
-                <TagCloseButton />
-              </Tag>
-            </Tooltip>
+        appliedFilters.map(({ key, tag }) => (
+          <WrapItem key={`${key}:${tag}`}>
+            <TableFilterTag value={tag} filterKey={key} color={colors?.[key]} />
           </WrapItem>
         ))
       }
