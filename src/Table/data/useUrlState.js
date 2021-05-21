@@ -25,22 +25,7 @@ const useUrlState = (stateKey = 'q', initalState, trigger) => {
   const [prev, setPrev] = useState(null);
   const [current, setCurrent] = useState(null);
 
-  useEffect(() => {
-    const { location, replace } = history;
-    if (current !== null) {
-      replace({
-        ...location,
-        search: update(stateKey, current, location.search),
-      });
-      trigger(current, prev);
-    } else {
-      const existingState = initialize(stateKey, initalState, location);
-      setCurrent(existingState);
-    }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [current]);
-
-  return {
+  const iface = {
     setState: (newState) => {
       setPrev(current);
       setCurrent(newState);
@@ -52,6 +37,23 @@ const useUrlState = (stateKey = 'q', initalState, trigger) => {
       setCurrent({ ...current, [key]: value });
     },
   };
+
+  useEffect(() => {
+    const { location, replace } = history;
+    if (current !== null) {
+      replace({
+        ...location,
+        search: update(stateKey, current, location.search),
+      });
+      trigger(iface, current, prev);
+    } else {
+      const existingState = initialize(stateKey, initalState, location);
+      setCurrent(existingState);
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [current]);
+
+  return iface;
 };
 
 export default useUrlState;

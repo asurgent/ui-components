@@ -53,7 +53,7 @@ const pageNumbersList = (currentPage, totalPages, delta) => {
   return [pageItem(1), ...pages, pageItem(totalPages)];
 };
 
-export const pagination = (currentPage, totalPages, delta) => {
+export const paginationCalculator = (currentPage, totalPages, delta) => {
   if (totalPages <= 1) {
     return [];
   }
