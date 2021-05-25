@@ -34,6 +34,10 @@ const useUrlState = (stateKey = 'q', initalState, trigger) => {
     },
     getState: () => current,
     getKey: (key) => current?.[key],
+    setKeys: (values) => {
+      setPrev(current);
+      setCurrent({ ...current, ...values });
+    },
     setKey: (key, value) => {
       setPrev(current);
       setCurrent({ ...current, [key]: value });

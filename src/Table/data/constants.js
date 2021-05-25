@@ -7,7 +7,7 @@ export const ORDER_DESC = 'order_desc';
 export const initalState = {
   [QUERY_KEY]: '',
   [FILTER_KEY]: {},
-  [ORDER_KEY]: '',
-  [ORDER_DESC]: true,
+  [ORDER_KEY]: null,
+  [ORDER_DESC]: null,
   [PAGE_KEY]: 1,
 };

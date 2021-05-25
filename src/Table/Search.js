@@ -12,6 +12,7 @@ import { QUERY_KEY } from './data/constants';
 
 export const TableSearch = () => {
   const { state } = useContext(TableContext);
+
   const handleSearch = ({ target }) => {
     if (state) {
       state.setKey(QUERY_KEY, target.value);
@@ -25,6 +26,7 @@ export const TableSearch = () => {
           <MdiIcon color="var(--chakra-colors-gray-400)" path={mdiMagnify} size={0.8} />
         </InputLeftElement>
         <Input
+          borderRadius={20}
           placeholder="Search..."
           defaultValue={state ? state.getKey(QUERY_KEY) : ''}
           onKeyUp={handleSearch}

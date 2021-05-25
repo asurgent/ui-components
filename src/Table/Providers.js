@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { useMutation } from 'react-query';
 import { TableContext } from './data/context';
-import useUrlState from './data/useUrlState';
+import useUrlState from '../data/useUrlState';
+import useAzureSeachPayload from '../data/useAzureSeachPayload';
 import {
   QUERY_KEY,
   PAGE_KEY,
@@ -9,7 +10,7 @@ import {
   initalState,
 } from './data/constants';
 
-const stateHandler = (mutate, dataFetcher) => ({ setKey }, current, prev) => {
+const stateHandler = (mutate) => ({ setKey }, current, prev) => {
   const searchChanged = current
     && prev
     && (current[QUERY_KEY] !== prev[QUERY_KEY])
@@ -19,23 +20,34 @@ const stateHandler = (mutate, dataFetcher) => ({ setKey }, current, prev) => {
     && prev
     && (JSON.stringify(current[FILTER_KEY]) !== JSON.stringify(prev[FILTER_KEY]));
 
+  // console.log('current', current);
+
   if (filterChanged) {
     setKey(QUERY_KEY, '');
     setKey(PAGE_KEY, 1);
   } else if (searchChanged) {
     setKey(PAGE_KEY, 1);
-  } else if (dataFetcher) {
-    mutate(current, prev);
+  } else {
+    // console.log('fetch');
+    mutate(current);
   }
 };
 
-export const TableSearchProvider = ({ children, dataFetcher }) => {
+export const TableSearchProvider = ({
+  children,
+  dataFetcher,
+  pageSize = 20,
+  urlStateKey = 'test',
+}) => {
   const [rows, setRows] = useState(null);
   const [itemCount, setItemCount] = useState(0);
   const [pageCount, setPageCount] = useState(0);
 
-  const dataSource = useMutation(dataFetcher, {});
-  const rowsQuery = useMutation(dataFetcher, {
+  const azureSearch = useAzureSeachPayload(pageSize);
+  const preFetch = (state) => dataFetcher(state, azureSearch);
+
+  const dataSource = useMutation(preFetch, {});
+  const rowsQuery = useMutation(preFetch, {
     onSuccess: (result) => {
       setRows(result?.result || []);
       setPageCount(result?.total_pages || 0);
@@ -48,7 +60,7 @@ export const TableSearchProvider = ({ children, dataFetcher }) => {
     },
   });
 
-  const state = useUrlState('test', initalState, stateHandler(rowsQuery.mutate, dataFetcher));
+  const state = useUrlState(urlStateKey, initalState, stateHandler(rowsQuery.mutate));
 
   return (
     <TableContext.Provider
@@ -60,7 +72,7 @@ export const TableSearchProvider = ({ children, dataFetcher }) => {
         dataSource,
         isError: rowsQuery.isError,
         isLoading: rowsQuery.isLoading,
-        isInitialized: ((rowsQuery.isSuccess || rowsQuery.isError) && rows !== null),
+        isInitializing: (rowsQuery.isLoading && rows === null),
       }}
     >
       {children}

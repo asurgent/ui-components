@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import {
   GridItem,
   IconButton,
@@ -17,9 +17,17 @@ import { TableContext } from './data/context';
 export const TableSort = ({ sort }) => {
   const { state } = useContext(TableContext);
 
+  useEffect(() => {
+    if (state.getKey(ORDER_KEY) === null) {
+      state.setKeys({ [ORDER_KEY]: sort[0].value, [ORDER_DESC]: false });
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [state.getKey(ORDER_KEY)]);
+
   const handeSortKeyChange = ({ target }) => {
     state.setKey(ORDER_KEY, target.value);
   };
+
   const onHandleSortDirection = () => {
     const direction = state.getKey(ORDER_DESC);
     state.setKey(ORDER_DESC, !direction);
@@ -30,7 +38,7 @@ export const TableSort = ({ sort }) => {
   return (
     <GridItem width={40}>
       <HStack>
-        <Select onChange={handeSortKeyChange}>
+        <Select onChange={handeSortKeyChange} borderColor="transparent">
           {sort.map(({ label, value }) => (
             <option key={value} value={value}>{label}</option>
           ))}

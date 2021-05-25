@@ -26,25 +26,41 @@ export default {
   },
 };
 
-const apiMockCall = async (state, previousState) => new Promise((resolve) => {
+const apiMockCall = async (state, azureSearch) => new Promise((resolve) => {
   setTimeout(() => {
-    if (state.filterKey) {
+    if (state.filterFacetKey) {
       const result = {
         page: 1,
         result: [],
         facets: [
-          { label: 'Acme', count: 123 },
-          { label: 'Apple', count: 123 },
-          { label: 'Amazon', count: 123 },
-          { label: 'Microsoft', count: 123 },
+          { label: 'Acme1', count: 123 },
+          { label: 'Apple2', count: 123 },
+          { label: 'Amazon3', count: 123 },
+          { label: 'Microsoft4', count: 123 },
+          { label: 'Acme5', count: 123 },
+          { label: 'Apple6', count: 123 },
+          { label: 'Amazon7', count: 123 },
+          { label: 'Microsoft8', count: 123 },
+          { label: 'Acme9', count: 123 },
+          { label: 'Apple10', count: 123 },
+          { label: 'Amazon11', count: 123 },
+          { label: 'Microsoft12', count: 123 },
+          { label: 'Acme13', count: 123 },
+          { label: 'Apple14', count: 123 },
+          { label: 'Amazon15', count: 123 },
         ],
         total_pages: 0,
         total_count: 0,
       };
 
+      azureSearch.facets(state, state.filterFacetKey);
+
       resolve(result.facets);
       return result.facets;
     }
+
+    const p = azureSearch.items(state);
+    console.log(p);
 
     const result = {
       page: 1,
@@ -87,8 +103,16 @@ const Template = () => (
             value: filter.label,
             subtitle: `${filter.count} users`,
           })}
+          renderTags
           label="Customers"
           filterKey="customer"
+          color="orange"
+        />
+        <TableFilter
+          renderTags
+          label="Type"
+          filterKey="type"
+          color="green"
         />
       </TableDrawer>
     </TableHeader>
@@ -101,7 +125,9 @@ const Template = () => (
       label="Customers"
       filterKey="customer"
     />
-    <TableFilterCollection />
+    <TableFilterCollection
+      colors={{ type: 'green', customer: 'orange' }}
+    />
     <TableResultCount />
     <TableBody columns={[
       { label: 'one', size: 'minmax(500px, 1fr)' },

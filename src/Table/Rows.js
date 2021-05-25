@@ -1,22 +1,24 @@
 /* eslint-disable react/no-array-index-key */
 import React, { useContext } from 'react';
 import {
+  Box,
   Stack,
   Center,
   GridItem,
   Skeleton,
 } from '@chakra-ui/react';
 import { TableContext, TableBodyContext } from './data/context';
+import { TableGrid } from './Body';
 
 export const TableRowCards = ({ component: CardComponent }) => {
   const {
     rows,
-    isInitialized,
+    isInitializing,
     isLoading,
   } = useContext(TableContext);
   const headers = useContext(TableBodyContext);
 
-  const hasNoData = isInitialized && !isLoading && !(rows?.length);
+  const hasNoData = isInitializing && !isLoading && !(rows?.length);
 
   if (hasNoData) {
     return (
@@ -28,7 +30,7 @@ export const TableRowCards = ({ component: CardComponent }) => {
     );
   }
 
-  if (!isInitialized) {
+  if (isInitializing) {
     return (
       <GridItem colSpan={headers.length} p={2}>
         <Stack>
@@ -41,20 +43,17 @@ export const TableRowCards = ({ component: CardComponent }) => {
   }
 
   return (rows || []).map((item, rIndex) => (
-    <GridItem colSpan={headers.length} p={2} key={rIndex}>
-      <CardComponent data={item} />
-    </GridItem>
+    <CardComponent data={item} key={rIndex} />
   ));
 };
 
 export const TableRows = ({ configuration }) => {
   const {
     rows,
-    isInitialized,
-    isLoading,
+    isInitializing,
   } = useContext(TableContext);
   const headers = useContext(TableBodyContext);
-  const hasNoData = isInitialized && !isLoading && !(rows?.length);
+  const hasNoData = !isInitializing && !(rows?.length);
 
   if (hasNoData) {
     return (
@@ -66,7 +65,7 @@ export const TableRows = ({ configuration }) => {
     );
   }
 
-  if (!isInitialized) {
+  if (isInitializing) {
     return (
       <GridItem colSpan={headers.length} p={2}>
         <Stack>
@@ -81,10 +80,14 @@ export const TableRows = ({ configuration }) => {
     );
   }
 
-  return (rows || []).map((row, gIdx) => configuration(row)
-    .map((item, rIndex) => (
-      <GridItem justify="right" p={2} key={`${gIdx}${rIndex}`}>
-        {item}
-      </GridItem>
-    )));
+  return (rows || []).map((row, gIdx) => (
+    <TableGrid _hover={{ background: 'gray.50' }} key={`${gIdx}`}>
+      {configuration(row)
+        .map((item, rIndex) => (
+          <GridItem justify="right" p={2} key={`${gIdx}${rIndex}`}>
+            {item}
+          </GridItem>
+        ))}
+    </TableGrid>
+  ));
 };

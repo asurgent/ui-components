@@ -33,20 +33,24 @@ export const TablePagination = ({ delta = 3 }) => {
     <Center mt={5}>
       <HStack>
         <IconButton
-          size="xs"
+          width={9}
+          height={9}
           variant="ghost"
-          colorScheme="blue"
+          colorScheme="black"
           icon={<MdiIcon path={mdiChevronLeft} size={0.8} />}
           onClick={previous}
         />
         {
             paginationCalculator(currentPage, pageCount, delta).map((page, idx) => (
               <Button
+                width={9}
+                height={9}
+                borderRadius="100%"
                 key={`${page.value}${idx}`}
                 size="xs"
-                colorScheme="blue"
+                colorScheme="black"
                 isDisabled={page.disabled}
-                variant={state.getKey(PAGE_KEY) === page.value ? 'solid' : 'ghost'}
+                variant={state.getKey(PAGE_KEY) === page.value ? 'outline' : 'ghost'}
                 onClick={() => state.setKey(PAGE_KEY, page.value)}
               >
                 {page.value}
@@ -54,9 +58,10 @@ export const TablePagination = ({ delta = 3 }) => {
             ))
         }
         <IconButton
-          size="xs"
+          width={9}
+          height={9}
           variant="ghost"
-          colorScheme="blue"
+          colorScheme="black"
           icon={<MdiIcon path={mdiChevronRight} size={0.8} />}
           onClick={next}
         />

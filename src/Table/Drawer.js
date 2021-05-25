@@ -23,10 +23,10 @@ export const TableDrawer = ({
   children,
   title,
   icon,
-  notify,
 }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { state } = useContext(TableContext);
+  const notify = !!Object.values(state.current?.filter || {}).flat().length;
 
   return (
     <GridItem width={8}>
@@ -39,7 +39,7 @@ export const TableDrawer = ({
             icon={<MdiIcon path={icon || mdiFilter} size={0.6} />}
             onClick={onOpen}
           />
-          { notify(state.current) && (
+          { notify && (
             <Box
               position="absolute"
               w={2}

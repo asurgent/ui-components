@@ -1,7 +1,6 @@
 /* eslint-disable react/no-array-index-key */
 import React, { useContext } from 'react';
 import {
-  Tooltip,
   Wrap,
   WrapItem,
 } from '@chakra-ui/react';
