@@ -1,7 +1,6 @@
 /* eslint-disable react/no-array-index-key */
 import React, { useContext } from 'react';
 import {
-  Box,
   Stack,
   Center,
   GridItem,
@@ -10,14 +9,14 @@ import {
 import { TableContext, TableBodyContext } from './data/context';
 import { TableGrid } from './Body';
 
-export const TableRowCards = ({ component: CardComponent }) => {
+export const TableRowCards = ({ children }) => {
   const {
     rows,
     isInitializing,
     isLoading,
+    ...rest
   } = useContext(TableContext);
   const headers = useContext(TableBodyContext);
-
   const hasNoData = isInitializing && !isLoading && !(rows?.length);
 
   if (hasNoData) {
@@ -42,12 +41,16 @@ export const TableRowCards = ({ component: CardComponent }) => {
     );
   }
 
-  return (rows || []).map((item, rIndex) => (
-    <CardComponent data={item} key={rIndex} />
-  ));
+  return (rows || []).map((item, index) => (children(item, index)));
 };
 
-export const TableRows = ({ configuration }) => {
+const GridRow = ({ children, ...props }) => (
+  <TableGrid _hover={{ background: 'gray.50' }} minHeight={12} {...props}>
+    {children}
+  </TableGrid>
+);
+
+export const TableRows = ({ children }) => {
   const {
     rows,
     isInitializing,
@@ -80,14 +83,5 @@ export const TableRows = ({ configuration }) => {
     );
   }
 
-  return (rows || []).map((row, gIdx) => (
-    <TableGrid _hover={{ background: 'gray.50' }} key={`${gIdx}`}>
-      {configuration(row)
-        .map((item, rIndex) => (
-          <GridItem justify="right" p={2} key={`${gIdx}${rIndex}`}>
-            {item}
-          </GridItem>
-        ))}
-    </TableGrid>
-  ));
+  return (rows || []).map((row, index) => children(row, index, GridRow));
 };

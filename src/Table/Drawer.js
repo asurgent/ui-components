@@ -13,6 +13,7 @@ import {
   useDisclosure,
   GridItem,
   Box,
+  Stack,
 } from '@chakra-ui/react';
 import MdiIcon from '@mdi/react';
 import { mdiFilter } from '@mdi/js';
@@ -29,10 +30,9 @@ export const TableDrawer = ({
   const notify = !!Object.values(state.current?.filter || {}).flat().length;
 
   return (
-    <GridItem width={8}>
+    <GridItem width={10}>
       <Tooltip hasArrow label="Change filter" placement="auto">
         <Box position="relative">
-
           <IconButton
             isRound
             colorScheme="blue"
@@ -48,8 +48,8 @@ export const TableDrawer = ({
               bg="tomato"
               borderWidth="1px"
               borderColor="red"
-              top={-0.5}
-              right={-0.5}
+              top={0.5}
+              right={0.5}
             />
           )}
         </Box>
@@ -65,7 +65,9 @@ export const TableDrawer = ({
           <DrawerHeader>{title}</DrawerHeader>
 
           <DrawerBody>
-            {children}
+            <Stack>
+              {children}
+            </Stack>
           </DrawerBody>
 
           <DrawerFooter>

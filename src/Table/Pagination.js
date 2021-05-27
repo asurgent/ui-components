@@ -11,7 +11,7 @@ import { paginationCalculator } from './data/pagination';
 import { TableContext } from './data/context';
 import { PAGE_KEY } from './data/constants';
 
-export const TablePagination = ({ delta = 3 }) => {
+export const TablePagination = ({ delta = 4 }) => {
   const { state, pageCount } = useContext(TableContext);
   const currentPage = state.getKey(PAGE_KEY);
 

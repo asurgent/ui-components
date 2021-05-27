@@ -1,5 +1,7 @@
 import React from 'react';
-import { Box } from '@chakra-ui/react';
+import {
+  Box, Flex, HStack, Wrap,
+} from '@chakra-ui/react';
 import {
   TableSort,
   TableSearch,
@@ -9,11 +11,14 @@ import {
   TablePagination,
   TableHeader,
   TableFilterCollection,
-  TableFilter,
+  TableFilterSelect,
   TableDrawer,
   TableBody,
   TableBodyHeader,
   TableResultCount,
+  TableFilterTagGroup,
+  TableFilterBool,
+  TableFilterTriState,
 } from '../Table';
 
 export default {
@@ -28,39 +33,39 @@ export default {
 
 const apiMockCall = async (state, azureSearch) => new Promise((resolve) => {
   setTimeout(() => {
-    if (state.filterFacetKey) {
+    if (state.isFilterTrigger) {
       const result = {
         page: 1,
         result: [],
         facets: [
-          { label: 'Acme1', count: 123 },
-          { label: 'Apple2', count: 123 },
-          { label: 'Amazon3', count: 123 },
-          { label: 'Microsoft4', count: 123 },
-          { label: 'Acme5', count: 123 },
-          { label: 'Apple6', count: 123 },
-          { label: 'Amazon7', count: 123 },
-          { label: 'Microsoft8', count: 123 },
-          { label: 'Acme9', count: 123 },
-          { label: 'Apple10', count: 123 },
-          { label: 'Amazon11', count: 123 },
-          { label: 'Microsoft12', count: 123 },
-          { label: 'Acme13', count: 123 },
-          { label: 'Apple14', count: 123 },
-          { label: 'Amazon15', count: 123 },
+          { label: 'a-1', count: 123 },
+          { label: 'a-2', count: 123 },
+          { label: 'a-3', count: 123 },
+          { label: 'a-4', count: 123 },
+          { label: 'a-5', count: 123 },
+          { label: 'a-6', count: 123 },
+          { label: 'a-7', count: 123 },
+          { label: 'a-8', count: 123 },
+          { label: 'a-9', count: 123 },
+          { label: 'a-10', count: 123 },
+          { label: 'a-11', count: 123 },
+          { label: 'a-12', count: 123 },
+          { label: 'a-13', count: 123 },
+          { label: 'a-14', count: 123 },
+          { label: 'a-15', count: 123 },
         ],
         total_pages: 0,
         total_count: 0,
       };
 
-      azureSearch.facets(state, state.filterFacetKey);
+      azureSearch.facets(state, state.filterKey);
 
       resolve(result.facets);
       return result.facets;
     }
 
-    const p = azureSearch.items(state);
-    console.log(p);
+    // const p = azureSearch.items(state);
+    // console.log(p);
 
     const result = {
       page: 1,
@@ -81,10 +86,7 @@ const CardComp = () => (
 );
 
 const Template = () => (
-  <TableSearchProvider
-    pageSize={20}
-    dataFetcher={apiMockCall}
-  >
+  <TableSearchProvider pageSize={20} dataFetcher={apiMockCall}>
     <TableHeader>
       <TableSearch />
       <TableSort sort={[
@@ -93,39 +95,70 @@ const Template = () => (
       ]}
       />
       <TableDrawer
-        notify={(state) => !!Object.values(state?.filter || {}).flat().length}
-        title="Apply filter for"
+        title="Apply filter for tickets"
         tooltip="View all filters"
       >
-        <TableFilter
+        <TableFilterSelect
+          title="Change Customer"
           configuration={(filter) => ({
             title: `hej ${filter.label}`,
             value: filter.label,
             subtitle: `${filter.count} users`,
           })}
-          renderTags
           label="Customers"
           filterKey="customer"
-          color="orange"
-        />
-        <TableFilter
-          renderTags
+        >
+          <TableFilterTagGroup
+            color="orange"
+            filterKey="customer"
+          />
+        </TableFilterSelect>
+        <TableFilterSelect
+          title="Change type"
           label="Type"
           filterKey="type"
-          color="green"
+        >
+          <Wrap>
+            <TableFilterTagGroup
+              color="green"
+              filterKey="type"
+              configure={(_, value) => `type: ${value}`}
+            />
+          </Wrap>
+        </TableFilterSelect>
+        <TableFilterBool
+          title="Include hidden entities"
+          label="Show Hidden"
+          filterKey="hidden"
+        />
+        <TableFilterTriState
+          title="Include entite with stale property"
+          label="Stale"
+          filterKey="stale"
         />
       </TableDrawer>
     </TableHeader>
-    <TableFilter
-      configuration={(filter) => ({
-        title: `hej ${filter.label}`,
-        value: filter.label,
-        subtitle: `${filter.count} users`,
-      })}
-      label="Customers"
-      filterKey="customer"
-    />
+    <HStack>
+      <TableFilterSelect
+        configuration={(filter) => ({
+          title: `hej ${filter.label}`,
+          value: filter.label,
+          subtitle: `${filter.count} users`,
+        })}
+        label="Customers"
+        filterKey="customer"
+      />
+      <TableFilterTriState
+        label="Stale"
+        filterKey="stale"
+      />
+      <TableFilterBool
+        label="Show Hidden"
+        filterKey="hidden"
+      />
+    </HStack>
     <TableFilterCollection
+      configurations={{ type: (_, value) => `Special type: ${value}` }}
       colors={{ type: 'green', customer: 'orange' }}
     />
     <TableResultCount />
@@ -136,10 +169,20 @@ const Template = () => (
     ]}
     >
       <TableBodyHeader />
-      <TableRows configuration={(row) => [row.value, 'hej', 'abc']} />
-      <TableRowCards component={CardComp} />
+      <TableRows>
+        {(data, idx, RowComponent) => (
+          <RowComponent key={idx}>
+            <Flex p={2} alignItems="center">{data.value}</Flex>
+            <Flex p={2} alignItems="center">hej</Flex>
+            <Flex p={2} alignItems="center">abc</Flex>
+          </RowComponent>
+        )}
+      </TableRows>
+      <TableRowCards>
+        {(row, idx) => <CardComp key={idx} />}
+      </TableRowCards>
     </TableBody>
-    <TablePagination delta={3} />
+    <TablePagination delta={4} />
   </TableSearchProvider>
 );
 

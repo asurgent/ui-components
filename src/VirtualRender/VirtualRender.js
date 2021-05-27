@@ -69,7 +69,7 @@ const VirtualRender = ({
             [...items]
               .splice(index, itemRenderCount)
               .map((item, i) => (
-                <Box height={`${rowHeight}px`}>
+                <Box height={`${rowHeight}px`} key={i}>
                   {children(item, i)}
                 </Box>
               ))

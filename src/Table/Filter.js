@@ -5,6 +5,7 @@ import React, {
   useState,
 } from 'react';
 import {
+  Wrap,
   Flex,
   Button,
   Code,
@@ -22,7 +23,8 @@ import {
   Tag,
   TagLabel,
   WrapItem,
-  Wrap,
+  ButtonGroup,
+  IconButton,
   Skeleton,
   TagCloseButton,
   Text,
@@ -30,7 +32,9 @@ import {
   Heading,
 } from '@chakra-ui/react';
 import MdiIcon from '@mdi/react';
-import { mdiFilter, mdiCheck } from '@mdi/js';
+import {
+  mdiCheck, mdiClose, mdiChevronDown,
+} from '@mdi/js';
 import { VirtualRender } from '../VirtualRender';
 import { TableContext } from './data/context';
 import { FILTER_KEY } from './data/constants';
@@ -49,7 +53,7 @@ const FilterContent = ({ filterKey, searchPlaceholder, configuration }) => {
   } = dataSource;
 
   useEffect(() => {
-    mutate({ filterFacetKey: filterKey, ...state.getState() });
+    mutate({ isFilterTrigger: true, filterKey, ...state.getState() });
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -176,20 +180,32 @@ const FilterContent = ({ filterKey, searchPlaceholder, configuration }) => {
 
 FilterContent.defaultProps = defaultPropsFilterContent;
 
-export const TableFilterTag = ({ value, filterKey, color }) => {
+const TableFilterTag = ({
+  color,
+  value,
+  filterKey,
+  configure,
+}) => {
   const { state } = useContext(TableContext);
 
   const handleRemoveFilterItem = () => {
     const { [filterKey]: target, ...current } = state.getKey(FILTER_KEY);
+    const newFilterState = target.filter((label) => label !== value);
 
-    state.setKey(FILTER_KEY, {
-      ...current,
-      [filterKey]: target.filter((label) => label !== value),
-    });
+    if (newFilterState?.length) {
+      state.setKey(FILTER_KEY, {
+        ...current,
+        [filterKey]: target.filter((label) => label !== value),
+      });
+    } else {
+      state.setKey(FILTER_KEY, { ...current });
+    }
   };
 
+  const label = configure ? configure(filterKey, value) : `${filterKey}: ${value}`;
+
   return (
-    <Tooltip hasArrow label="Remove applied filter" placement="auto">
+    <Tooltip hasArrow label="Remove filter" placement="auto">
       <Tag
         size="sm"
         key={`${filterKey}:${value}`}
@@ -197,7 +213,7 @@ export const TableFilterTag = ({ value, filterKey, color }) => {
         variant="solid"
         colorScheme={color}
       >
-        <TagLabel>{`${filterKey}: ${value}`}</TagLabel>
+        <TagLabel>{label}</TagLabel>
         <TagCloseButton onClick={handleRemoveFilterItem} />
       </Tag>
     </Tooltip>
@@ -207,61 +223,192 @@ export const TableFilterTag = ({ value, filterKey, color }) => {
 const getFilterState = (state, key) => (state.getKey(FILTER_KEY)?.[key] || [])
   .map((tag) => ({ key, tag }));
 
-export const TableFilter = ({
-  label,
-  filterKey,
-  configuration,
-  color = 'gray',
-  renderTags,
-}) => {
+export const TableFilterTagGroup = ({ filterKey, color, configure }) => {
   const { state } = useContext(TableContext);
   const appliedFilters = getFilterState(state, filterKey);
 
+  return appliedFilters.map(({ key, tag }) => (
+    <WrapItem key={`${key}:${tag}`}>
+      <TableFilterTag value={tag} filterKey={key} color={color} configure={configure} />
+    </WrapItem>
+  ));
+};
+
+export const TableFilterSelect = ({
+  title,
+  label,
+  filterKey,
+  configuration,
+  children,
+}) => {
+  const { state } = useContext(TableContext);
+  const hasAppliedFilter = !!state.getKey(FILTER_KEY)?.[filterKey]?.length;
+
+  const handleClearFilter = () => {
+    const { [filterKey]: target, ...current } = state.getKey(FILTER_KEY);
+    state.setKey(FILTER_KEY, { ...current });
+  };
+
   return (
-    <>
+    <Stack>
+      { title && (
+        <Text fontSize="xs" mt={1}>
+          {title}
+        </Text>
+      )}
       <Popover placement="bottom">
         {({ isOpen }) => (
           <>
-            <PopoverTrigger>
-              <Button
-                iconSpacing
-                rightIcon={<MdiIcon path={mdiFilter} size={0.6} />}
-              >
-                {label}
-              </Button>
-            </PopoverTrigger>
+            <ButtonGroup size="sm" isAttached variant="outline" width="auto">
+              <PopoverTrigger>
+                <Button
+                  justifyContent="space-between"
+                  mr="-px"
+                  isFullWidth
+                  iconSpacing
+                  rightIcon={<MdiIcon path={mdiChevronDown} size={0.8} />}
+                >
+                  {label}
+                </Button>
+              </PopoverTrigger>
+              {hasAppliedFilter && (
+                <Tooltip hasArrow label={`Clear applied filters for ${label}`} placement="auto">
+                  <IconButton onClick={handleClearFilter} aria-label="Remove filter" icon={<MdiIcon path={mdiClose} size={0.8} />} />
+                </Tooltip>
+              )}
+            </ButtonGroup>
+
             <PopoverContent>
               <PopoverHeader fontWeight="semibold">
-                Select filter for
+                Modify filter for
                 {' '}
-                <Code>Customers</Code>
+                <Code>{label}</Code>
               </PopoverHeader>
               <PopoverArrow />
               <PopoverCloseButton />
               <PopoverBody>
                 {isOpen && (
-                  <FilterContent
-                    searchPlaceholder={`Search ${label.toLowerCase()}...`}
-                    filterKey={filterKey}
-                    configuration={configuration}
-                  />
+                <FilterContent
+                  searchPlaceholder={`Search ${label.toLowerCase()}...`}
+                  filterKey={filterKey}
+                  configuration={configuration}
+                />
                 )}
               </PopoverBody>
             </PopoverContent>
           </>
         )}
       </Popover>
-      { renderTags && (
-        <Wrap spacing={2} mt={2}>
-          {
-            appliedFilters.map(({ key, tag }) => (
-              <WrapItem key={`${key}:${tag}`}>
-                <TableFilterTag value={tag} filterKey={key} color={color} />
-              </WrapItem>
-            ))
-          }
-        </Wrap>
+      { children }
+    </Stack>
+  );
+};
+
+export const TableFilterTriState = ({
+  title,
+  label,
+  filterKey,
+}) => {
+  const { state } = useContext(TableContext);
+  const appliedFilterState = state.getKey(FILTER_KEY)?.[filterKey]?.[0];
+
+  const handleClearFilter = () => {
+    const { [filterKey]: target, ...current } = state.getKey(FILTER_KEY);
+    state.setKey(FILTER_KEY, { ...current });
+  };
+
+  const handleActivateFilter = () => {
+    const { [filterKey]: target, ...current } = state.getKey(FILTER_KEY);
+    state.setKey(FILTER_KEY, { [filterKey]: [true], ...current });
+  };
+
+  const handleDeactivateFilter = () => {
+    const { [filterKey]: target, ...current } = state.getKey(FILTER_KEY);
+    state.setKey(FILTER_KEY, { [filterKey]: [false], ...current });
+  };
+
+  const isDisabled = appliedFilterState === undefined;
+  const isTrue = appliedFilterState === true;
+  const isFalse = appliedFilterState === false;
+
+  const isTrueLabel = `${label}: Yes`;
+  const isFalseLabel = `${label}: No`;
+
+  return (
+    <Stack>
+      { title && (
+        <Text fontSize="xs" mt={1}>
+          {title}
+        </Text>
       )}
-    </>
+      <ButtonGroup size="sm" isAttached variant="outline">
+        <Tooltip hasArrow label="Disable filter" placement="bottom">
+          <Button
+            mr="-px"
+            colorScheme={isDisabled ? 'blue' : 'gray'}
+            variant={isDisabled ? 'solid' : 'outline'}
+            onClick={handleClearFilter}
+          >
+            ∅
+          </Button>
+        </Tooltip>
+        <Tooltip hasArrow label={isFalseLabel} placement="bottom">
+          <IconButton
+            colorScheme={isFalse ? 'red' : 'gray'}
+            variant={isFalse ? 'solid' : 'outline'}
+            onClick={handleDeactivateFilter}
+            icon={(<MdiIcon path={mdiClose} size={0.8} />)}
+          />
+        </Tooltip>
+
+        <Tooltip hasArrow label={isTrueLabel} placement="bottom">
+          <IconButton
+            colorScheme={isTrue ? 'green' : 'gray'}
+            variant={isTrue ? 'solid' : 'outline'}
+            onClick={handleActivateFilter}
+            icon={(<MdiIcon path={mdiCheck} size={0.8} />)}
+          />
+        </Tooltip>
+      </ButtonGroup>
+    </Stack>
+  );
+};
+
+export const TableFilterBool = ({ filterKey, title }) => {
+  const { state } = useContext(TableContext);
+  const appliedFilterState = state.getKey(FILTER_KEY)?.[filterKey]?.[0];
+
+  const handleClearFilter = () => {
+    const { [filterKey]: target, ...current } = state.getKey(FILTER_KEY);
+    state.setKey(FILTER_KEY, { ...current });
+  };
+
+  const handleActivateFilter = () => {
+    const { [filterKey]: target, ...current } = state.getKey(FILTER_KEY);
+    state.setKey(FILTER_KEY, { [filterKey]: [true], ...current });
+  };
+
+  return (
+    <Stack>
+      { title && (
+        <Text fontSize="xs" mt={1}>
+          {title}
+        </Text>
+      )}
+      <ButtonGroup size="sm" isAttached variant="outline">
+        <IconButton
+          colorScheme={!appliedFilterState ? 'red' : 'gray'}
+          variant={!appliedFilterState ? 'solid' : 'outline'}
+          onClick={handleClearFilter}
+          icon={(<MdiIcon path={mdiClose} size={0.8} />)}
+        />
+        <IconButton
+          colorScheme={appliedFilterState ? 'green' : 'gray'}
+          variant={appliedFilterState ? 'solid' : 'outline'}
+          onClick={handleActivateFilter}
+          icon={(<MdiIcon path={mdiCheck} size={0.8} />)}
+        />
+      </ButtonGroup>
+    </Stack>
   );
 };

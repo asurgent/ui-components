@@ -7,7 +7,12 @@ import { TableHeader } from './Header';
 import { TableBody } from './Body';
 import { TableBodyHeader } from './BodyHeader';
 import { TableFilterCollection } from './FilterCollection';
-import { TableFilter } from './Filter';
+import {
+  TableFilterTagGroup,
+  TableFilterSelect,
+  TableFilterBool,
+  TableFilterTriState,
+} from './Filter';
 import { TableResultCount } from './ResultCount';
 import { TableDrawer } from './Drawer';
 
@@ -22,7 +27,10 @@ export {
   TableBody,
   TableBodyHeader,
   TableFilterCollection,
-  TableFilter,
+  TableFilterSelect,
   TableResultCount,
   TableDrawer,
+  TableFilterTagGroup,
+  TableFilterBool,
+  TableFilterTriState,
 };
