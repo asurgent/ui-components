@@ -8,6 +8,13 @@
     "start": "start-storybook -p 6006 -s public",
     "build-storybook": "build-storybook -s public"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/asurgent/ui-components.git"
+  },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com/"
+  },
   "dependencies": {
     "@chakra-ui/react": "^1.0.0",
     "@emotion/react": "^11.0.0",
