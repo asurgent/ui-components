@@ -1,4 +1,4 @@
-src/stories
+/src
 webpack.config.js
 .gitignore
 .babelrc
