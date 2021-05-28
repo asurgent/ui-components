@@ -1,12 +1,13 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext } from 'react';
 import {
   GridItem,
   IconButton,
-  HStack,
+  Flex,
   Select,
 } from '@chakra-ui/react';
 import MdiIcon from '@mdi/react';
 import {
+  mdiSort,
   mdiChevronUp,
   mdiChevronDown,
 } from '@mdi/js';
@@ -14,15 +15,8 @@ import {
 import { ORDER_DESC, ORDER_KEY } from './data/constants';
 import { TableContext } from './data/context';
 
-export const TableSort = ({ sort }) => {
-  const { state } = useContext(TableContext);
-
-  useEffect(() => {
-    if (state.getKey(ORDER_KEY) === null) {
-      state.setKeys({ [ORDER_KEY]: sort[0].value, [ORDER_DESC]: false });
-    }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [state.getKey(ORDER_KEY)]);
+export const TableSort = () => {
+  const { sort, state } = useContext(TableContext);
 
   const handeSortKeyChange = ({ target }) => {
     state.setKey(ORDER_KEY, target.value);
@@ -33,25 +27,35 @@ export const TableSort = ({ sort }) => {
     state.setKey(ORDER_DESC, !direction);
   };
 
-  const iconPath = state.getKey(ORDER_DESC) ? mdiChevronUp : mdiChevronDown;
-
   return (
     <GridItem width={40}>
-      <HStack>
-        <Select onChange={handeSortKeyChange} borderColor="transparent">
+      <Flex>
+        <Select
+          borderRightRadius={0}
+          onChange={handeSortKeyChange}
+          value={state.getKey(ORDER_KEY) || ''}
+        >
           {sort.map(({ label, value }) => (
-            <option key={value} value={value}>{label}</option>
+            <option key={value} value={value}>
+              {label}
+            </option>
           ))}
         </Select>
         <IconButton
           isLoading={state.getKey(ORDER_DESC) === undefined}
-          isRound
-          onClick={onHandleSortDirection}
-          variant="outline"
+          variant="solid"
           colorScheme="blue"
-          icon={<MdiIcon path={iconPath} size={0.8} />}
+          borderLeftRadius={0}
+          onClick={onHandleSortDirection}
+          icon={(
+            <MdiIcon
+              size={0.8}
+              path={mdiSort}
+              rotate={state.getKey(ORDER_DESC) ? 0 : 180}
+            />
+          )}
         />
-      </HStack>
+      </Flex>
     </GridItem>
   );
 };

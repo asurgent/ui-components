@@ -33,6 +33,7 @@ export default {
 
 const apiMockCall = async (state, azureSearch) => new Promise((resolve) => {
   setTimeout(() => {
+    console.log(state);
     if (state.isFilterTrigger) {
       const result = {
         page: 1,
@@ -86,14 +87,19 @@ const CardComp = () => (
 );
 
 const Template = () => (
-  <TableSearchProvider pageSize={20} dataFetcher={apiMockCall}>
+  <TableSearchProvider
+    pageSize={20}
+    dataFetcher={apiMockCall}
+    sort={[
+      { label: 'Name', value: 'name' },
+      {
+        label: 'Created', value: 'created_at', desc: false, default: true,
+      },
+    ]}
+  >
     <TableHeader>
       <TableSearch />
-      <TableSort sort={[
-        { label: 'Name', value: 'name' },
-        { label: 'Created', value: 'created_at' },
-      ]}
-      />
+      <TableSort />
       <TableDrawer
         title="Apply filter for tickets"
         tooltip="View all filters"

@@ -7,10 +7,12 @@ import {
   QUERY_KEY,
   PAGE_KEY,
   FILTER_KEY,
+  ORDER_KEY,
   initalState,
+  ORDER_DESC,
 } from './data/constants';
 
-const stateHandler = (mutate) => ({ setKey }, current, prev) => {
+const stateHandler = (mutate, sort) => ({ setKey, setKeys }, current, prev) => {
   const searchChanged = current
     && prev
     && (current[QUERY_KEY] !== prev[QUERY_KEY])
@@ -20,23 +22,26 @@ const stateHandler = (mutate) => ({ setKey }, current, prev) => {
     && prev
     && (JSON.stringify(current[FILTER_KEY]) !== JSON.stringify(prev[FILTER_KEY]));
 
-  // console.log('current', current);
+  const noSortValue = !current[ORDER_KEY] && sort && sort.length > 0;
 
   if (filterChanged) {
     setKey(QUERY_KEY, '');
     setKey(PAGE_KEY, 1);
   } else if (searchChanged) {
     setKey(PAGE_KEY, 1);
+  } else if (noSortValue) {
+    const def = sort.find(({ default: x }) => x) || sort[0];
+    setKeys({ [ORDER_KEY]: def.value, [ORDER_DESC]: !!def.desc });
   } else {
-    // console.log('fetch');
     mutate(current);
   }
 };
 
 export const TableSearchProvider = ({
   children,
-  dataFetcher,
+  sort,
   pageSize = 20,
+  dataFetcher,
   urlStateKey = 'test',
 }) => {
   const [rows, setRows] = useState(null);
@@ -60,11 +65,12 @@ export const TableSearchProvider = ({
     },
   });
 
-  const state = useUrlState(urlStateKey, initalState, stateHandler(rowsQuery.mutate));
+  const state = useUrlState(urlStateKey, initalState, stateHandler(rowsQuery.mutate, sort));
 
   return (
     <TableContext.Provider
       value={{
+        sort,
         state,
         rows,
         itemCount,

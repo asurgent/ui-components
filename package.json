@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "",
   "license": "ISC",
+  "main": "src/index.js",
   "scripts": {
     "start": "start-storybook -p 6006 -s public",
     "build-storybook": "build-storybook -s public"
