@@ -5,6 +5,8 @@ import React, {
   useState,
 } from 'react';
 import {
+  RadioGroup,
+  Radio,
   Wrap,
   Flex,
   Button,
@@ -33,7 +35,7 @@ import {
 } from '@chakra-ui/react';
 import MdiIcon from '@mdi/react';
 import {
-  mdiCheck, mdiClose, mdiChevronDown,
+  mdiCheck, mdiClose, mdiChevronDown, mdiMinusCircle,
 } from '@mdi/js';
 import { VirtualRender } from '../VirtualRender';
 import { TableContext } from './data/context';
@@ -259,7 +261,13 @@ export const TableFilterSelect = ({
       <Popover placement="bottom">
         {({ isOpen }) => (
           <>
-            <ButtonGroup size="sm" isAttached variant="outline" width="auto">
+            <ButtonGroup
+              size="sm"
+              isAttached
+              width="auto"
+              variant={hasAppliedFilter ? 'solid' : 'outline'}
+              colorScheme={hasAppliedFilter ? 'facebook' : 'gray'}
+            >
               <PopoverTrigger>
                 <Button
                   justifyContent="space-between"
@@ -273,7 +281,13 @@ export const TableFilterSelect = ({
               </PopoverTrigger>
               {hasAppliedFilter && (
                 <Tooltip hasArrow label={`Clear applied filters for ${label}`} placement="auto">
-                  <IconButton onClick={handleClearFilter} aria-label="Remove filter" icon={<MdiIcon path={mdiClose} size={0.8} />} />
+                  <IconButton
+                    borderLeft="1px solid"
+                    borderColor={hasAppliedFilter ? 'white' : 'gray.200'}
+                    onClick={handleClearFilter}
+                    aria-label="Remove filter"
+                    icon={<MdiIcon path={mdiClose} size={0.8} />}
+                  />
                 </Tooltip>
               )}
             </ButtonGroup>
@@ -319,13 +333,18 @@ export const TableFilterTriState = ({
 
   const handleActivateFilter = () => {
     const { [filterKey]: target, ...current } = state.getKey(FILTER_KEY);
-    state.setKey(FILTER_KEY, { [filterKey]: [true], ...current });
+    state.setKey(FILTER_KEY, { [filterKey]: ['a'], ...current });
   };
 
-  const handleDeactivateFilter = () => {
-    const { [filterKey]: target, ...current } = state.getKey(FILTER_KEY);
-    state.setKey(FILTER_KEY, { [filterKey]: [false], ...current });
+  const handleOnChange = (value) => {
+    const { [filterKey]: _, ...current } = state.getKey(FILTER_KEY);
+    state.setKey(FILTER_KEY, { [filterKey]: [value], ...current });
   };
+
+  // const handleDeactivateFilter = () => {
+  //   const { [filterKey]: target, ...current } = state.getKey(FILTER_KEY);
+  //   state.setKey(FILTER_KEY, { [filterKey]: [false], ...current });
+  // };
 
   const isDisabled = appliedFilterState === undefined;
   const isTrue = appliedFilterState === true;
@@ -341,35 +360,68 @@ export const TableFilterTriState = ({
           {title}
         </Text>
       )}
-      <ButtonGroup size="sm" isAttached variant="outline">
-        <Tooltip hasArrow label="Disable filter" placement="bottom">
-          <Button
-            mr="-px"
-            colorScheme={isDisabled ? 'blue' : 'gray'}
-            variant={isDisabled ? 'solid' : 'outline'}
-            onClick={handleClearFilter}
-          >
-            ∅
-          </Button>
-        </Tooltip>
-        <Tooltip hasArrow label={isFalseLabel} placement="bottom">
-          <IconButton
-            colorScheme={isFalse ? 'red' : 'gray'}
-            variant={isFalse ? 'solid' : 'outline'}
-            onClick={handleDeactivateFilter}
-            icon={(<MdiIcon path={mdiClose} size={0.8} />)}
-          />
-        </Tooltip>
-
-        <Tooltip hasArrow label={isTrueLabel} placement="bottom">
-          <IconButton
-            colorScheme={isTrue ? 'green' : 'gray'}
-            variant={isTrue ? 'solid' : 'outline'}
-            onClick={handleActivateFilter}
-            icon={(<MdiIcon path={mdiCheck} size={0.8} />)}
-          />
-        </Tooltip>
-      </ButtonGroup>
+      {
+        isDisabled && (
+          <ButtonGroup size="sm" isAttached variant="outline">
+            <Button
+              mr="-px"
+              onClick={handleActivateFilter}
+              rightIcon={<MdiIcon path={mdiMinusCircle} size={0.8} />}
+            >
+              {label}
+            </Button>
+          </ButtonGroup>
+        )
+      }
+      { !isDisabled && (
+        <Flex justifyContent="center" border="1px solid" borderColor="gray.200" borderRadius={5} pl={1} bg="facebook.500" color="white">
+          { !isDisabled && (
+            <RadioGroup
+              colorScheme="green"
+              flex="1"
+              display="flex"
+              justifyContent="center"
+              onChange={handleOnChange}
+              value={appliedFilterState}
+              px={2}
+            >
+              <Stack direction="row">
+                <Radio value="a">A</Radio>
+                <Radio value="b">B</Radio>
+                <Radio value="c">C</Radio>
+              </Stack>
+            </RadioGroup>
+          )}
+          <ButtonGroup size="sm" isAttached variant="outline">
+            <Button
+              borderTop="none"
+              borderBottom="none"
+              borderRight="none"
+              borderRadius="0"
+              borderColor="gray.200"
+              borderLeft="1p solid"
+              mr="-px"
+              onClick={isDisabled ? handleActivateFilter : () => {}}
+              rightIcon={isDisabled ? <MdiIcon path={mdiMinusCircle} size={0.8} /> : null}
+            >
+              {label}
+            </Button>
+            { !isDisabled
+            && (
+            <IconButton
+              borderTop="none"
+              borderBottom="none"
+              borderRight="none"
+              borderRadius="0"
+              borderColor="gray.200"
+              borderLeft="1p solid"
+              onClick={handleClearFilter}
+              icon={(<MdiIcon path={mdiClose} size={0.8} />)}
+            />
+            )}
+          </ButtonGroup>
+        </Flex>
+      )}
     </Stack>
   );
 };
