@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import {
   GridItem,
   Input,
@@ -9,13 +9,24 @@ import MdiIcon from '@mdi/react';
 import { mdiMagnify } from '@mdi/js';
 import { TableContext } from './data/context';
 import { QUERY_KEY } from './data/constants';
+import useDelayTrigger from '../data/useDelayTrigger';
 
 export const TableSearch = () => {
   const { state } = useContext(TableContext);
+  const { trigger, cancel } = useDelayTrigger();
 
-  const handleSearch = ({ target }) => {
+  const updateState = (query) => {
     if (state) {
-      state.setKey(QUERY_KEY, target.value);
+      state.setKey(QUERY_KEY, query);
+    }
+  };
+
+  const handleSearch = ({ target, key }) => {
+    if (key === 'Enter') {
+      cancel();
+      updateState(target.value);
+    } else {
+      trigger(() => updateState(target.value));
     }
   };
 
@@ -23,12 +34,12 @@ export const TableSearch = () => {
     <GridItem width="1fr">
       <InputGroup>
         <InputLeftElement pointerEvents="none">
-          <MdiIcon color="var(--chakra-colors-gray-400)" path={mdiMagnify} size={0.8} />
+          <MdiIcon color="var(--chakra-colors-gray-400)" path={mdiMagnify} size={1.2} />
         </InputLeftElement>
         <Input
           borderRadius={20}
           placeholder="Search..."
-          defaultValue={state ? state.getKey(QUERY_KEY) : ''}
+          defaultValue={(state ? state.getKey(QUERY_KEY) : '')}
           onKeyUp={handleSearch}
         />
       </InputGroup>

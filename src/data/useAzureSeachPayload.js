@@ -1,8 +1,15 @@
 import * as tableState from '../Table/data/constants';
 
-const generateFilter = (filters) => {
+const isBoolean = (val) => typeof val === 'boolean';
+
+const generateFilter = (filters, parser) => {
   const f = Object.entries(filters).reduce((acc, [facet, values]) => {
-    const res = values.map((value) => `${facet} eq '${value}'`).join(' or ');
+    const res = values.map((parser?.[facet]) || ((value) => {
+      if (isBoolean(value)) {
+        return `${facet} eq ${value}`;
+      }
+      return `${facet} eq '${value}'`;
+    })).join(' or ');
 
     return [...acc, [`(${res})`]];
   }, []);
@@ -15,7 +22,7 @@ const generateFilter = (filters) => {
   return '';
 };
 
-const generateSearch = (query) => {
+const generateSearch = (query, parser = (str) => str) => {
   if (!query) {
     return '';
   }
@@ -27,7 +34,7 @@ const generateSearch = (query) => {
 
   const joined = (sanatize).split(' ').join('*+');
 
-  return `${joined}*`;
+  return parser(`${joined}*`);
 };
 
 const generateOrder = (key, desc) => {
@@ -37,7 +44,7 @@ const generateOrder = (key, desc) => {
   return [`${key} ${desc ? 'desc' : 'asc'}`];
 };
 
-const generate = (state, pageSize) => {
+const generate = (state, pageSize, parsers) => {
   const {
     [tableState.FILTER_KEY]: filter,
     [tableState.ORDER_DESC]: orderDesc,
@@ -47,8 +54,8 @@ const generate = (state, pageSize) => {
   } = state;
 
   return {
-    search_string: generateSearch(query),
-    filter: generateFilter(filter || {}),
+    search_string: generateSearch(query, parsers?.search),
+    filter: generateFilter(filter || {}, parsers?.filter),
     facets: [],
     order_by: generateOrder(orderKey, orderDesc),
     search_fields: [],
@@ -58,8 +65,8 @@ const generate = (state, pageSize) => {
 };
 
 const useAzureSeachPayload = (pageSize) => ({
-  items: (state) => ({ ...generate(state, pageSize) }),
-  facets: (state, filterKey) => {
+  items: (state, parsers) => ({ ...generate(state, pageSize, parsers) }),
+  facets: (state, filterKey, parsers) => {
     const {
       [tableState.FILTER_KEY]: filter,
     } = state;
@@ -67,8 +74,9 @@ const useAzureSeachPayload = (pageSize) => ({
     const removeSelfFromState = { ...state, filter: rest };
 
     return {
-      ...generate(removeSelfFromState, 0),
+      ...generate(removeSelfFromState, 0, parsers),
       facets: [`${filterKey}, count:0`],
+      search_string: '',
     };
   },
 });

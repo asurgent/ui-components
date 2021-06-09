@@ -2,6 +2,7 @@ import React from 'react';
 import {
   Box, Flex, HStack, Wrap,
 } from '@chakra-ui/react';
+import { useMutation } from 'react-query';
 import {
   TableSort,
   TableSearch,
@@ -31,54 +32,54 @@ export default {
   },
 };
 
-const apiMockCall = async (state, azureSearch) => new Promise((resolve) => {
-  setTimeout(() => {
-    console.log(state);
-    if (state.isFilterTrigger) {
-      const result = {
-        page: 1,
-        result: [],
-        facets: [
-          { label: 'a-1', count: 123 },
-          { label: 'a-2', count: 123 },
-          { label: 'a-3', count: 123 },
-          { label: 'a-4', count: 123 },
-          { label: 'a-5', count: 123 },
-          { label: 'a-6', count: 123 },
-          { label: 'a-7', count: 123 },
-          { label: 'a-8', count: 123 },
-          { label: 'a-9', count: 123 },
-          { label: 'a-10', count: 123 },
-          { label: 'a-11', count: 123 },
-          { label: 'a-12', count: 123 },
-          { label: 'a-13', count: 123 },
-          { label: 'a-14', count: 123 },
-          { label: 'a-15', count: 123 },
-        ],
-        total_pages: 0,
-        total_count: 0,
-      };
+// const apiMockCall = async (state, azureSearch) => new Promise((resolve) => {
+//   setTimeout(() => {
+//     console.log(state);
+//     if (state.isFilterTrigger) {
+//       const result = {
+//         page: 1,
+//         result: [],
+//         facets: [
+//           { label: 'a-1', count: 123 },
+//           { label: 'a-2', count: 123 },
+//           { label: 'a-3', count: 123 },
+//           { label: 'a-4', count: 123 },
+//           { label: 'a-5', count: 123 },
+//           { label: 'a-6', count: 123 },
+//           { label: 'a-7', count: 123 },
+//           { label: 'a-8', count: 123 },
+//           { label: 'a-9', count: 123 },
+//           { label: 'a-10', count: 123 },
+//           { label: 'a-11', count: 123 },
+//           { label: 'a-12', count: 123 },
+//           { label: 'a-13', count: 123 },
+//           { label: 'a-14', count: 123 },
+//           { label: 'a-15', count: 123 },
+//         ],
+//         total_pages: 0,
+//         total_count: 0,
+//       };
 
-      azureSearch.facets(state, state.filterKey);
+//       azureSearch.facets(state, state.filterKey);
 
-      resolve(result.facets);
-      return result.facets;
-    }
+//       resolve(result.facets);
+//       return result.facets;
+//     }
 
-    // const p = azureSearch.items(state);
-    // console.log(p);
+//     // const p = azureSearch.items(state);
+//     // console.log(p);
 
-    const result = {
-      page: 1,
-      result: [{ value: 'hello' }, { value: 'hello' }],
-      facets: [],
-      total_pages: 100,
-      total_count: 10,
-    };
-    resolve(result);
-    return result;
-  }, 500);
-});
+//     const result = {
+//       page: 1,
+//       result: [{ value: 'hello' }, { value: 'hello' }],
+//       facets: [],
+//       total_pages: 100,
+//       total_count: 10,
+//     };
+//     resolve(result);
+//     return result;
+//   }, 500);
+// });
 
 const CardComp = () => (
   <Box bg="tomato" p={8}>
@@ -86,10 +87,24 @@ const CardComp = () => (
   </Box>
 );
 
+const mockPayloadParser = (state, azureSearchParser) => {
+  if (state.isFilterTrigger) {
+    const a = azureSearchParser.facets(state, state.filterKey);
+    console.log(a);
+  }
+
+  azureSearchParser.items(state);
+};
+
+const mockService = async (config) => new Promise((resolve, reject) => {
+  resolve({ result: [] });
+});
+
 const Template = () => (
   <TableSearchProvider
     pageSize={20}
-    dataFetcher={apiMockCall}
+    payload={mockPayloadParser}
+    fetcher={mockService}
     sort={[
       { label: 'Name', value: 'name' },
       {

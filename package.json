@@ -12,7 +12,9 @@
   "scripts": {
     "start": "start-storybook -p 6006 -s public",
     "build-storybook": "build-storybook -s public",
-    "publish:npm": "rm -rf dist && mkdir dist &&  babel ./src -d dist --ignore ./src/stories --copy-files --no-copy-ignored"
+    "build": "rm -rf dist && mkdir dist &&  babel ./src -d dist --ignore ./src/stories --copy-files --no-copy-ignored",
+    "copy": "npm run build && rsync -av ./dist/ ./../cloudops-portal/node_modules/@asurgent/ui-components/dist/"
+    
   },
   "repository": {
     "type": "git",

@@ -42,7 +42,7 @@ import { TableContext } from './data/context';
 import { FILTER_KEY } from './data/constants';
 
 const defaultPropsFilterContent = {
-  configuration: (filter) => ({ title: filter.label, value: filter.label, subtitle: filter.count }),
+  configuration: (filter) => ({ title: filter.value, value: filter.value, subtitle: filter.count }),
 };
 
 const FilterContent = ({ filterKey, searchPlaceholder, configuration }) => {
@@ -77,11 +77,11 @@ const FilterContent = ({ filterKey, searchPlaceholder, configuration }) => {
   };
 
   const items = useMemo(() => {
-    if (!data) {
+    if (!data || isLoading || !data.facets?.[filterKey]) {
       return [];
     }
 
-    const sortedItems = data.map((filter) => {
+    const sortedItems = data.facets?.[filterKey].map((filter) => {
       const { title, value, subtitle } = configuration(filter);
       const isSelected = state.getKey(FILTER_KEY)?.[filterKey]?.includes(value);
       return {
@@ -117,7 +117,7 @@ const FilterContent = ({ filterKey, searchPlaceholder, configuration }) => {
 
     return sortedItems;
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [data, search, state.getKey(FILTER_KEY)]);
+  }, [data, isLoading, search, state.getKey(FILTER_KEY)]);
 
   return (
     <>
@@ -152,11 +152,11 @@ const FilterContent = ({ filterKey, searchPlaceholder, configuration }) => {
                 variant="unstyled"
                 isFullWidth
               >
-                <Text>{title}</Text>
+                <Text isTruncated mr={3}>{title}</Text>
                 <Flex alignItems="center">
                   <Code>{subtitle}</Code>
                   {isSelected && (
-                  <Box ml={5}>
+                  <Box ml={3}>
                     <MdiIcon path={mdiCheck} size={0.6} />
                   </Box>
                   )}
@@ -181,6 +181,16 @@ const FilterContent = ({ filterKey, searchPlaceholder, configuration }) => {
 };
 
 FilterContent.defaultProps = defaultPropsFilterContent;
+
+const genreateColor = (str) => {
+  let hash = 0;
+  // eslint-disable-next-line no-plusplus
+  for (let i = 0; i < str.length; i++) {
+    // eslint-disable-next-line no-bitwise
+    hash = str.charCodeAt(i) + ((hash << 5) - hash);
+  }
+  return hash;
+};
 
 const TableFilterTag = ({
   color,
@@ -213,7 +223,7 @@ const TableFilterTag = ({
         key={`${filterKey}:${value}`}
         borderRadius="full"
         variant="solid"
-        colorScheme={color}
+        colorScheme={color || genreateColor(filterKey)}
       >
         <TagLabel>{label}</TagLabel>
         <TagCloseButton onClick={handleRemoveFilterItem} />

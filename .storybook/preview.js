@@ -3,8 +3,10 @@ import { BrowserRouter } from 'react-router-dom';
 import {
   ChakraProvider, 
   CSSReset, 
-  ColorModeScript
+  ColorModeScript  
 } from '@chakra-ui/react'
+import { extendTheme } from "@chakra-ui/react"
+
 
 import {
   QueryClient,
@@ -18,18 +20,28 @@ const queryClient = new QueryClient({
       retry: false,
     },
   },
-});
+});     
 
-          
-
+const theme = extendTheme({
+  styles: {
+    global: {
+      html: {
+        fontSize: "100%"
+      },
+      // body: {
+      //   fontSize: "1.6rem",
+      // },
+    },
+  }
+})
 
 export const decorators = [
   (Story) => (
     <QueryClientProvider client={queryClient}>
       <BrowserRouter>
         <ColorModeScript/>
-        <ChakraProvider>
-          <CSSReset />
+        <ChakraProvider theme={theme}>
+        
           <Story/>
         </ChakraProvider>
       </BrowserRouter>

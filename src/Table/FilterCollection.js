@@ -19,8 +19,8 @@ export const TableFilterCollection = ({ colors, configurations }) => {
               <TableFilterTagGroup
                 key={key}
                 filterKey={key}
-                color={colors[key]}
-                configure={configurations[key]}
+                color={colors?.[key]}
+                configure={configurations?.[key]}
               />
             ))
           }

@@ -40,8 +40,9 @@ const stateHandler = (mutate, sort) => ({ setKey, setKeys }, current, prev) => {
 export const TableSearchProvider = ({
   children,
   sort,
+  payload,
+  fetcher,
   pageSize = 20,
-  dataFetcher,
   urlStateKey = 'test',
 }) => {
   const [rows, setRows] = useState(null);
@@ -49,7 +50,7 @@ export const TableSearchProvider = ({
   const [pageCount, setPageCount] = useState(0);
 
   const azureSearch = useAzureSeachPayload(pageSize);
-  const preFetch = (state) => dataFetcher(state, azureSearch);
+  const preFetch = (state) => fetcher(payload(state, azureSearch), state);
 
   const dataSource = useMutation(preFetch, {});
   const rowsQuery = useMutation(preFetch, {

@@ -29,6 +29,12 @@ export const TablePagination = ({ delta = 4 }) => {
     }
   };
 
+  const pages = paginationCalculator(currentPage, pageCount, delta);
+
+  if (pages.length === 0) {
+    return <Center mt={5} />;
+  }
+
   return (
     <Center mt={5}>
       <HStack>
@@ -41,7 +47,7 @@ export const TablePagination = ({ delta = 4 }) => {
           onClick={previous}
         />
         {
-            paginationCalculator(currentPage, pageCount, delta).map((page, idx) => (
+            pages.map((page, idx) => (
               <Button
                 width={9}
                 height={9}
