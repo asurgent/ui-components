@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext } from 'react';
 import {
   GridItem,
   Input,
@@ -10,8 +10,10 @@ import { mdiMagnify } from '@mdi/js';
 import { TableContext } from './data/context';
 import { QUERY_KEY } from './data/constants';
 import useDelayTrigger from '../data/useDelayTrigger';
+import translation from './Table.translation';
 
 export const TableSearch = () => {
+  const { t } = translation;
   const { state } = useContext(TableContext);
   const { trigger, cancel } = useDelayTrigger();
 
@@ -38,7 +40,7 @@ export const TableSearch = () => {
         </InputLeftElement>
         <Input
           borderRadius={20}
-          placeholder="Search..."
+          placeholder={`${t('search', 'ui')}...`}
           defaultValue={(state ? state.getKey(QUERY_KEY) : '')}
           onKeyUp={handleSearch}
         />

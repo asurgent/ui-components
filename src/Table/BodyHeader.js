@@ -12,8 +12,8 @@ export const TableBodyHeader = () => {
 
   return (
     <TableGrid>
-      {headers.map(({ label }) => (
-        <Flex justify="right" direction="column" key={label}>
+      {headers.map(({ label, key, render = true }) => render && (
+        <Flex justify="right" direction="column" key={`${label}-${key}`}>
           <Heading as="h6" size="xs" p={2}>
             {label}
           </Heading>

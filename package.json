@@ -14,7 +14,6 @@
     "build-storybook": "build-storybook -s public",
     "build": "rm -rf dist && mkdir dist &&  babel ./src -d dist --ignore ./src/stories --copy-files --no-copy-ignored",
     "copy": "npm run build && rsync -av ./dist/ ./../cloudops-portal/node_modules/@asurgent/ui-components/dist/"
-    
   },
   "repository": {
     "type": "git",
@@ -24,6 +23,7 @@
     "registry": "https://npm.pkg.github.com/"
   },
   "dependencies": {
+    "@asurgent/ui": "^1.13.133",
     "@chakra-ui/react": "^1.0.0",
     "@emotion/react": "^11.0.0",
     "@emotion/styled": "^11.0.0",
@@ -48,6 +48,8 @@
     "@storybook/preset-create-react-app": "^3.1.7",
     "@storybook/react": "^6.2.9",
     "babel-loader": "^8.2.2",
+    "i18next": "^20.3.1",
+    "react-i18next": "^11.10.0",
     "react-scripts": "^4.0.3"
   },
   "keywords": []

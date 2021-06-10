@@ -2,16 +2,31 @@ import React from 'react';
 import { BrowserRouter } from 'react-router-dom';
 import {
   ChakraProvider, 
-  CSSReset, 
   ColorModeScript  
 } from '@chakra-ui/react'
+import { QueryClient,  QueryClientProvider,} from 'react-query';
 import { extendTheme } from "@chakra-ui/react"
+import { I18nextProvider,initReactI18next } from 'react-i18next';
+import { i18next, addComponentTranslations } from './../src/translations'
 
+i18next
+  .use(initReactI18next)
+  .init({
+    // we init with resources
+    resources: {},
+    fallbackLng: 'en',
+    debug: false,
+    defaultNS: 'translations',
+    keySeparator: false, // we use content as keys
+    interpolation: {
+      escapeValue: false, // not needed for react!!
+      formatSeparator: ',',
+    },
+    react: { wait: true },
+  });
 
-import {
-  QueryClient,
-  QueryClientProvider,
-} from 'react-query';
+addComponentTranslations()
+
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -23,14 +38,16 @@ const queryClient = new QueryClient({
 });     
 
 const theme = extendTheme({
+  colors: {
+    asurgent: {
+      500: "#133A5D",
+    },
+  },
   styles: {
     global: {
       html: {
         fontSize: "100%"
       },
-      // body: {
-      //   fontSize: "1.6rem",
-      // },
     },
   }
 })
@@ -41,8 +58,9 @@ export const decorators = [
       <BrowserRouter>
         <ColorModeScript/>
         <ChakraProvider theme={theme}>
-        
-          <Story/>
+          <I18nextProvider i18n={i18next}>
+            <Story/>
+          </I18nextProvider>
         </ChakraProvider>
       </BrowserRouter>
     </QueryClientProvider>

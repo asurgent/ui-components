@@ -6,11 +6,7 @@ import {
   Select,
 } from '@chakra-ui/react';
 import MdiIcon from '@mdi/react';
-import {
-  mdiSort,
-  mdiChevronUp,
-  mdiChevronDown,
-} from '@mdi/js';
+import { mdiSort } from '@mdi/js';
 
 import { ORDER_DESC, ORDER_KEY } from './data/constants';
 import { TableContext } from './data/context';
@@ -31,6 +27,7 @@ export const TableSort = () => {
     <GridItem width={40}>
       <Flex>
         <Select
+          isTruncated
           borderRightRadius={0}
           onChange={handeSortKeyChange}
           value={state.getKey(ORDER_KEY) || ''}
@@ -44,7 +41,7 @@ export const TableSort = () => {
         <IconButton
           isLoading={state.getKey(ORDER_DESC) === undefined}
           variant="solid"
-          colorScheme="blue"
+          colorScheme="asurgent"
           borderLeftRadius={0}
           onClick={onHandleSortDirection}
           icon={(

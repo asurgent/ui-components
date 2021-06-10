@@ -1,9 +1,5 @@
 import React, { useContext } from 'react';
-import {
-  Grid, GridItem, Flex, IconButton, Tooltip, Wrap,
-} from '@chakra-ui/react';
-import MdiIcon from '@mdi/react';
-import { mdiClose } from '@mdi/js';
+import { Grid, Wrap } from '@chakra-ui/react';
 import { FILTER_KEY } from './data/constants';
 import { TableContext } from './data/context';
 import { TableFilterTagGroup } from './Filter';

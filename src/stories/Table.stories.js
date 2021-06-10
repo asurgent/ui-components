@@ -127,12 +127,25 @@ const Template = () => (
             subtitle: `${filter.count} users`,
           })}
           label="Customers"
-          filterKey="customer"
+          filterKey="customer_display_name"
         >
           <TableFilterTagGroup
             color="orange"
-            filterKey="customer"
+            filterKey="customer_display_name"
+            filterTitle="Customer"
           />
+        </TableFilterSelect>
+        <TableFilterSelect
+          label="resourceGroup"
+          filterKey="resource_group"
+        >
+          <Wrap>
+            <TableFilterTagGroup
+              color="red"
+              filterKey="resource_group"
+              filterTitle="Resource group"
+            />
+          </Wrap>
         </TableFilterSelect>
         <TableFilterSelect
           title="Change type"
@@ -143,7 +156,7 @@ const Template = () => (
             <TableFilterTagGroup
               color="green"
               filterKey="type"
-              configure={(_, value) => `type: ${value}`}
+              filterTitle="Type"
             />
           </Wrap>
         </TableFilterSelect>
@@ -167,7 +180,7 @@ const Template = () => (
           subtitle: `${filter.count} users`,
         })}
         label="Customers"
-        filterKey="customer"
+        filterKey="customer_display_name"
       />
       <TableFilterTriState
         label="Stale"

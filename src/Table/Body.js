@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useMemo } from 'react';
 import {
   Box,
   Grid,
@@ -16,10 +16,19 @@ export const TableGrid = ({ children, ...gridProps }) => {
   );
 };
 
-export const TableBody = ({ children, columns }) => (
-  <TableBodyContext.Provider value={columns}>
-    <Box w="100%" overflowX="auto">
-      {children}
-    </Box>
-  </TableBodyContext.Provider>
-);
+export const TableBody = ({ children, columns }) => {
+  const parsedColumns = useMemo(() => columns.filter((column) => {
+    if (column.render === false) {
+      return false;
+    }
+    return true;
+  }), [columns]);
+
+  return (
+    <TableBodyContext.Provider value={parsedColumns}>
+      <Box w="100%" overflowX="auto">
+        {children}
+      </Box>
+    </TableBodyContext.Provider>
+  );
+};

@@ -14,8 +14,10 @@ import {
 import MdiIcon from '@mdi/react';
 import { mdiFileDownloadOutline, mdiChevronDown } from '@mdi/js';
 import { TableContext } from './data/context';
+import translation from './Table.translation';
 
 export const TableResultCount = () => {
+  const { t } = translation;
   const { itemCount } = useContext(TableContext);
 
   const handleDownload = () => {
@@ -35,7 +37,7 @@ export const TableResultCount = () => {
         >
           <HStack>
             <Heading size="xs" as="h6">
-              Total items
+              {t('totalItems', 'ui')}
             </Heading>
             <Code>
               {itemCount}
@@ -48,7 +50,7 @@ export const TableResultCount = () => {
             <Box mr={2}>
               <MdiIcon path={mdiFileDownloadOutline} size={0.7} />
             </Box>
-            Download .csv
+            {`${t('download', 'ui')} .csv`}
           </MenuItem>
         </MenuList>
       </Menu>

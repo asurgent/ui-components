@@ -8,6 +8,7 @@ import {
 } from '@chakra-ui/react';
 import { TableContext, TableBodyContext } from './data/context';
 import { TableGrid } from './Body';
+import translation from './Table.translation';
 
 export const TableRowCards = ({ children }) => {
   const {
@@ -18,12 +19,13 @@ export const TableRowCards = ({ children }) => {
   } = useContext(TableContext);
   const headers = useContext(TableBodyContext);
   const hasNoData = isInitializing && !isLoading && !(rows?.length);
+  const { t } = translation;
 
   if (hasNoData) {
     return (
       <GridItem colSpan={headers.length} p={8}>
         <Center>
-          No data
+          {t('noData', 'ui')}
         </Center>
       </GridItem>
     );
@@ -57,12 +59,13 @@ export const TableRows = ({ children }) => {
   } = useContext(TableContext);
   const headers = useContext(TableBodyContext);
   const hasNoData = !isInitializing && !(rows?.length);
+  const { t } = translation;
 
   if (hasNoData) {
     return (
       <GridItem colSpan={headers.length} p={8}>
         <Center>
-          No data
+          {t('noData', 'ui')}
         </Center>
       </GridItem>
     );
