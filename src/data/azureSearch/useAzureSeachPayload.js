@@ -1,4 +1,4 @@
-import * as tableState from '../Table/data/constants';
+import * as tableState from '../../Table/data/constants';
 
 const isBoolean = (val) => typeof val === 'boolean';
 

@@ -14,7 +14,7 @@ export const TableBodyHeader = () => {
     <TableGrid>
       {headers.map(({ label, key, render = true }) => render && (
         <Flex justify="right" direction="column" key={`${label}-${key}`}>
-          <Heading as="h6" size="xs" p={2}>
+          <Heading as="h6" size="xs" p={2} height={8}>
             {label}
           </Heading>
           <Divider />
