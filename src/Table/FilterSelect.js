@@ -4,8 +4,8 @@ import React, {
   useMemo,
   useState,
 } from 'react';
+import PropTypes from 'prop-types';
 import {
-  Switch,
   Flex,
   Button,
   Code,
@@ -20,13 +20,9 @@ import {
   Input,
   Box,
   Tooltip,
-  Tag,
-  TagLabel,
-  WrapItem,
   ButtonGroup,
   IconButton,
   Skeleton,
-  TagCloseButton,
   Text,
   Center,
   Heading,
@@ -35,7 +31,6 @@ import MdiIcon from '@mdi/react';
 import {
   mdiCheck,
   mdiClose,
-  mdiCancel,
   mdiChevronDown,
 } from '@mdi/js';
 import { VirtualRender } from '../VirtualRender';
@@ -43,11 +38,11 @@ import { TableContext } from './data/context';
 import { FILTER_KEY } from './data/constants';
 import translation from './Table.translation';
 
-const defaultPropsFilterContent = {
-  configuration: (filter) => ({ title: filter.value, value: filter.value, subtitle: filter.count }),
-};
-
-const FilterContent = ({ filterKey, searchPlaceholder, configuration }) => {
+const FilterContent = ({
+  filterKey,
+  searchPlaceholder,
+  configuration,
+}) => {
   const { t } = translation;
   const [search, setSearch] = useState('');
   const { dataSource, state } = useContext(TableContext);
@@ -104,6 +99,11 @@ const FilterContent = ({ filterKey, searchPlaceholder, configuration }) => {
 
         return false;
       })
+      .sort(({ subtitle: a }, { subtitle: b }) => {
+        if (a < b) { return -1; }
+        if (a > b) { return 1; }
+        return 0;
+      })
       .sort(({ title: a }, { title: b }) => {
         const textA = a.toUpperCase();
         const textB = b.toUpperCase();
@@ -125,7 +125,10 @@ const FilterContent = ({ filterKey, searchPlaceholder, configuration }) => {
   return (
     <>
       <Box mb={2}>
-        <Input placeholder={searchPlaceholder} onChange={({ target }) => setSearch(target.value)} />
+        <Input
+          placeholder={searchPlaceholder}
+          onChange={({ target }) => setSearch(target.value)}
+        />
       </Box>
       { !isLoading && items.length === 0 && search.length > 0
         && (
@@ -181,75 +184,6 @@ const FilterContent = ({ filterKey, searchPlaceholder, configuration }) => {
       )}
     </>
   );
-};
-
-FilterContent.defaultProps = defaultPropsFilterContent;
-
-const TableFilterTag = ({
-  color,
-  value,
-  filterKey,
-  filterTitle,
-  configure,
-}) => {
-  const { t } = translation;
-  const { state } = useContext(TableContext);
-
-  const handleRemoveFilterItem = () => {
-    const { [filterKey]: target, ...current } = state.getKey(FILTER_KEY);
-    const newFilterState = target.filter((label) => label !== value);
-
-    if (newFilterState?.length) {
-      state.setKey(FILTER_KEY, {
-        ...current,
-        [filterKey]: target.filter((label) => label !== value),
-      });
-    } else {
-      state.setKey(FILTER_KEY, { ...current });
-    }
-  };
-
-  const label = configure ? configure(filterKey, value) : `${filterTitle || filterKey}: ${value}`;
-
-  return (
-    <Tooltip hasArrow label={t('removeFilter', 'ui')} placement="auto">
-      <Tag
-        size="sm"
-        key={`${filterKey}:${value}`}
-        borderRadius="full"
-        variant="solid"
-        colorScheme={color}
-      >
-        <TagLabel isTruncated>{label}</TagLabel>
-        <TagCloseButton onClick={handleRemoveFilterItem} />
-      </Tag>
-    </Tooltip>
-  );
-};
-
-const getFilterState = (state, key) => (state.getKey(FILTER_KEY)?.[key] || [])
-  .map((tag) => ({ key, tag }));
-
-export const TableFilterTagGroup = ({
-  filterKey,
-  filterTitle,
-  configure,
-  color,
-}) => {
-  const { state } = useContext(TableContext);
-  const appliedFilters = getFilterState(state, filterKey);
-
-  return appliedFilters.map(({ key, tag }) => (
-    <WrapItem key={`${key}:${tag}`}>
-      <TableFilterTag
-        value={tag}
-        filterTitle={filterTitle}
-        filterKey={key}
-        color={color}
-        configure={configure}
-      />
-    </WrapItem>
-  ));
 };
 
 export const TableFilterSelect = ({
@@ -333,90 +267,35 @@ export const TableFilterSelect = ({
   );
 };
 
-export const TableFilterTriState = ({
-  title,
-  label,
-  filterKey,
-}) => {
-  const { state } = useContext(TableContext);
-  const appliedFilterState = state.getKey(FILTER_KEY)?.[filterKey]?.[0];
-
-  const handleClearFilter = () => {
-    const { [filterKey]: target, ...current } = state.getKey(FILTER_KEY);
-    state.setKey(FILTER_KEY, { ...current });
-  };
-
-  const handleSetToTrue = () => {
-    const { [filterKey]: target, ...current } = state.getKey(FILTER_KEY);
-    state.setKey(FILTER_KEY, { [filterKey]: [true], ...current });
-  };
-
-  const handleSetToFalse = () => {
-    const { [filterKey]: target, ...current } = state.getKey(FILTER_KEY);
-    state.setKey(FILTER_KEY, { [filterKey]: [false], ...current });
-  };
-
-  const isTrue = appliedFilterState === true;
-  const isFalse = appliedFilterState === false;
-
-  return (
-    <Stack>
-      { title && (
-        <Text fontSize="xs" mt={1}>
-          {title}
-        </Text>
-      )}
-      <ButtonGroup size="sm" isAttached variant="outline">
-        <IconButton
-          colorScheme={isFalse ? 'red' : 'gray'}
-          variant={isFalse ? 'solid' : 'outline'}
-          onClick={handleSetToFalse}
-          icon={(<MdiIcon path={mdiCancel} size={0.8} />)}
-        />
-        <Button mr="-px" onClick={handleClearFilter}>
-          {label}
-        </Button>
-        <IconButton
-          colorScheme={isTrue ? 'green' : 'gray'}
-          variant={isTrue ? 'solid' : 'outline'}
-          onClick={handleSetToTrue}
-          icon={(<MdiIcon path={mdiCheck} size={0.8} />)}
-        />
-      </ButtonGroup>
-    </Stack>
-  );
+TableFilterSelect.propTypes = {
+  title: PropTypes.string,
+  label: PropTypes.string.isRequired,
+  filterKey: PropTypes.string.isRequired,
+  configuration: PropTypes.func,
+  children: PropTypes.oneOfType([PropTypes.any]),
 };
 
-export const TableFilterBool = ({ filterKey, title }) => {
-  const { state } = useContext(TableContext);
-  const appliedFilterState = state.getKey(FILTER_KEY)?.[filterKey]?.[0];
+TableFilterSelect.defaultProps = {
+  title: '',
+  configuration: (filter) => ({
+    title: filter.value,
+    value: filter.value,
+    subtitle: filter.count,
+  }),
+  children: null,
+};
 
-  const handleClearFilter = () => {
-    const { [filterKey]: target, ...current } = state.getKey(FILTER_KEY);
-    state.setKey(FILTER_KEY, { ...current });
-  };
-
-  const handleActivateFilter = () => {
-    const { [filterKey]: target, ...current } = state.getKey(FILTER_KEY);
-    state.setKey(FILTER_KEY, { [filterKey]: [true], ...current });
-  };
-
-  return (
-    <Stack>
-      { title && (
-        <Text fontSize="xs" mt={1}>
-          {title}
-        </Text>
-      )}
-      <Switch
-        size="lg"
-        colorScheme="asurgent"
-        isChecked={appliedFilterState === true}
-        onChange={() => (appliedFilterState === true
-          ? handleClearFilter()
-          : handleActivateFilter()
-        )}
-      />
-    </Stack>
-  );
+FilterContent.propTypes = {
+  filterKey: PropTypes.string,
+  searchPlaceholder: PropTypes.string,
+  configuration: PropTypes.func,
+};
+FilterContent.defaultProps = {
+  filterKey: '',
+  searchPlaceholder: '',
+  configuration: (filter) => ({
+    title: filter.value,
+    value: filter.value,
+    subtitle: filter.count,
+  }),
 };

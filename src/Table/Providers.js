@@ -1,15 +1,19 @@
 import React, { useState } from 'react';
+import PropTypes from 'prop-types';
 import { useMutation } from 'react-query';
+import { Box, Spinner, useBoolean } from '@chakra-ui/react';
 import { TableContext } from './data/context';
 import useUrlState from '../data/useUrlState';
-import useAzureSeachPayload from '../data/useAzureSeachPayload';
+import useAzureSeachPayload from '../data/azureSearch/useAzureSeachPayload';
+import useAzureSearchGetAllResults from '../data/azureSearch/useAzureSearchGetAllResults';
 import {
+  initalState,
   QUERY_KEY,
   PAGE_KEY,
   FILTER_KEY,
   ORDER_KEY,
-  initalState,
   ORDER_DESC,
+  PAGE_SIZE,
 } from './data/constants';
 
 const stateHandler = (mutate, sort) => ({ setKey, setKeys }, current, prev) => {
@@ -45,6 +49,7 @@ export const TableSearchProvider = ({
   pageSize = 20,
   urlStateKey = 'test',
 }) => {
+  const [showLoader, loader] = useBoolean();
   const [rows, setRows] = useState(null);
   const [itemCount, setItemCount] = useState(0);
   const [pageCount, setPageCount] = useState(0);
@@ -67,22 +72,60 @@ export const TableSearchProvider = ({
   });
 
   const state = useUrlState(urlStateKey, initalState, stateHandler(rowsQuery.mutate, sort));
+  const downloadSource = useAzureSearchGetAllResults(fetcher, (page, size) => payload({
+    ...state.current,
+    [PAGE_SIZE]: size,
+    [PAGE_KEY]: page,
+  }, azureSearch));
 
   return (
     <TableContext.Provider
       value={{
+        loader,
         sort,
         state,
         rows,
         itemCount,
         pageCount,
         dataSource,
+        downloadSource,
         isError: rowsQuery.isError,
         isLoading: rowsQuery.isLoading,
         isInitializing: (rowsQuery.isLoading && rows === null),
       }}
     >
       {children}
+      {showLoader && (
+        <Box
+          position="absolute"
+          display="flex"
+          justifyContent="center"
+          alignItems="center"
+          left="0"
+          right="0"
+          top="0"
+          bottom="0"
+          backgroundColor="white"
+          zIndex="2"
+          opacity=".8"
+        >
+          <Spinner />
+        </Box>
+      )}
     </TableContext.Provider>
   );
+};
+
+TableSearchProvider.propTypes = {
+  children: PropTypes.oneOfType([PropTypes.any]).isRequired,
+  sort: PropTypes.instanceOf(Array).isRequired,
+  payload: PropTypes.func.isRequired,
+  fetcher: PropTypes.func.isRequired,
+  pageSize: PropTypes.number,
+  urlStateKey: PropTypes.string,
+};
+
+TableSearchProvider.defaultProps = {
+  pageSize: 20,
+  urlStateKey: '',
 };

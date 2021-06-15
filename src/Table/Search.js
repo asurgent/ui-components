@@ -1,4 +1,5 @@
 import React, { useContext } from 'react';
+import PropTypes from 'prop-types';
 import {
   GridItem,
   Input,
@@ -12,7 +13,7 @@ import { QUERY_KEY } from './data/constants';
 import useDelayTrigger from '../data/useDelayTrigger';
 import translation from './Table.translation';
 
-export const TableSearch = () => {
+export const TableSearch = ({ placeholder }) => {
   const { t } = translation;
   const { state } = useContext(TableContext);
   const { trigger, cancel } = useDelayTrigger();
@@ -40,11 +41,18 @@ export const TableSearch = () => {
         </InputLeftElement>
         <Input
           borderRadius={20}
-          placeholder={`${t('search', 'ui')}...`}
+          placeholder={placeholder || `${t('search', 'ui')}...`}
           defaultValue={(state ? state.getKey(QUERY_KEY) : '')}
           onKeyUp={handleSearch}
         />
       </InputGroup>
     </GridItem>
   );
+};
+
+TableSearch.propTypes = {
+  placeholder: PropTypes.string,
+};
+TableSearch.defaultProps = {
+  placeholder: '',
 };

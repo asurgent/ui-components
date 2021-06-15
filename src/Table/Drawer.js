@@ -1,4 +1,5 @@
 import React, { useContext } from 'react';
+import PropTypes from 'prop-types';
 import {
   Drawer,
   DrawerBody,
@@ -81,4 +82,17 @@ export const TableDrawer = ({
       </Drawer>
     </GridItem>
   );
+};
+
+TableDrawer.propTypes = {
+  children: PropTypes.oneOfType([PropTypes.any]),
+  tooltip: PropTypes.string,
+  title: PropTypes.string,
+  icon: PropTypes.string,
+};
+TableDrawer.defaultProps = {
+  children: null,
+  tooltip: '',
+  title: '',
+  icon: '',
 };

@@ -2,7 +2,6 @@ import React from 'react';
 import {
   Box, Flex, HStack, Wrap,
 } from '@chakra-ui/react';
-import { useMutation } from 'react-query';
 import {
   TableSort,
   TableSearch,
@@ -11,7 +10,7 @@ import {
   TableSearchProvider,
   TablePagination,
   TableHeader,
-  TableFilterCollection,
+  TableFilterTags,
   TableFilterSelect,
   TableDrawer,
   TableBody,
@@ -32,55 +31,6 @@ export default {
   },
 };
 
-// const apiMockCall = async (state, azureSearch) => new Promise((resolve) => {
-//   setTimeout(() => {
-//     console.log(state);
-//     if (state.isFilterTrigger) {
-//       const result = {
-//         page: 1,
-//         result: [],
-//         facets: [
-//           { label: 'a-1', count: 123 },
-//           { label: 'a-2', count: 123 },
-//           { label: 'a-3', count: 123 },
-//           { label: 'a-4', count: 123 },
-//           { label: 'a-5', count: 123 },
-//           { label: 'a-6', count: 123 },
-//           { label: 'a-7', count: 123 },
-//           { label: 'a-8', count: 123 },
-//           { label: 'a-9', count: 123 },
-//           { label: 'a-10', count: 123 },
-//           { label: 'a-11', count: 123 },
-//           { label: 'a-12', count: 123 },
-//           { label: 'a-13', count: 123 },
-//           { label: 'a-14', count: 123 },
-//           { label: 'a-15', count: 123 },
-//         ],
-//         total_pages: 0,
-//         total_count: 0,
-//       };
-
-//       azureSearch.facets(state, state.filterKey);
-
-//       resolve(result.facets);
-//       return result.facets;
-//     }
-
-//     // const p = azureSearch.items(state);
-//     // console.log(p);
-
-//     const result = {
-//       page: 1,
-//       result: [{ value: 'hello' }, { value: 'hello' }],
-//       facets: [],
-//       total_pages: 100,
-//       total_count: 10,
-//     };
-//     resolve(result);
-//     return result;
-//   }, 500);
-// });
-
 const CardComp = () => (
   <Box bg="tomato" p={8}>
     Hej
@@ -88,16 +38,38 @@ const CardComp = () => (
 );
 
 const mockPayloadParser = (state, azureSearchParser) => {
+  console.log(state);
   if (state.isFilterTrigger) {
-    const a = azureSearchParser.facets(state, state.filterKey);
-    console.log(a);
+    return azureSearchParser.facets(state, state.filterKey);
   }
 
-  azureSearchParser.items(state);
+  return azureSearchParser.items(state);
 };
 
-const mockService = async (config) => new Promise((resolve, reject) => {
-  resolve({ result: [] });
+const mockService = async () => new Promise((resolve) => {
+  resolve({
+    facets: [
+      { label: 'a-1', count: 123 },
+      { label: 'a-2', count: 123 },
+      { label: 'a-3', count: 123 },
+      { label: 'a-4', count: 123 },
+      { label: 'a-5', count: 123 },
+      { label: 'a-6', count: 123 },
+      { label: 'a-7', count: 123 },
+      { label: 'a-8', count: 123 },
+      { label: 'a-9', count: 123 },
+      { label: 'a-10', count: 123 },
+      { label: 'a-11', count: 123 },
+      { label: 'a-12', count: 123 },
+      { label: 'a-13', count: 123 },
+      { label: 'a-14', count: 123 },
+      { label: 'a-15', count: 123 },
+    ],
+    page: 1,
+    result: [{ value: 'hello' }, { value: 'hello' }],
+    total_pages: 2,
+    total_count: 2,
+  });
 });
 
 const Template = () => (
@@ -191,13 +163,13 @@ const Template = () => (
         filterKey="hidden"
       />
     </HStack>
-    <TableFilterCollection
+    <TableFilterTags
       configurations={{ type: (_, value) => `Special type: ${value}` }}
       colors={{ type: 'green', customer: 'orange' }}
     />
     <TableResultCount />
     <TableBody columns={[
-      { label: 'one', size: 'minmax(500px, 1fr)' },
+      { label: 'one', size: 'minmax(500px, 1fr)', render: false },
       { label: 'two' },
       { label: 'three' },
     ]}
@@ -213,7 +185,7 @@ const Template = () => (
         )}
       </TableRows>
       <TableRowCards>
-        {(row, idx) => <CardComp key={idx} />}
+        {(_, idx) => <CardComp key={idx} />}
       </TableRowCards>
     </TableBody>
     <TablePagination delta={4} />

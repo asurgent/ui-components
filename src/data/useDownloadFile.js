@@ -54,7 +54,7 @@ const splitFileName = (fileName) => {
   return { extension: 'txt', name: fileName };
 };
 
-const downloadFile = async ({ data, fileName = 'export.csv' }) => {
+const downloadFile = async (data, fileName = 'export.csv') => {
   const handledFileName = splitFileName(fileName);
   const handledData = getHandledData(data, handledFileName.extension);
 

@@ -6,15 +6,14 @@ import { TablePagination } from './Pagination';
 import { TableHeader } from './Header';
 import { TableBody } from './Body';
 import { TableBodyHeader } from './BodyHeader';
-import { TableFilterCollection } from './FilterCollection';
-import {
-  TableFilterTagGroup,
-  TableFilterSelect,
-  TableFilterBool,
-  TableFilterTriState,
-} from './Filter';
+import { TableFilterTags } from './TableFilterTags';
 import { TableResultCount } from './ResultCount';
 import { TableDrawer } from './Drawer';
+
+import { TableFilterTagGroup } from './FilterTagGroup';
+import { TableFilterSelect } from './FilterSelect';
+import { TableFilterBool } from './FilterBool';
+import { TableFilterTriState } from './FilterTriState';
 
 export {
   TableSort,
@@ -26,7 +25,7 @@ export {
   TableHeader,
   TableBody,
   TableBodyHeader,
-  TableFilterCollection,
+  TableFilterTags,
   TableFilterSelect,
   TableResultCount,
   TableDrawer,

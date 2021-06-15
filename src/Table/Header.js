@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Grid } from '@chakra-ui/react';
 
 export const TableHeader = ({ children }) => (
@@ -12,3 +13,10 @@ export const TableHeader = ({ children }) => (
     {children}
   </Grid>
 );
+
+TableHeader.propTypes = {
+  children: PropTypes.oneOfType([PropTypes.any]),
+};
+TableHeader.defaultProps = {
+  children: null,
+};

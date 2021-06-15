@@ -1,19 +1,26 @@
 import React, { useContext, useMemo } from 'react';
-import {
-  Box,
-  Grid,
-} from '@chakra-ui/react';
+import PropTypes from 'prop-types';
+import { Box, Grid } from '@chakra-ui/react';
 import { TableBodyContext } from './data/context';
 
 export const TableGrid = ({ children, ...gridProps }) => {
   const columns = useContext(TableBodyContext);
-  const templateColumns = columns.map(({ size }) => size || 'minmax(5rem, 1fr)').join(' ');
+  const templateColumns = useMemo(() => columns
+    .map(({ size }) => size || 'minmax(5rem, 1fr)').join(' '),
+  [columns]);
 
   return (
     <Grid templateColumns={templateColumns} {...gridProps}>
       {children}
     </Grid>
   );
+};
+
+TableGrid.propTypes = {
+  children: PropTypes.oneOfType([PropTypes.any]),
+};
+TableGrid.defaultProps = {
+  children: null,
 };
 
 export const TableBody = ({ children, columns }) => {
@@ -31,4 +38,13 @@ export const TableBody = ({ children, columns }) => {
       </Box>
     </TableBodyContext.Provider>
   );
+};
+
+TableBody.propTypes = {
+  children: PropTypes.oneOfType([PropTypes.any]),
+  columns: PropTypes.instanceOf(Array),
+};
+TableBody.defaultProps = {
+  children: null,
+  columns: [],
 };

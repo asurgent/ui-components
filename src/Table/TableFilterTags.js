@@ -1,10 +1,11 @@
 import React, { useContext } from 'react';
+import PropTypes from 'prop-types';
 import { Grid, Wrap } from '@chakra-ui/react';
 import { FILTER_KEY } from './data/constants';
 import { TableContext } from './data/context';
-import { TableFilterTagGroup } from './Filter';
+import { TableFilterTagGroup } from './FilterTagGroup';
 
-export const TableFilterCollection = ({ colors, configurations }) => {
+export const TableFilterTags = ({ colors, configurations }) => {
   const { state } = useContext(TableContext);
 
   return (
@@ -23,4 +24,13 @@ export const TableFilterCollection = ({ colors, configurations }) => {
       </Wrap>
     </Grid>
   );
+};
+
+TableFilterTags.propTypes = {
+  colors: PropTypes.instanceOf(Object),
+  configurations: PropTypes.instanceOf(Object),
+};
+TableFilterTags.defaultProps = {
+  colors: {},
+  configurations: {},
 };

@@ -1,5 +1,5 @@
-/* eslint-disable react/no-array-index-key */
 import React, { useContext } from 'react';
+import PropTypes from 'prop-types';
 import {
   Stack,
   Center,
@@ -10,12 +10,24 @@ import { TableContext, TableBodyContext } from './data/context';
 import { TableGrid } from './Body';
 import translation from './Table.translation';
 
+const GridRow = ({ children, ...props }) => (
+  <TableGrid _hover={{ background: 'gray.50' }} minHeight={12} {...props}>
+    {children}
+  </TableGrid>
+);
+
+GridRow.propTypes = {
+  children: PropTypes.oneOfType([PropTypes.any]),
+};
+GridRow.defaultProps = {
+  children: null,
+};
+
 export const TableRowCards = ({ children }) => {
   const {
     rows,
     isInitializing,
     isLoading,
-    ...rest
   } = useContext(TableContext);
   const headers = useContext(TableBodyContext);
   const hasNoData = isInitializing && !isLoading && !(rows?.length);
@@ -45,12 +57,6 @@ export const TableRowCards = ({ children }) => {
 
   return (rows || []).map((item, index) => (children(item, index)));
 };
-
-const GridRow = ({ children, ...props }) => (
-  <TableGrid _hover={{ background: 'gray.50' }} minHeight={12} {...props}>
-    {children}
-  </TableGrid>
-);
 
 export const TableRows = ({ children }) => {
   const {

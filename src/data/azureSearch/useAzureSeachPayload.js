@@ -17,7 +17,7 @@ const generateFilter = (filters, parser) => {
   const result = f.join(' and ');
 
   if (result) {
-    return `(${result})`;
+    return `${result}`;
   }
   return '';
 };
@@ -44,13 +44,14 @@ const generateOrder = (key, desc) => {
   return [`${key} ${desc ? 'desc' : 'asc'}`];
 };
 
-const generate = (state, pageSize, parsers) => {
+const generate = (state, initialPageSize, parsers) => {
   const {
     [tableState.FILTER_KEY]: filter,
     [tableState.ORDER_DESC]: orderDesc,
     [tableState.ORDER_KEY]: orderKey,
     [tableState.PAGE_KEY]: page,
     [tableState.QUERY_KEY]: query,
+    [tableState.PAGE_SIZE]: pageSize,
   } = state;
 
   return {
@@ -59,7 +60,7 @@ const generate = (state, pageSize, parsers) => {
     facets: [],
     order_by: generateOrder(orderKey, orderDesc),
     search_fields: [],
-    page_size: pageSize,
+    page_size: pageSize || initialPageSize,
     page,
   };
 };

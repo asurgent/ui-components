@@ -1,4 +1,5 @@
 import React, { useContext } from 'react';
+import PropTypes from 'prop-types';
 import {
   Center,
   Button,
@@ -11,7 +12,7 @@ import { paginationCalculator } from './data/pagination';
 import { TableContext } from './data/context';
 import { PAGE_KEY } from './data/constants';
 
-export const TablePagination = ({ delta = 4 }) => {
+export const TablePagination = ({ delta }) => {
   const { state, pageCount } = useContext(TableContext);
   const currentPage = state.getKey(PAGE_KEY);
 
@@ -74,4 +75,11 @@ export const TablePagination = ({ delta = 4 }) => {
       </HStack>
     </Center>
   );
+};
+
+TablePagination.propTypes = {
+  delta: PropTypes.number,
+};
+TablePagination.defaultProps = {
+  delta: 4,
 };

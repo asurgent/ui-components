@@ -1,4 +1,5 @@
 import React, { useContext } from 'react';
+import PropTypes from 'prop-types';
 import {
   Flex,
   Divider,
@@ -15,13 +16,17 @@ import MdiIcon from '@mdi/react';
 import { mdiFileDownloadOutline, mdiChevronDown } from '@mdi/js';
 import { TableContext } from './data/context';
 import translation from './Table.translation';
+import downloadFile from '../data/useDownloadFile';
 
-export const TableResultCount = () => {
+export const TableResultCount = ({ fileName }) => {
   const { t } = translation;
-  const { itemCount } = useContext(TableContext);
+  const { itemCount, downloadSource, loader } = useContext(TableContext);
 
-  const handleDownload = () => {
-    console.log('download');
+  const handleDownload = async () => {
+    loader.on();
+    const result = await downloadSource.fetch(itemCount);
+    downloadFile(result, fileName);
+    loader.off();
   };
 
   return (
@@ -46,7 +51,7 @@ export const TableResultCount = () => {
           </HStack>
         </MenuButton>
         <MenuList>
-          <MenuItem onClick={handleDownload}>
+          <MenuItem onClick={handleDownload} isDisabled={itemCount === 0}>
             <Box mr={2}>
               <MdiIcon path={mdiFileDownloadOutline} size={0.7} />
             </Box>
@@ -57,4 +62,11 @@ export const TableResultCount = () => {
       <Divider />
     </Flex>
   );
+};
+
+TableResultCount.propTypes = {
+  fileName: PropTypes.string,
+};
+TableResultCount.defaultProps = {
+  fileName: '',
 };
