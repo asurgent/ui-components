@@ -13,7 +13,10 @@
     "start": "start-storybook -p 6006 -s public",
     "build-storybook": "build-storybook -s public",
     "build": "rm -rf dist && mkdir dist &&  babel ./src -d dist --ignore ./src/stories --copy-files --no-copy-ignored",
-    "copy": "npm run build && rsync -av ./dist/ ./../cloudops-portal/node_modules/@asurgent/ui-components/dist/"
+    "copy": "npm run build && rsync -av ./dist/ ./../cloudops-portal/node_modules/@asurgent/ui-components/dist/",
+    "version:patch": "npm run build && npm version patch && npm publish && git p && git p --tags",
+    "version:minor": "npm run build && npm version minor && npm publish && git p && git p --tags",
+    "version:major": "npm run build && npm version major && npm publish && git p && git p --tags"
   },
   "repository": {
     "type": "git",
