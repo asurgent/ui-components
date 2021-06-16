@@ -99,11 +99,6 @@ const FilterContent = ({
 
         return false;
       })
-      .sort(({ subtitle: a }, { subtitle: b }) => {
-        if (a < b) { return -1; }
-        if (a > b) { return 1; }
-        return 0;
-      })
       .sort(({ title: a }, { title: b }) => {
         const textA = a.toUpperCase();
         const textB = b.toUpperCase();
@@ -115,6 +110,11 @@ const FilterContent = ({
       .sort(({ isSelected: a }, { isSelected: b }) => {
         if (a && !b) { return -1; }
         if (!a && b) { return 1; }
+        return 0;
+      })
+      .sort(({ subtitle: a }, { subtitle: b }) => {
+        if (a < b) { return 1; }
+        if (a > b) { return -1; }
         return 0;
       });
 

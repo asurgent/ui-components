@@ -58,7 +58,11 @@ const TableFilterTag = ({
 
 TableFilterTag.propTypes = {
   color: PropTypes.oneOfType([PropTypes.string, PropTypes.oneOf([null])]),
-  value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
+  value: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.number,
+    PropTypes.oneOf([false, true]),
+  ]).isRequired,
   filterKey: PropTypes.string.isRequired,
   filterTitle: PropTypes.string,
   configure: PropTypes.oneOfType([PropTypes.func, PropTypes.instanceOf(Object)]),
