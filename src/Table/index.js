@@ -14,6 +14,7 @@ import { TableFilterTagGroup } from './FilterTagGroup';
 import { TableFilterSelect } from './FilterSelect';
 import { TableFilterBool } from './FilterBool';
 import { TableFilterTriState } from './FilterTriState';
+import { TableFilterStack } from './TableFilterStack';
 
 export {
   TableSort,
@@ -32,4 +33,5 @@ export {
   TableFilterTagGroup,
   TableFilterBool,
   TableFilterTriState,
+  TableFilterStack,
 };

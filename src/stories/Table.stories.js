@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-  Box, Flex, HStack,
+  Box, Flex,
 } from '@chakra-ui/react';
 import {
   TableSort,
@@ -18,6 +18,7 @@ import {
   TableResultCount,
   TableFilterBool,
   TableFilterTriState,
+  TableFilterStack,
 } from '../Table';
 
 export default {
@@ -136,7 +137,7 @@ const Template = () => (
         />
       </TableDrawer>
     </TableHeader>
-    <HStack>
+    <TableFilterStack>
       <TableFilterSelect
         configuration={(filter) => ({
           title: `hej ${filter.label}`,
@@ -154,7 +155,7 @@ const Template = () => (
         label="Show Hidden"
         filterKey="hidden"
       />
-    </HStack>
+    </TableFilterStack>
     <TableFilterTags
       configurations={{ type: (_, value) => `Special type: ${value}` }}
       colors={{ type: 'green', customer: 'orange' }}

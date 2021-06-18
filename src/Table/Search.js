@@ -5,6 +5,7 @@ import {
   Input,
   InputGroup,
   InputLeftElement,
+  useBreakpointValue,
 } from '@chakra-ui/react';
 import MdiIcon from '@mdi/react';
 import { mdiMagnify } from '@mdi/js';
@@ -33,8 +34,10 @@ export const TableSearch = ({ placeholder }) => {
     }
   };
 
+  const colSpan = useBreakpointValue({ base: '3', sm: '1' });
+
   return (
-    <GridItem width="1fr">
+    <GridItem width="1fr" colSpan={colSpan}>
       <InputGroup>
         <InputLeftElement pointerEvents="none">
           <MdiIcon color="var(--chakra-colors-gray-400)" path={mdiMagnify} size={1.2} />

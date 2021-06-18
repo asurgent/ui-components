@@ -24,7 +24,7 @@ export const TableSort = () => {
   };
 
   return (
-    <GridItem width={40}>
+    <GridItem minWidth={40}>
       <Flex>
         <Select
           isTruncated
