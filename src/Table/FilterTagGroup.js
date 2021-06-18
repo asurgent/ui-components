@@ -1,10 +1,10 @@
 import React, { useContext } from 'react';
 import PropTypes from 'prop-types';
 import {
+  Flex,
   Tooltip,
   Tag,
   TagLabel,
-  WrapItem,
   TagCloseButton,
 } from '@chakra-ui/react';
 import { TableContext } from './data/context';
@@ -41,18 +41,22 @@ const TableFilterTag = ({
   const label = configure ? configure(filterKey, value) : `${filterTitle || filterKey}: ${value}`;
 
   return (
-    <Tooltip hasArrow label={t('removeFilter', 'ui')} placement="auto">
-      <Tag
-        size="sm"
-        key={`${filterKey}:${value}`}
-        borderRadius="full"
-        variant="solid"
-        colorScheme={color}
-      >
+    <Tag
+      size="sm"
+      key={`${filterKey}:${value}`}
+      borderRadius="full"
+      variant="solid"
+      colorScheme={color}
+    >
+      <Tooltip hasArrow label={label} placement="auto">
         <TagLabel isTruncated>{label}</TagLabel>
-        <TagCloseButton onClick={handleRemoveFilterItem} />
-      </Tag>
-    </Tooltip>
+      </Tooltip>
+      <Tooltip hasArrow label={t('removeFilter', 'ui')} placement="auto">
+        <Flex>
+          <TagCloseButton onClick={handleRemoveFilterItem} />
+        </Flex>
+      </Tooltip>
+    </Tag>
   );
 };
 
@@ -84,14 +88,12 @@ export const TableFilterTagGroup = ({
   const appliedFilters = getFilterState(state, filterKey);
 
   return appliedFilters.map(({ key, tag }) => (
-    <WrapItem key={`${key}:${tag}`}>
-      <TableFilterTag
-        value={tag}
-        filterTitle={filterTitle}
-        filterKey={key}
-        color={color}
-        configure={configure}
-      />
-    </WrapItem>
+    <TableFilterTag
+      value={tag}
+      filterTitle={filterTitle}
+      filterKey={key}
+      color={color}
+      configure={configure}
+    />
   ));
 };

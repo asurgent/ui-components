@@ -26,6 +26,7 @@ import {
   Text,
   Center,
   Heading,
+  Wrap,
 } from '@chakra-ui/react';
 import MdiIcon from '@mdi/react';
 import {
@@ -33,6 +34,7 @@ import {
   mdiClose,
   mdiChevronDown,
 } from '@mdi/js';
+import { TableFilterTagGroup } from './FilterTagGroup';
 import { VirtualRender } from '../VirtualRender';
 import { TableContext } from './data/context';
 import { FILTER_KEY } from './data/constants';
@@ -191,7 +193,8 @@ export const TableFilterSelect = ({
   label,
   filterKey,
   configuration,
-  children,
+  color,
+  renderTags,
 }) => {
   const { t } = translation;
   const { state } = useContext(TableContext);
@@ -262,7 +265,17 @@ export const TableFilterSelect = ({
           </>
         )}
       </Popover>
-      { children }
+      {renderTags && (
+        <Box>
+          <Wrap spacing={2}>
+            <TableFilterTagGroup
+              color={color}
+              filterKey={filterKey}
+              filterTitle={label}
+            />
+          </Wrap>
+        </Box>
+      )}
     </Stack>
   );
 };
@@ -272,17 +285,19 @@ TableFilterSelect.propTypes = {
   label: PropTypes.string.isRequired,
   filterKey: PropTypes.string.isRequired,
   configuration: PropTypes.func,
-  children: PropTypes.oneOfType([PropTypes.any]),
+  color: PropTypes.oneOfType([PropTypes.string, PropTypes.oneOf([null])]),
+  renderTags: PropTypes.bool,
 };
 
 TableFilterSelect.defaultProps = {
   title: '',
+  color: null,
+  renderTags: false,
   configuration: (filter) => ({
     title: filter.value,
     value: filter.value,
     subtitle: filter.count,
   }),
-  children: null,
 };
 
 FilterContent.propTypes = {

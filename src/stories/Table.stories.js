@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-  Box, Flex, HStack, Wrap,
+  Box, Flex, HStack,
 } from '@chakra-ui/react';
 import {
   TableSort,
@@ -16,7 +16,6 @@ import {
   TableBody,
   TableBodyHeader,
   TableResultCount,
-  TableFilterTagGroup,
   TableFilterBool,
   TableFilterTriState,
 } from '../Table';
@@ -77,6 +76,7 @@ const Template = () => (
     pageSize={20}
     payload={mockPayloadParser}
     fetcher={mockService}
+    urlStateKey="tetare"
     sort={[
       { label: 'Name', value: 'name' },
       {
@@ -92,55 +92,47 @@ const Template = () => (
         tooltip="View all filters"
       >
         <TableFilterSelect
-          title="Change Customer"
-          configuration={(filter) => ({
-            title: `hej ${filter.label}`,
-            value: filter.label,
-            subtitle: `${filter.count} users`,
-          })}
-          label="Customers"
+          title="changeCustomer"
+          label="customer"
           filterKey="customer_display_name"
-        >
-          <TableFilterTagGroup
-            color="orange"
-            filterKey="customer_display_name"
-            filterTitle="Customer"
-          />
-        </TableFilterSelect>
+          color="orange"
+          renderTags
+        />
         <TableFilterSelect
+          title="changeContainer"
+          label="container"
+          filterKey="container_name"
+          color="red"
+          renderTags
+        />
+        <TableFilterSelect
+          title="changeResourceGroup"
           label="resourceGroup"
           filterKey="resource_group"
-        >
-          <Wrap>
-            <TableFilterTagGroup
-              color="red"
-              filterKey="resource_group"
-              filterTitle="Resource group"
-            />
-          </Wrap>
-        </TableFilterSelect>
+          color="red"
+          renderTags
+        />
         <TableFilterSelect
-          title="Change type"
-          label="Type"
+          title="changeType"
+          label="type"
           filterKey="type"
-        >
-          <Wrap>
-            <TableFilterTagGroup
-              color="green"
-              filterKey="type"
-              filterTitle="Type"
-            />
-          </Wrap>
-        </TableFilterSelect>
-        <TableFilterBool
-          title="Include hidden entities"
-          label="Show Hidden"
-          filterKey="hidden"
+          color="green"
+          renderTags
         />
         <TableFilterTriState
-          title="Include entite with stale property"
-          label="Stale"
-          filterKey="stale"
+          title="changeIsMapped"
+          label="isMapped"
+          filterKey="is_mapped"
+        />
+        <TableFilterTriState
+          title="changeIsHidden"
+          label="isHidden"
+          filterKey="is_hidden"
+        />
+        <TableFilterBool
+          title="changeIStale"
+          label="isStale"
+          filterKey="is_stale"
         />
       </TableDrawer>
     </TableHeader>

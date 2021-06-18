@@ -5,9 +5,9 @@ import {
   ColorModeScript  
 } from '@chakra-ui/react'
 import { QueryClient,  QueryClientProvider,} from 'react-query';
-import { extendTheme } from "@chakra-ui/react"
 import { I18nextProvider,initReactI18next } from 'react-i18next';
 import { i18next, addComponentTranslations } from './../src/translations'
+import { theme } from "./../src/style/chakra.config";
 
 i18next
   .use(initReactI18next)
@@ -36,21 +36,6 @@ const queryClient = new QueryClient({
     },
   },
 });     
-
-const theme = extendTheme({
-  colors: {
-    asurgent: {
-      500: "#133A5D",
-    },
-  },
-  styles: {
-    global: {
-      html: {
-        fontSize: "100%"
-      },
-    },
-  }
-})
 
 export const decorators = [
   (Story) => (
