@@ -41,7 +41,7 @@ export const TableSort = () => {
         <IconButton
           isLoading={state.getKey(ORDER_DESC) === undefined}
           variant="solid"
-          colorScheme="asurgent"
+          colorScheme="blue"
           borderLeftRadius={0}
           onClick={onHandleSortDirection}
           icon={(

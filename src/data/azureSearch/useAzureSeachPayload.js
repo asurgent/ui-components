@@ -3,12 +3,12 @@ import * as tableState from '../../Table/data/constants';
 const isBoolean = (val) => typeof val === 'boolean';
 
 const generateFilter = (filters, parser) => {
-  const f = Object.entries(filters).reduce((acc, [facet, values]) => {
-    const res = values.map((parser?.[facet]) || ((value) => {
+  const f = Object.entries(filters).reduce((acc, [filterKey, values]) => {
+    const res = values.map((parser?.[filterKey]) || ((value) => {
       if (isBoolean(value)) {
-        return `${facet} eq ${value}`;
+        return `${filterKey} eq ${value}`;
       }
-      return `${facet} eq '${value}'`;
+      return `${filterKey} eq '${value}'`;
     })).join(' or ');
 
     return [...acc, [`(${res})`]];
@@ -16,7 +16,7 @@ const generateFilter = (filters, parser) => {
 
   const result = f.join(' and ');
 
-  if (result) {
+  if (result && result !== '()') {
     return `${result}`;
   }
   return '';
