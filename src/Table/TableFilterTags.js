@@ -13,7 +13,7 @@ export const TableFilterTags = ({ colors, configurations }) => {
 
   return (
     <Grid templateColumns="1fr 4rem" display={display}>
-      <Wrap spacing={2} mt={2} maxHeight={20} overflowX="scroll">
+      <Wrap spacing={2} mt={2} maxHeight={20}>
         {
             Object.keys(state.getKey(FILTER_KEY) || {}).sort().map((key) => (
               <TableFilterTagGroup
