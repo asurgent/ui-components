@@ -165,8 +165,8 @@ const Template = () => (
       />
     </TableFilterStack>
     <TableFilterTags
-      configurations={{ type: (_, value) => `Special type: ${value}` }}
-      colors={{ type: 'blue', customer: 'green', is_mapped: 'ruby' }}
+      configurations={{ customer_display_name: (_, value) => `Val: ${value}`, type: (_, value) => `Special type: ${value}` }}
+      colors={{ customer_display_name: 'blue', container_name: 'green', is_mapped: 'ruby' }}
     />
     <TableResultCount />
     <TableBody columns={[
