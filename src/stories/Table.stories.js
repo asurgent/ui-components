@@ -39,32 +39,40 @@ const CardComp = () => (
 
 const mockPayloadParser = (state, azureSearchParser) => {
   console.log(state);
+  const parsers = {
+    filter: {
+      customer_display_name: (val) => `${val} less than something cool`,
+    },
+  };
+
   if (state.isFilterTrigger) {
-    return azureSearchParser.facets(state, state.filterKey);
+    return azureSearchParser.facets(state, state.filterKey, parsers);
   }
 
-  return azureSearchParser.items(state);
+  return azureSearchParser.items(state, parsers);
 };
 
 const mockService = async () => new Promise((resolve) => {
   resolve({
-    facets: [
-      { label: 'a-1', count: 123 },
-      { label: 'a-2', count: 123 },
-      { label: 'a-3', count: 123 },
-      { label: 'a-4', count: 123 },
-      { label: 'a-5', count: 123 },
-      { label: 'a-6', count: 123 },
-      { label: 'a-7', count: 123 },
-      { label: 'a-8', count: 123 },
-      { label: 'a-9', count: 123 },
-      { label: 'a-10', count: 123 },
-      { label: 'a-11', count: 123 },
-      { label: 'a-12', count: 123 },
-      { label: 'a-13', count: 123 },
-      { label: 'a-14', count: 123 },
-      { label: 'a-15', count: 123 },
-    ],
+    facets: {
+      customer_display_name: [
+        { label: 'a-1', count: 123 },
+        { label: 'a-2', count: 123 },
+        { label: 'a-3', count: 123 },
+        { label: 'a-4', count: 123 },
+        { label: 'a-5', count: 123 },
+        { label: 'a-6', count: 123 },
+        { label: 'a-7', count: 123 },
+        { label: 'a-8', count: 123 },
+        { label: 'a-9', count: 123 },
+        { label: 'a-10', count: 123 },
+        { label: 'a-11', count: 123 },
+        { label: 'a-12', count: 123 },
+        { label: 'a-13', count: 123 },
+        { label: 'a-14', count: 123 },
+        { label: 'a-15', count: 123 },
+      ],
+    },
     page: 1,
     result: [{ value: 'hello' }, { value: 'hello' }],
     total_pages: 2,
@@ -157,8 +165,8 @@ const Template = () => (
       />
     </TableFilterStack>
     <TableFilterTags
-      configurations={{ type: (_, value) => `Special type: ${value}` }}
-      colors={{ type: 'green', customer: 'orange' }}
+      configurations={{ customer_display_name: (_, value) => `Val: ${value}`, type: (_, value) => `Special type: ${value}` }}
+      colors={{ customer_display_name: 'blue', container_name: 'green', is_mapped: 'ruby' }}
     />
     <TableResultCount />
     <TableBody columns={[

@@ -28,7 +28,7 @@ export const TableFilterBool = ({ filterKey, title }) => {
       )}
       <Switch
         size="lg"
-        colorScheme="asurgent"
+        colorScheme="blue"
         isChecked={appliedFilterState === true}
         onChange={() => (appliedFilterState === true
           ? handleClearFilter()
