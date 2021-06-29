@@ -6,6 +6,9 @@ export const theme = extendTheme({
     body: 'Lato',
   },
   colors: {
+    asurgent: {
+      500: '#133A5D',
+    },
     gray: {
       900: '#1c1c1c',
       800: '#3C3C3C',
