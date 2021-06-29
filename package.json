@@ -1,6 +1,6 @@
 {
   "name": "@asurgent/ui-components",
-  "version": "1.3.1",
+  "version": "1.3.2",
   "description": "",
   "license": "ISC",
   "main": "dist/index.js",
