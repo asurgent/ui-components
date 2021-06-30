@@ -40,9 +40,10 @@ export const TableSort = () => {
         </Select>
         <IconButton
           isLoading={state.getKey(ORDER_DESC) === undefined}
-          variant="solid"
-          colorScheme="blue"
+          variant="outline"
+          borderLeft="none"
           borderLeftRadius={0}
+          borderRightRadius={5}
           onClick={onHandleSortDirection}
           icon={(
             <MdiIcon

@@ -38,7 +38,7 @@ export const TableDrawer = ({
         <Box position="relative">
           <IconButton
             isRound
-            colorScheme="blue"
+            colorScheme="asurgent"
             icon={<MdiIcon path={icon || mdiFilter} size={0.6} />}
             onClick={onOpen}
           />
