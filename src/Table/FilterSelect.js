@@ -63,7 +63,9 @@ const FilterContent = ({
     const { [filterKey]: target, ...current } = state.getKey(FILTER_KEY);
 
     const isSelected = target?.includes(value);
-    if (isSelected) {
+    if (isSelected && target?.length === 1) {
+      state.setKey(FILTER_KEY, { ...current });
+    } else if (isSelected) {
       state.setKey(FILTER_KEY, {
         ...current,
         [filterKey]: target.filter((label) => label !== value),
