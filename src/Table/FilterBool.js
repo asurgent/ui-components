@@ -5,7 +5,9 @@ import { Switch, Stack, Text } from '@chakra-ui/react';
 import { TableContext } from './data/context';
 import { FILTER_KEY } from './data/constants';
 
-export const TableFilterBool = ({ filterKey, title }) => {
+export const TableFilterBool = ({
+  filterKey, title, labelSize, switchSize,
+}) => {
   const { state } = useContext(TableContext);
   const appliedFilterState = state.getKey(FILTER_KEY)?.[filterKey]?.[0];
 
@@ -22,12 +24,12 @@ export const TableFilterBool = ({ filterKey, title }) => {
   return (
     <Stack>
       { title && (
-        <Text fontSize="xs" mt={1}>
+        <Text fontSize={labelSize} mt={1}>
           {title}
         </Text>
       )}
       <Switch
-        size="lg"
+        size={switchSize}
         colorScheme="asurgent"
         isChecked={appliedFilterState === true}
         onChange={() => (appliedFilterState === true
@@ -42,8 +44,12 @@ export const TableFilterBool = ({ filterKey, title }) => {
 TableFilterBool.propTypes = {
   title: PropTypes.string,
   filterKey: PropTypes.string.isRequired,
+  labelSize: PropTypes.string,
+  switchSize: PropTypes.string,
 };
 
 TableFilterBool.defaultProps = {
   title: '',
+  labelSize: 'xs',
+  switchSize: 'lg',
 };

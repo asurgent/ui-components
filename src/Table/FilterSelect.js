@@ -162,7 +162,7 @@ const FilterContent = ({
                 variant="unstyled"
                 isFullWidth
               >
-                <Text isTruncated mr={3}>{title}</Text>
+                <Text fontSize="small" isTruncated mr={3}>{title}</Text>
                 <Flex alignItems="center">
                   <Code>{subtitle}</Code>
                   {isSelected && (
@@ -246,7 +246,7 @@ export const TableFilterSelect = ({
               ) }
             </ButtonGroup>
 
-            <PopoverContent>
+            <PopoverContent minWidth="800px">
               <PopoverHeader fontWeight="semibold">
                 {t('changeFilter', 'ui')}
                 {' '}
