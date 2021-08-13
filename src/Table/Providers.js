@@ -48,6 +48,7 @@ export const TableSearchProvider = ({
   fetcher,
   pageSize = 20,
   urlStateKey = 'test',
+  noUrlState,
 }) => {
   const [showLoader, loader] = useBoolean();
   const [rows, setRows] = useState(null);
@@ -71,12 +72,15 @@ export const TableSearchProvider = ({
     },
   });
 
-  const state = useUrlState(urlStateKey, initalState, stateHandler(rowsQuery.mutate, sort));
-  const downloadSource = useAzureSearchGetAllResults(fetcher, (page, size) => payload({
+  const trigger = stateHandler(rowsQuery.mutate, sort);
+  const state = useUrlState(urlStateKey, initalState, trigger, noUrlState);
+
+  const downloadPayload = (page, size) => payload({
     ...state.current,
     [PAGE_SIZE]: size,
     [PAGE_KEY]: page,
-  }, azureSearch));
+  }, azureSearch);
+  const downloadSource = useAzureSearchGetAllResults(fetcher, downloadPayload);
 
   return (
     <TableContext.Provider
@@ -123,9 +127,11 @@ TableSearchProvider.propTypes = {
   fetcher: PropTypes.func.isRequired,
   pageSize: PropTypes.number,
   urlStateKey: PropTypes.string,
+  noUrlState: PropTypes.bool,
 };
 
 TableSearchProvider.defaultProps = {
   pageSize: 20,
   urlStateKey: '',
+  noUrlState: false,
 };

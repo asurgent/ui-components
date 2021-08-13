@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext, useEffect } from 'react';
 import {
   Box, Flex,
 } from '@chakra-ui/react';
@@ -20,6 +20,7 @@ import {
   TableFilterTriState,
   TableFilterStack,
 } from '../Table';
+import { TableContext } from '../Table/data/context';
 
 export default {
   title: 'Components/Table',
@@ -38,18 +39,19 @@ const CardComp = () => (
 );
 
 const mockPayloadParser = (state, azureSearchParser) => {
-  console.log(state);
-  const parsers = {
-    filter: {
-      customer_display_name: (val) => `${val} less than something cool`,
-    },
+  console.log('mockPayloadParser');
+  const parsers = {};
+
+  const cId = Math.random();
+  const ret = {
+    payload: state.isFilterTrigger
+      ? azureSearchParser.facets(state, state.filterKey, parsers)
+      : azureSearchParser.items(state, parsers),
+    customerId: cId,
+    includeStale: false,
   };
 
-  if (state.isFilterTrigger) {
-    return azureSearchParser.facets(state, state.filterKey, parsers);
-  }
-
-  return azureSearchParser.items(state, parsers);
+  return ret;
 };
 
 const mockService = async () => new Promise((resolve) => {
@@ -80,118 +82,129 @@ const mockService = async () => new Promise((resolve) => {
   });
 });
 
-const Template = () => (
-  <TableSearchProvider
-    pageSize={20}
-    payload={mockPayloadParser}
-    fetcher={mockService}
-    urlStateKey="tetare"
-    sort={[
-      { label: 'Name', value: 'name' },
-      {
-        label: 'Created', value: 'created_at', desc: false, default: true,
-      },
-    ]}
-  >
-    <TableHeader>
-      <TableSearch />
-      <TableSort />
-      <TableDrawer
-        title="Apply filter for tickets"
-        tooltip="View all filters"
-      >
+const Template = () => {
+  const context = useContext(TableContext);
+  const { state } = context;
+  console.log('context', context);
+  useEffect(() => {
+    console.log('state changed', state);
+  }, [state]);
+
+  return (
+    <TableSearchProvider
+      pageSize={20}
+      payload={mockPayloadParser}
+      fetcher={mockService}
+      urlStateKey="tetare"
+      sort={[
+        { label: 'Name', value: 'name' },
+        {
+          label: 'Created', value: 'created_at', desc: false, default: true,
+        },
+      ]}
+    >
+
+      <TableHeader>
+        <TableSearch />
+        <TableSort />
+        <TableDrawer
+          title="Apply filter for tickets"
+          tooltip="View all filters"
+        >
+          <TableFilterSelect
+            title="changeCustomer"
+            label="customer"
+            filterKey="customer_display_name"
+            color="orange"
+            renderTags
+          />
+          <TableFilterSelect
+            title="changeContainer"
+            label="container"
+            filterKey="container_name"
+            color="red"
+            renderTags
+          />
+          <TableFilterSelect
+            title="changeResourceGroup"
+            label="resourceGroup"
+            filterKey="resource_group"
+            color="red"
+            renderTags
+          />
+          <TableFilterSelect
+            title="changeType"
+            label="type"
+            filterKey="type"
+            color="green"
+            renderTags
+          />
+          <TableFilterTriState
+            title="changeIsMapped"
+            label="isMapped"
+            filterKey="is_mapped"
+          />
+          <TableFilterTriState
+            title="changeIsHidden"
+            label="isHidden"
+            filterKey="is_hidden"
+          />
+          <TableFilterBool
+            title="changeIStale"
+            label="isStale"
+            filterKey="is_stale"
+          />
+        </TableDrawer>
+      </TableHeader>
+      <TableFilterStack>
         <TableFilterSelect
-          title="changeCustomer"
-          label="customer"
+          configuration={(filter) => ({
+            title: `hej ${filter.label}`,
+            value: filter.label,
+            subtitle: `${filter.count} users`,
+          })}
+          label="Customers"
           filterKey="customer_display_name"
-          color="orange"
-          renderTags
-        />
-        <TableFilterSelect
-          title="changeContainer"
-          label="container"
-          filterKey="container_name"
-          color="red"
-          renderTags
-        />
-        <TableFilterSelect
-          title="changeResourceGroup"
-          label="resourceGroup"
-          filterKey="resource_group"
-          color="red"
-          renderTags
-        />
-        <TableFilterSelect
-          title="changeType"
-          label="type"
-          filterKey="type"
-          color="green"
-          renderTags
         />
         <TableFilterTriState
-          title="changeIsMapped"
-          label="isMapped"
-          filterKey="is_mapped"
-        />
-        <TableFilterTriState
-          title="changeIsHidden"
-          label="isHidden"
-          filterKey="is_hidden"
+          label="Stale"
+          filterKey="stale"
         />
         <TableFilterBool
-          title="changeIStale"
-          label="isStale"
-          filterKey="is_stale"
+          label="Show Hidden"
+          filterKey="hidden"
         />
-      </TableDrawer>
-    </TableHeader>
-    <TableFilterStack>
-      <TableFilterSelect
-        configuration={(filter) => ({
-          title: `hej ${filter.label}`,
-          value: filter.label,
-          subtitle: `${filter.count} users`,
-        })}
-        label="Customers"
-        filterKey="customer_display_name"
+
+      </TableFilterStack>
+      <TableFilterTags
+        configurations={{ customer_display_name: (_, value) => `Val: ${value}`, type: (_, value) => `Special type: ${value}` }}
+        colors={{ customer_display_name: 'blue', container_name: 'green', is_mapped: 'ruby' }}
       />
-      <TableFilterTriState
-        label="Stale"
-        filterKey="stale"
-      />
-      <TableFilterBool
-        label="Show Hidden"
-        filterKey="hidden"
-      />
-    </TableFilterStack>
-    <TableFilterTags
-      configurations={{ customer_display_name: (_, value) => `Val: ${value}`, type: (_, value) => `Special type: ${value}` }}
-      colors={{ customer_display_name: 'blue', container_name: 'green', is_mapped: 'ruby' }}
-    />
-    <TableResultCount />
-    <TableBody columns={[
-      { label: 'one', size: 'minmax(500px, 1fr)', render: false },
-      { label: 'two' },
-      { label: 'three' },
-    ]}
-    >
-      <TableBodyHeader />
-      <TableRows>
-        {(data, idx, RowComponent) => (
-          <RowComponent key={idx}>
-            <Flex p={2} alignItems="center">{data.value}</Flex>
-            <Flex p={2} alignItems="center">hej</Flex>
-            <Flex p={2} alignItems="center">abc</Flex>
-          </RowComponent>
-        )}
-      </TableRows>
-      <TableRowCards>
-        {(_, idx) => <CardComp key={idx} />}
-      </TableRowCards>
-    </TableBody>
-    <TablePagination delta={4} />
-  </TableSearchProvider>
-);
+      <TableResultCount />
+      <TableBody columns={[
+        { label: 'one', size: 'minmax(500px, 1fr)', render: false },
+        { label: 'two' },
+        { label: 'three' },
+      ]}
+      >
+        <TableBodyHeader />
+        <TableRows>
+          {(data, idx, RowComponent) => (
+            <RowComponent key={idx}>
+              <Flex p={2} alignItems="center">{data.value}</Flex>
+              <Flex p={2} alignItems="center">hej</Flex>
+              <Flex p={2} alignItems="center">abc</Flex>
+            </RowComponent>
+          )}
+        </TableRows>
+        <TableRowCards>
+          {(_, idx) => <CardComp key={idx} />}
+        </TableRowCards>
+      </TableBody>
+      <TablePagination delta={4} />
+    </TableSearchProvider>
+  );
+};
 
 export const Primary = Template.bind({});
 Primary.args = {};

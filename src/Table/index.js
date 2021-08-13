@@ -16,6 +16,8 @@ import { TableFilterBool } from './FilterBool';
 import { TableFilterTriState } from './FilterTriState';
 import { TableFilterStack } from './TableFilterStack';
 
+import { TableContext } from './data/context';
+
 export {
   TableSort,
   TableSearch,
@@ -34,4 +36,5 @@ export {
   TableFilterBool,
   TableFilterTriState,
   TableFilterStack,
+  TableContext,
 };
