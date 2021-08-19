@@ -12,6 +12,7 @@ import {
   TableHeader,
   TableFilterTags,
   TableFilterSelect,
+  TableFilterSelectSingle,
   TableDrawer,
   TableBody,
   TableBodyHeader,
@@ -119,13 +120,6 @@ const Template = () => {
             renderTags
           />
           <TableFilterSelect
-            title="changeContainer"
-            label="container"
-            filterKey="container_name"
-            color="red"
-            renderTags
-          />
-          <TableFilterSelect
             title="changeResourceGroup"
             label="resourceGroup"
             filterKey="resource_group"
@@ -157,12 +151,13 @@ const Template = () => {
         </TableDrawer>
       </TableHeader>
       <TableFilterStack>
-        <TableFilterSelect
+        <TableFilterSelectSingle
           configuration={(filter) => ({
             title: `hej ${filter.label}`,
             value: filter.label,
             subtitle: `${filter.count} users`,
           })}
+          renderTags={false}
           label="Customers"
           filterKey="customer_display_name"
         />

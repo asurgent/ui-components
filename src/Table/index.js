@@ -12,6 +12,7 @@ import { TableDrawer } from './Drawer';
 
 import { TableFilterTagGroup } from './FilterTagGroup';
 import { TableFilterSelect } from './FilterSelect';
+import { TableFilterSelectSingle } from './FilterSelectSingle';
 import { TableFilterBool } from './FilterBool';
 import { TableFilterTriState } from './FilterTriState';
 import { TableFilterStack } from './TableFilterStack';
@@ -30,6 +31,7 @@ export {
   TableBodyHeader,
   TableFilterTags,
   TableFilterSelect,
+  TableFilterSelectSingle,
   TableResultCount,
   TableDrawer,
   TableFilterTagGroup,
