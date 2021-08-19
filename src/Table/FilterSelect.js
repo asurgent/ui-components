@@ -246,7 +246,7 @@ export const TableFilterSelect = ({
               ) }
             </ButtonGroup>
 
-            <PopoverContent minWidth="800px">
+            <PopoverContent maxWidth="500px">
               <PopoverHeader fontWeight="semibold">
                 {t('changeFilter', 'ui')}
                 {' '}
