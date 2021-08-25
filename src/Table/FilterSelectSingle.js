@@ -224,7 +224,7 @@ export const TableFilterSelectSingle = ({
                   iconSpacing
                   rightIcon={<MdiIcon path={mdiChevronDown} size={0.8} />}
                 >
-                  {label}
+                  {hasAppliedFilter || label}
                 </Button>
               </PopoverTrigger>
               { hasAppliedFilter && (
@@ -260,15 +260,15 @@ export const TableFilterSelectSingle = ({
         )}
       </Popover>
       {renderTags && (
-      <Box>
-        <Wrap spacing={2}>
-          <TableFilterTagGroup
-            color={color}
-            filterKey={filterKey}
-            filterTitle={label}
-          />
-        </Wrap>
-      </Box>
+        <Box>
+          <Wrap spacing={2}>
+            <TableFilterTagGroup
+              color={color}
+              filterKey={filterKey}
+              filterTitle={label}
+            />
+          </Wrap>
+        </Box>
       )}
     </Stack>
   );

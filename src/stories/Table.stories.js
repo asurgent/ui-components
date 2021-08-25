@@ -40,15 +40,12 @@ const CardComp = () => (
 );
 
 const mockPayloadParser = (state, azureSearchParser) => {
-  console.log('mockPayloadParser');
   const parsers = {};
 
-  const cId = Math.random();
   const ret = {
     payload: state.isFilterTrigger
       ? azureSearchParser.facets(state, state.filterKey, parsers)
       : azureSearchParser.items(state, parsers),
-    customerId: cId,
     includeStale: false,
   };
 
@@ -77,7 +74,7 @@ const mockService = async () => new Promise((resolve) => {
       ],
     },
     page: 1,
-    result: [{ value: 'hello' }, { value: 'hello' }],
+    result: [{ value: 'hello' }, { value: 'bye' }],
     total_pages: 2,
     total_count: 2,
   });
@@ -152,22 +149,24 @@ const Template = () => {
       </TableHeader>
       <TableFilterStack>
         <TableFilterSelectSingle
+          renderTags={false}
+          label="Customers"
+          filterKey="customer_display_name"
           configuration={(filter) => ({
             title: `hej ${filter.label}`,
             value: filter.label,
             subtitle: `${filter.count} users`,
           })}
-          renderTags={false}
-          label="Customers"
-          filterKey="customer_display_name"
         />
         <TableFilterTriState
           label="Stale"
           filterKey="stale"
+          renderTags
         />
         <TableFilterBool
           label="Show Hidden"
           filterKey="hidden"
+          renderTags
         />
 
       </TableFilterStack>
