@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react';
+import React from 'react';
 import {
   Box, Flex,
 } from '@chakra-ui/react';
@@ -21,7 +21,6 @@ import {
   TableFilterTriState,
   TableFilterStack,
 } from '../Table';
-import { TableContext } from '../Table/data/context';
 
 export default {
   title: 'Components/Table',
