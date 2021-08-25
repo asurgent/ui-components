@@ -89,6 +89,7 @@ export const TableFilterTagGroup = ({
 
   return appliedFilters.map(({ key, tag }) => (
     <TableFilterTag
+      key={`${key}${tag}`}
       value={tag}
       filterTitle={filterTitle}
       filterKey={key}
