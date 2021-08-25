@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React from 'react';
 import {
   Box, Flex,
@@ -57,6 +58,23 @@ const mockService = async () => new Promise((resolve) => {
   resolve({
     facets: {
       customer_display_name: [
+        { label: 'a-1', count: 123 },
+        { label: 'a-2', count: 123 },
+        { label: 'a-3', count: 123 },
+        { label: 'a-4', count: 123 },
+        { label: 'a-5', count: 123 },
+        { label: 'a-6', count: 123 },
+        { label: 'a-7', count: 123 },
+        { label: 'a-8', count: 123 },
+        { label: 'a-9', count: 123 },
+        { label: 'a-10', count: 123 },
+        { label: 'a-11', count: 123 },
+        { label: 'a-12', count: 123 },
+        { label: 'a-13', count: 123 },
+        { label: 'a-14', count: 123 },
+        { label: 'a-15', count: 123 },
+      ],
+      customer_display_name2: [
         { label: 'a-1', count: 123 },
         { label: 'a-2', count: 123 },
         { label: 'a-3', count: 123 },
@@ -149,6 +167,11 @@ const Template = () => (
           value: filter.label,
           subtitle: `${filter.count} users`,
         })}
+      />
+      <TableFilterSelect
+        renderTags={false}
+        label="Customers"
+        filterKey="customer_display_name_2"
       />
       <TableFilterTriState
         label="Stale"

@@ -8,7 +8,7 @@ export const TableFilterStack = ({ children }) => {
   const display = useBreakpointValue({ base: 'none', sm: 'flex' });
 
   return (
-    <HStack templateColumns="1fr 4rem" display={display}>
+    <HStack display={display}>
       {children}
     </HStack>
   );
