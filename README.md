@@ -26,17 +26,14 @@ npm run storybook
 ## Relase a package update
 This repo uses [github-actions](https://help.github.com/en/actions/automating-your-workflow-with-github-actions/configuring-workflows) that automatically publish a new package whenever there a new release is published at. A release is automatically created when run eg. `npm version patch`.
 
-You have basically 3 ways of increasing the version number.
-1. Publishing a small patch? Run - `npm version patch`
-2. Publishing a minor update? Run - `npm version minor`
-3. Publishing a major update? Run - `npm version major` 
+You have basically 3 ways of increasing the version number (full explanation in package.json)
+1. Publishing a small patch? Run - `npm run version:patch`
+2. Publishing a minor update? Run - `npm run version:minor`
+3. Publishing a major update? Run - `npm run version:major` 
 
 [Read more](https://docs.npmjs.com/cli/version)
 
-After that simply run `git push && git push --tags`.
-
 Whenever the tag is pushed, simply go under releases, edit the pushed tag. Give it a title and description, then publish it.
-
 
 
 ## Installing @asugent packages
