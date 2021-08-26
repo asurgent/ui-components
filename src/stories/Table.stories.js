@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React from 'react';
 import {
   Box, Flex,
@@ -12,6 +13,7 @@ import {
   TableHeader,
   TableFilterTags,
   TableFilterSelect,
+  TableFilterSelectSingle,
   TableDrawer,
   TableBody,
   TableBodyHeader,
@@ -72,9 +74,26 @@ const mockService = async () => new Promise((resolve) => {
         { label: 'a-14', count: 123 },
         { label: 'a-15', count: 123 },
       ],
+      customer_display_name2: [
+        { label: 'a-1', count: 123 },
+        { label: 'a-2', count: 123 },
+        { label: 'a-3', count: 123 },
+        { label: 'a-4', count: 123 },
+        { label: 'a-5', count: 123 },
+        { label: 'a-6', count: 123 },
+        { label: 'a-7', count: 123 },
+        { label: 'a-8', count: 123 },
+        { label: 'a-9', count: 123 },
+        { label: 'a-10', count: 123 },
+        { label: 'a-11', count: 123 },
+        { label: 'a-12', count: 123 },
+        { label: 'a-13', count: 123 },
+        { label: 'a-14', count: 123 },
+        { label: 'a-15', count: 123 },
+      ],
     },
     page: 1,
-    result: [{ value: 'hello' }, { value: 'hello' }],
+    result: [{ value: 'hello' }, { value: 'bye' }],
     total_pages: 2,
     total_count: 2,
   });
@@ -105,13 +124,6 @@ const Template = () => (
           label="customer"
           filterKey="customer_display_name"
           color="orange"
-          renderTags
-        />
-        <TableFilterSelect
-          title="changeContainer"
-          label="container"
-          filterKey="container_name"
-          color="red"
           renderTags
         />
         <TableFilterSelect
@@ -146,23 +158,32 @@ const Template = () => (
       </TableDrawer>
     </TableHeader>
     <TableFilterStack>
-      <TableFilterSelect
+      <TableFilterSelectSingle
+        renderTags={false}
+        label="Customers"
+        filterKey="customer_display_name"
         configuration={(filter) => ({
           title: `hej ${filter.label}`,
           value: filter.label,
           subtitle: `${filter.count} users`,
         })}
+      />
+      <TableFilterSelect
+        renderTags={false}
         label="Customers"
-        filterKey="customer_display_name"
+        filterKey="customer_display_name_2"
       />
       <TableFilterTriState
         label="Stale"
         filterKey="stale"
+        renderTags
       />
       <TableFilterBool
         label="Show Hidden"
         filterKey="hidden"
+        renderTags
       />
+
     </TableFilterStack>
     <TableFilterTags
       configurations={{ customer_display_name: (_, value) => `Val: ${value}`, type: (_, value) => `Special type: ${value}` }}

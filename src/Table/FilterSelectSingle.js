@@ -1,11 +1,10 @@
-/* eslint-disable no-unused-vars */
 import React, { useContext } from 'react';
 import PropTypes from 'prop-types';
 import { FilterContentComponent, FilterSelectComponent } from './shared/FilterSelectComponents';
 import { TableContext } from './data/context';
 import { FILTER_KEY } from './data/constants';
 
-export const TableFilterSelect = ({
+export const TableFilterSelectSingle = ({
   title,
   label,
   filterKey,
@@ -15,37 +14,31 @@ export const TableFilterSelect = ({
 }) => {
   const { state } = useContext(TableContext);
 
-  const handleFilterToggle = (value) => {
-    const { [filterKey]: target, ...current } = state.getKey(FILTER_KEY);
+  const selectedItem = state.getKey(FILTER_KEY)?.[filterKey]?.[0];
 
+  const handleFilterClick = (value) => {
+    const { [filterKey]: target, ...current } = state.getKey(FILTER_KEY);
     const isSelected = target?.includes(value);
-    if (isSelected && target?.length === 1) {
+
+    if (isSelected) {
       state.setKey(FILTER_KEY, { ...current });
-    } else if (isSelected) {
-      state.setKey(FILTER_KEY, {
-        ...current,
-        [filterKey]: target.filter((lbl) => lbl !== value),
-      });
     } else {
-      state.setKey(FILTER_KEY, {
-        ...current,
-        [filterKey]: [...(target || []), value],
-      });
+      state.setKey(FILTER_KEY, { [filterKey]: [value], ...current });
     }
   };
 
   return (
     <FilterSelectComponent
       title={title}
-      label={label}
+      label={selectedItem || label}
       filterKey={filterKey}
       configuration={configuration}
-      renderTags={renderTags}
       color={color}
+      renderTags={renderTags}
     >
       {({ searchPlaceholder }) => (
         <FilterContentComponent
-          handleFilterClick={handleFilterToggle}
+          handleFilterClick={handleFilterClick}
           searchPlaceholder={searchPlaceholder}
           configuration={configuration}
           filterKey={filterKey}
@@ -55,7 +48,7 @@ export const TableFilterSelect = ({
   );
 };
 
-TableFilterSelect.propTypes = {
+TableFilterSelectSingle.propTypes = {
   title: PropTypes.string,
   label: PropTypes.string.isRequired,
   filterKey: PropTypes.string.isRequired,
@@ -64,7 +57,7 @@ TableFilterSelect.propTypes = {
   renderTags: PropTypes.bool,
 };
 
-TableFilterSelect.defaultProps = {
+TableFilterSelectSingle.defaultProps = {
   title: '',
   color: null,
   renderTags: false,

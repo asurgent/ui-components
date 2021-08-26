@@ -20,7 +20,7 @@ const initialize = (key, initalState, location) => {
   }
 };
 
-const useUrlState = (stateKey = 'q', initalState, trigger) => {
+const useUrlState = (stateKey = 'q', initalState, trigger, noUrlState = false) => {
   const history = useHistory();
   const [prev, setPrev] = useState(null);
   const [current, setCurrent] = useState(null);
@@ -47,10 +47,13 @@ const useUrlState = (stateKey = 'q', initalState, trigger) => {
   useEffect(() => {
     const { location, replace } = history;
     if (current !== null) {
-      replace({
-        ...location,
-        search: update(stateKey, current, location.search),
-      });
+      if (!noUrlState) {
+        replace({
+          ...location,
+          search: update(stateKey, current, location.search),
+        });
+      }
+
       trigger(iface, current, prev);
     } else {
       const existingState = initialize(stateKey, initalState, location);
