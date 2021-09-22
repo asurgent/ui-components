@@ -1,14 +1,14 @@
-/* eslint-disable no-unused-vars */
+import { Input } from '@chakra-ui/react';
 import React, { useContext } from 'react';
 import { FieldContext } from '../data/formContext';
-import { withWrapper } from '../withWrapper';
+import { withFormControl } from '../withWrapper';
 
-const Text = withWrapper((props) => {
+const Text = withFormControl((props) => {
   const field = useContext(FieldContext);
 
   return (
-    <input {...field} type="text" style={{ border: '1px solid black' }} />
+    <Input {...field} {...props} type="text" />
   );
 });
 
-export { Text };
+export default Text;

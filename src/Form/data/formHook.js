@@ -8,7 +8,7 @@ import {
   useCallback,
 } from 'react';
 
-const useEventCallback = (fn) => {
+export const useEventCallback = (fn) => {
   const ref = useRef(fn);
   // we copy a ref to the callback scoped to the current state/props on each render
   useLayoutEffect(() => {
@@ -18,7 +18,7 @@ const useEventCallback = (fn) => {
   return useCallback((...args) => ref.current(...args), [ref]);
 };
 
-const prevent = (fn) => (e) => {
+export const prevent = (fn) => (e) => {
   if (e && e.preventDefault && typeof e.preventDefault === 'function') {
     e.preventDefault();
   }
@@ -53,8 +53,54 @@ const reducer = (state, msg) => {
       return { ...state, ...msg.payload };
     case 'UPDATE_VALUE':
       return { ...state, values: { ...state.values, [msg.payload.name]: msg.payload.value } };
-    case 'SET_SUBMIT':
-      console.log({ ...state, isSubmitting: msg.payload });
+    case 'APPEND_REPEAT_GROUP': {
+      const group = [...(state.values?.[msg.payload.name] || []), {}];
+      return {
+        ...state,
+        values: {
+          ...state.values,
+          [msg.payload.name]: group,
+        },
+      };
+    }
+    case 'ADD_REPEAT_GROUP': {
+      const group = state.values?.[msg.payload.name] || [];
+      group[msg.payload.index] = {};
+      return {
+        ...state,
+        values: {
+          ...state.values,
+          [msg.payload.name]: group,
+        },
+      };
+    } case 'REMOVE_REPEAT_GROUP': {
+      const group = state.values?.[msg.payload.name];
+      const newGroup = group.filter((_, index) => index !== msg.payload.index);
+
+      return {
+        ...state,
+        values: {
+          ...state.values,
+          [msg.payload.name]: newGroup,
+        },
+      };
+    } case 'UPDATE_REPEAT_VALUE': {
+      const group = state.values?.[msg.payload.repeatFieldName];
+      const newGroup = group.map((item, index) => {
+        if (index === msg.payload.index) {
+          return { ...item, [msg.payload.name]: msg.payload.value };
+        }
+        return item;
+      });
+
+      return {
+        ...state,
+        values: {
+          ...state.values,
+          [msg.payload.repeatFieldName]: newGroup,
+        },
+      };
+    } case 'SET_SUBMIT':
       return { ...state, isSubmitting: msg.payload };
     case 'SET_SUBMIT_COUNT':
       return { ...state, submitCount: msg.payload };
@@ -77,6 +123,14 @@ export const useForm = ({
   const initialValues = useRef(rest.initialValues || {});
   const initialErrors = useRef(rest.initialErrors || {});
 
+  useEffect(() => {
+    isMounted.current = true;
+
+    return () => {
+      isMounted.current = false;
+    };
+  }, []);
+
   const [state, dispatch] = useReducer(reducer, {
     errors: initialErrors.current || {},
     values: initialValues.current,
@@ -96,6 +150,30 @@ export const useForm = ({
     dispatch({
       type: 'SET_FIELD_ERROR',
       payload: { field, value },
+    });
+  },
+  []);
+
+  const appendRepeatGroup = useCallback((name) => {
+    dispatch({
+      type: 'APPEND_REPEAT_GROUP',
+      payload: { name },
+    });
+  },
+  []);
+
+  const addRepeatGroup = useCallback((name, index) => {
+    dispatch({
+      type: 'ADD_REPEAT_GROUP',
+      payload: { name, index },
+    });
+  },
+  []);
+
+  const clearRepeatGroup = useCallback((name, index) => {
+    dispatch({
+      type: 'REMOVE_REPEAT_GROUP',
+      payload: { name, index },
     });
   },
   []);
@@ -123,22 +201,37 @@ export const useForm = ({
     });
   }, []);
 
-  const getFormValues = useCallback(() => {
+  const getFormValues = useCallback((changeEvent) => {
+    const getter = () => {
+      if (changeEvent) {
+        const { name, value } = changeEvent;
+        return { ...state.values, [name]: value };
+      }
+      return state.values;
+    };
+
     if (formatter && typeof formatter === 'function') {
-      return formatter(state.values);
+      return formatter(getter());
     }
-    return state.values;
+    return getter();
   }, [formatter, state.values]);
 
   const runValidator = useCallback((name, value) => {
-    if (validators?.[name] && typeof validators?.[name] === 'function') {
-      const { fail, error } = validators?.[name](value);
+    const fieldValidator = fieldRegistry.current?.[name]?.validator;
+    const providerValidator = validators?.[name];
 
-      if (fail) {
-        setFieldError(name, error);
-      } else {
+    const setter = (result) => {
+      if (result?.isValid === true || result?.isValid === undefined) {
         clearFieldError(name);
+      } else {
+        setFieldError(name, result?.error);
       }
+    };
+
+    if (fieldValidator && typeof fieldValidator === 'function') {
+      setter(fieldValidator(value));
+    } else if (providerValidator && typeof providerValidator === 'function') {
+      setter(providerValidator(value));
     }
   }, [clearFieldError, setFieldError, validators]);
 
@@ -160,7 +253,7 @@ export const useForm = ({
     }
 
     if (onChange && typeof onChange === 'function') {
-      onChange(getFormValues(), state);
+      onChange(getFormValues(event.target), state);
     }
   }), []);
 
@@ -170,7 +263,7 @@ export const useForm = ({
         runValidators();
         dispatch({ type: 'SET_SUBMIT', payload: true });
         dispatch({ type: 'SET_SUBMIT_COUNT', payload: state.submitCount + 1 });
-        await onSubmit(getFormValues(), state);
+        await onSubmit({ ...state, values: getFormValues() });
         dispatch({ type: 'SET_SUBMIT', payload: false });
       }
     };
@@ -181,7 +274,14 @@ export const useForm = ({
   const handleReset = useEventCallback(prevent(() => {
     resetForm();
     if (onReset && typeof onReset === 'function') {
-      onReset(getFormValues(), state);
+      const getter = () => {
+        if (formatter && typeof formatter === 'function') {
+          return formatter(initialValues.current);
+        }
+
+        return initialValues.current;
+      };
+      onReset(getter());
     }
   }), []);
 
@@ -196,16 +296,9 @@ export const useForm = ({
     return props;
   }, [state.values, handleChange]);
 
-  useEffect(() => {
-    isMounted.current = true;
-
-    return () => {
-      isMounted.current = false;
-    };
-  }, []);
-
   return {
     state,
+    dispatch,
     isMounted,
     registerField,
     unregisterField,
@@ -214,5 +307,8 @@ export const useForm = ({
     handleChange,
     setFieldError,
     getFieldProps,
+    addRepeatGroup,
+    appendRepeatGroup,
+    clearRepeatGroup,
   };
 };

@@ -3,31 +3,45 @@
 /* eslint-disable react/destructuring-assignment */
 import React from 'react';
 import { Box, Button, Flex } from '@chakra-ui/react';
-import * as FormComponents from '../Form';
+import {
+  FormProvider,
+  Field,
+  Text,
+  TextArea,
+  Number,
+  Switch,
+  Email,
+  RadioGroup,
+  Date,
+  GroupRepeat,
+} from '../Form';
 
 const Story = {
   title: 'Components/Form',
-  component: FormComponents,
+  component: FormProvider,
   argTypes: {},
 };
-
+//
 export default Story;
 
-const FormTemplate = () => (
+const Template = () => (
   <Box width="25rem" height="25rem" m={5} borderRadius="5px" border>
-    <FormComponents.FormProvider
+    <FormProvider
+      validateOnChange
       formatter={(values) => ({
-        one: values.field,
-        two: values['field-2'],
-        tree: values['field-3'],
+        ...values,
+        // one: values.field,
+        // two: values['field-2'],
+        // tree: values['field-3'],
       })}
-      validators={{ field: (val) => ({ fail: val.length === 0, error: 'Cant be empty' }) }}
+      validators={{ number: (val) => ({ isValid: val.length > 0, error: 'Cant be empty' }) }}
       initialErrors={{ field: 'Your WRONG' }}
-      initialValues={{ field: 'Gurkansson', 'field-3': 'I will appear like magic' }}
+      initialValues={{ repeat: [{ hello: '1', bye: '2' }, { hello: '3', bye: '4' }] }}
       onChange={(a) => console.log('onChange', a)}
       onReset={(a) => console.log('onReset', a)}
       onSubmit={(a) => new Promise((resolve) => {
         setTimeout(() => {
+          console.log('onSubmit', a);
           resolve(a);
         }, 1000);
       })}
@@ -35,28 +49,11 @@ const FormTemplate = () => (
       {({ state }) => (
         <>
           <Flex flexDirection="column">
-
-            <FormComponents.Field name="field" validator={(val) => ({ fail: val.length === 0, error: 'Cant be empty' })}>
-              {(field, { errors }) => (
-                <>
-                  <input {...field} type="text" style={{ border: '1px solid black' }} />
-                  { errors[field.name] && (
-                  <Box bg="red" p="5px">
-                    {errors[field.name]}
-                  </Box>
-                  )}
-                </>
-              )}
-            </FormComponents.Field>
-
-            <FormComponents.Field name="field-2">
-              {(field) => (
-                <input {...field} type="text" style={{ border: '1px solid black' }} />
-              )}
-            </FormComponents.Field>
-
-            { !state.errors.field && (
-              <FormComponents.Field name="field-3">
+            {/* <Box mb={4}>
+              <Field
+                name="field"
+                validator={(val) => ({ isValid: val.length === 0, error: 'Cant be empty' })}
+              >
                 {(field, { errors }) => (
                   <>
                     <input {...field} type="text" style={{ border: '1px solid black' }} />
@@ -67,8 +64,78 @@ const FormTemplate = () => (
                     )}
                   </>
                 )}
-              </FormComponents.Field>
-            )}
+              </Field>
+            </Box> */}
+
+            <GroupRepeat name="repeat" min={1} max={3}>
+              <Text
+                name="hello"
+                label="Provide name"
+                helperText="we are careful"
+                validator={(val) => ({ isValid: val.length > 0, error: 'Cant be empty' })}
+              />
+              <Text
+                name="bye"
+                label="Provide name"
+                helperText="we are careful"
+                validator={(val) => ({ isValid: val.length > 0, error: 'Cant be empty' })}
+              />
+            </GroupRepeat>
+
+            {/*
+            <Text
+              label="Provide name"
+              isRequired
+              helperText="we are careful"
+              name="field"
+              validator={(val) => ({ isValid: val.length > 0, error: 'Cant be empty' })}
+            />
+
+            <TextArea
+              label="Provide name"
+              isRequired
+              helperText="we are careful"
+              name="field"
+              validator={(val) => ({ isValid: val.length > 0, error: 'Cant be empty' })}
+            />
+
+            <Number
+              label="Provide name"
+              isRequired
+              helperText="we are careful"
+              name="number"
+            />
+
+            <Switch
+              label="Provide name"
+              helperText="we are careful"
+              name="switch"
+            />
+
+            <Email
+              label="Provide name"
+              isRequired
+              helperText="we are careful"
+              name="Email"
+            />
+
+            <Date
+              label="Provide name"
+              isRequired
+              helperText="we are careful"
+              name="Date"
+            />
+
+            <RadioGroup
+              label="Provide name"
+              isRequired
+              helperText="we are careful"
+              name="RadioGroup"
+              options={[
+                { value: 1, label: 'Im number #1' },
+                { value: 2, label: 'Im number #2' },
+              ]}
+            /> */}
 
           </Flex>
 
@@ -82,12 +149,9 @@ const FormTemplate = () => (
           </Flex>
         </>
       )}
-    </FormComponents.FormProvider>
+    </FormProvider>
   </Box>
 );
 
-export const Form = FormTemplate.bind({});
-Form.args = {
-  rowHeight: 60,
-  numberOfEntries: 100,
-};
+export const Primary = Template.bind({});
+Primary.args = {};
