@@ -1,8 +1,6 @@
 /* eslint-disable react/prop-types */
-/* eslint-disable no-unused-vars */
 import React from 'react';
 import {
-  Wrap,
   FormControl,
   FormLabel,
   FormErrorMessage,
@@ -12,20 +10,23 @@ import { Field } from './Field';
 
 export const withFormControl = (Component, componentProps) => (props) => {
   const {
-    name,
-    validator,
-    label,
     isRequired,
     helperText,
     errorMessage,
+    ...restProps
   } = props;
+
+  const {
+    name,
+    label,
+  } = restProps;
 
   const formControllProps = componentProps?.formControllProps || {};
   const formLabelProps = componentProps?.formLabelProps || {};
   const fieldProps = componentProps?.fieldProps || {};
 
   return (
-    <Field name={name} validator={validator} {...fieldProps}>
+    <Field {...fieldProps} {...restProps}>
       {(field, { errors }) => (
         <FormControl
           mb={4}
@@ -35,7 +36,7 @@ export const withFormControl = (Component, componentProps) => (props) => {
           {...formControllProps}
         >
           {label && <FormLabel mt={0} mb={1} fontFamily="Poppins" {...formLabelProps}>{label}</FormLabel>}
-          <Component {...props} />
+          <Component {...restProps} />
           <FormErrorMessage mt={1}>{errorMessage || errors[field.name]}</FormErrorMessage>
           {helperText && <FormHelperText mt={1}>{helperText}</FormHelperText>}
         </FormControl>

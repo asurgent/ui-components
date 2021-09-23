@@ -216,7 +216,8 @@ export const useForm = ({
     return getter();
   }, [formatter, state.values]);
 
-  const runValidator = useCallback((name, value) => {
+  const runValidator = useCallback((event) => {
+    const { name } = event;
     const fieldValidator = fieldRegistry.current?.[name]?.validator;
     const providerValidator = validators?.[name];
 
@@ -229,9 +230,9 @@ export const useForm = ({
     };
 
     if (fieldValidator && typeof fieldValidator === 'function') {
-      setter(fieldValidator(value));
+      setter(fieldValidator(event));
     } else if (providerValidator && typeof providerValidator === 'function') {
-      setter(providerValidator(value));
+      setter(providerValidator(event));
     }
   }, [clearFieldError, setFieldError, validators]);
 
@@ -239,17 +240,29 @@ export const useForm = ({
     Object.entries(fieldRegistry.current)
       .forEach(([name, { validator }]) => {
         if (validator) {
-          runValidator(name, state.values[name]);
+          runValidator({ name, value: state.values[name] });
         }
       });
   }, [runValidator, state.values]);
 
   const handleChange = useEventCallback(prevent((event) => {
-    const { name, value } = event.target;
-    dispatch({ type: 'UPDATE_VALUE', payload: { name, value } });
+    //  we can assume its a normal user-triggerd-event
+    if (event.target) {
+      const { name, value } = event.target;
+      dispatch({ type: 'UPDATE_VALUE', payload: { name, value } });
 
-    if (validateOnChange) {
-      runValidator(name, value);
+      if (validateOnChange) {
+        runValidator(event.target);
+      }
+    }
+
+    if (event.groupTrigger) {
+      const { type, payload } = event;
+
+      dispatch({ type, payload });
+      if (validateOnChange) {
+        runValidator(event);
+      }
     }
 
     if (onChange && typeof onChange === 'function') {

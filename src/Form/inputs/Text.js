@@ -3,11 +3,11 @@ import React, { useContext } from 'react';
 import { FieldContext } from '../data/formContext';
 import { withFormControl } from '../withWrapper';
 
-const Text = withFormControl((props) => {
+const Text = withFormControl(() => {
   const field = useContext(FieldContext);
 
   return (
-    <Input {...field} {...props} type="text" />
+    <Input {...field} type="text" />
   );
 });
 

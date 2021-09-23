@@ -13,7 +13,6 @@ const SwitchComponent = withFormControl((props) => {
   return (
     <Switch
       {...props}
-      // value={value}
       isChecked={value}
       name={name}
       onChange={({ target }) => onChange({ target: { value: target.checked, name } })}
@@ -21,5 +20,4 @@ const SwitchComponent = withFormControl((props) => {
   );
 });
 
-// onChange={(v) => { console.log(v.target.checked); }}
 export default SwitchComponent;

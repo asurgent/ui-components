@@ -33,53 +33,61 @@ export const useGroupRepeat = ({
     delete fieldRegistry.current[name];
   }, [fieldRegistry]);
 
-  const getGroupValues = useCallback((changeEvent) => {
-    const getter = () => {
-      if (changeEvent) {
-        const { name, value } = changeEvent;
-        const group = form.state.values?.[repeatFieldName];
-        const newGroup = group.map((item, i) => {
-          if (i === index) {
-            return { ...item, [name]: value };
-          }
-          return item;
-        });
+  // const getGroupValues = useCallback((changeEvent) => {
+  //   const getter = () => {
+  //     if (changeEvent) {
+  //       const { name, value } = changeEvent;
+  //       const group = form.state.values?.[repeatFieldName];
+  //       const newGroup = group.map((item, i) => {
+  //         if (i === index) {
+  //           return { ...item, [name]: value };
+  //         }
+  //         return item;
+  //       });
 
-        return {
-          values: {
-            ...form.state.values,
-            [repeatFieldName]: newGroup,
-          },
-        };
-      }
+  //       return {
+  //         values: {
+  //           ...form.state.values,
+  //           [repeatFieldName]: newGroup,
+  //         },
+  //       };
+  //     }
 
-      return form.state.values;
-    };
+  //     return form.state.values;
+  //   };
 
-    if (formatter && typeof formatter === 'function') {
-      return formatter(getter());
-    }
+  //   if (formatter && typeof formatter === 'function') {
+  //     return formatter(getter());
+  //   }
 
-    return getter();
-  }, [form.state, formatter, index, repeatFieldName]);
+  //   return getter();
+  // }, [form.state, formatter, index, repeatFieldName]);
 
   const handleChange = useEventCallback(prevent((event) => {
     const { name, value } = event.target;
-    form.dispatch({
+    // const [_, realName] = name.match(/\[\d\](.+)/);
+
+    // console.log(name, realName);
+
+    form.handleChange({
+      name: repeatFieldName,
+      value,
+      groupIndex: index,
+      groupTrigger: true,
       type: 'UPDATE_REPEAT_VALUE',
       payload: {
-        repeatFieldName,
         index,
         name,
         value,
+        repeatFieldName,
       },
     });
-    form.onChange(getGroupValues(event.target), form.state);
   }), []);
 
   const getFieldProps = useCallback(({ name, ...fieldProps }) => {
     const props = {
       name,
+      // name: `[${index}]${name}`,
       type: fieldProps.type || 'text',
       value: form.state.values?.[repeatFieldName]?.[index]?.[name] || '',
       onChange: handleChange,
@@ -90,9 +98,9 @@ export const useGroupRepeat = ({
 
   return {
     ...form,
-    registerField,
-    unregisterField,
     handleChange,
     getFieldProps,
+    registerField,
+    unregisterField,
   };
 };

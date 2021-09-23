@@ -67,18 +67,25 @@ const Template = () => (
               </Field>
             </Box> */}
 
+            <Text
+              name="hellothere"
+              label="Provide name"
+              helperText="we are careful"
+              validator={({ value }) => ({ isValid: value.length > 0, error: 'Cant be empty' })}
+            />
+
             <GroupRepeat name="repeat" min={1} max={3}>
               <Text
                 name="hello"
                 label="Provide name"
                 helperText="we are careful"
-                validator={(val) => ({ isValid: val.length > 0, error: 'Cant be empty' })}
+                validator={({ value }) => ({ isValid: value.length > 0, error: 'Cant be empty' })}
               />
               <Text
                 name="bye"
                 label="Provide name"
                 helperText="we are careful"
-                validator={(val) => ({ isValid: val.length > 0, error: 'Cant be empty' })}
+                validator={({ value }) => ({ isValid: value.length > 0, error: 'Cant be empty' })}
               />
             </GroupRepeat>
 
