@@ -62,17 +62,6 @@ const reducer = (state, msg) => {
           [msg.payload.name]: group,
         },
       };
-    }
-    case 'ADD_REPEAT_GROUP': {
-      const group = state.values?.[msg.payload.name] || [];
-      group[msg.payload.index] = {};
-      return {
-        ...state,
-        values: {
-          ...state.values,
-          [msg.payload.name]: group,
-        },
-      };
     } case 'REMOVE_REPEAT_GROUP': {
       const group = state.values?.[msg.payload.name];
       const newGroup = group.filter((_, index) => index !== msg.payload.index);
@@ -82,22 +71,6 @@ const reducer = (state, msg) => {
         values: {
           ...state.values,
           [msg.payload.name]: newGroup,
-        },
-      };
-    } case 'UPDATE_REPEAT_VALUE': {
-      const group = state.values?.[msg.payload.repeatFieldName];
-      const newGroup = group.map((item, index) => {
-        if (index === msg.payload.index) {
-          return { ...item, [msg.payload.name]: msg.payload.value };
-        }
-        return item;
-      });
-
-      return {
-        ...state,
-        values: {
-          ...state.values,
-          [msg.payload.repeatFieldName]: newGroup,
         },
       };
     } case 'SET_SUBMIT':
@@ -120,6 +93,7 @@ export const useForm = ({
 }) => {
   const isMounted = useRef(false);
   const fieldRegistry = useRef({});
+  const groupRegistry = useRef({});
   const initialValues = useRef(rest.initialValues || {});
   const initialErrors = useRef(rest.initialErrors || {});
 
@@ -162,14 +136,6 @@ export const useForm = ({
   },
   []);
 
-  const addRepeatGroup = useCallback((name, index) => {
-    dispatch({
-      type: 'ADD_REPEAT_GROUP',
-      payload: { name, index },
-    });
-  },
-  []);
-
   const clearRepeatGroup = useCallback((name, index) => {
     dispatch({
       type: 'REMOVE_REPEAT_GROUP',
@@ -177,6 +143,14 @@ export const useForm = ({
     });
   },
   []);
+
+  const registerGroup = useCallback(({ name, ...groupHook }) => {
+    groupRegistry.current[name] = { ...groupHook };
+  }, [groupRegistry]);
+
+  const unregisterGroup = useCallback(({ name }) => {
+    delete groupRegistry.current[name];
+  }, [groupRegistry]);
 
   const registerField = useCallback(({ name, validator }) => {
     fieldRegistry.current[name] = { validator };
@@ -189,7 +163,7 @@ export const useForm = ({
   const resetForm = useCallback(() => {
     const values = initialValues.current;
     const errors = initialErrors.current;
-
+    console.log(rest.name, errors, values);
     dispatch({
       type: 'RESET_FORM',
       payload: {
@@ -199,7 +173,12 @@ export const useForm = ({
         isSubmitting: false,
       },
     });
-  }, []);
+
+    Object.values(groupRegistry.current)
+      .forEach((group) => {
+        group.handleReset();
+      });
+  }, [rest.name]);
 
   const getFormValues = useCallback((changeEvent) => {
     const getter = () => {
@@ -243,6 +222,11 @@ export const useForm = ({
           runValidator({ name, value: state.values[name] });
         }
       });
+
+    Object.values(groupRegistry.current)
+      .forEach((group) => {
+        group.runValidators();
+      });
   }, [runValidator, state.values]);
 
   const handleChange = useEventCallback(prevent((event) => {
@@ -253,15 +237,6 @@ export const useForm = ({
 
       if (validateOnChange) {
         runValidator(event.target);
-      }
-    }
-
-    if (event.groupTrigger) {
-      const { type, payload } = event;
-
-      dispatch({ type, payload });
-      if (validateOnChange) {
-        runValidator(event);
       }
     }
 
@@ -320,8 +295,10 @@ export const useForm = ({
     handleChange,
     setFieldError,
     getFieldProps,
-    addRepeatGroup,
     appendRepeatGroup,
     clearRepeatGroup,
+    registerGroup,
+    unregisterGroup,
+    runValidators,
   };
 };

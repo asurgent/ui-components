@@ -3,26 +3,45 @@
 import React, { useContext, useEffect } from 'react';
 import { Button } from '@chakra-ui/react';
 import { FromContext, GroupContext } from '../data/formContext';
-import { useGroupRepeat } from '../data/groupHook';
+import { useForm } from '../data/formHook';
 
 const Row = ({ index, children }) => {
-  const { name, min, numberOfGroups } = useContext(GroupContext);
   const {
+    name, min, numberOfGroups, formatter,
+  } = useContext(GroupContext);
+  const {
+    registerGroup,
+    unregisterGroup,
     clearRepeatGroup,
     ...form
   } = useContext(FromContext);
 
-  const pattern = useGroupRepeat({ form, name, index });
+  const group = useForm({
+    ...form,
+    name,
+    index,
+    formatter,
+    initialValues: form.state.values[name]?.[index] || {},
+    initialErrors: form.state.errors[name]?.[index] || {},
+    onChange: (values) => {
+      const groupValues = form.state.values[name];
+      if (groupValues) {
+        const newGroupValues = groupValues.map((item, i) => (index === i ? { ...values } : item));
+        form.handleChange({ target: { name, value: newGroupValues } });
+      } else {
+        form.handleChange({ target: { name, value: [{ ...values }] } });
+      }
+    },
+  });
 
-  // const childrenWithProps = React.Children.map(children, (child) => {
-  //   if (React.isValidElement(child)) {
-  //     return React.cloneElement(child, {
-  //       ...child.props,
-  //       name: `${child.props.name}`,
-  //     });
-  //   }
-  //   return child;
-  // });
+  useEffect(() => {
+    registerGroup({ name: name + index, ...group });
+
+    return () => {
+      unregisterGroup({ name: name + index, ...group });
+    };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const onRemoveGroup = () => {
     if (typeof parseInt(min, 10) === 'number') {
@@ -33,8 +52,9 @@ const Row = ({ index, children }) => {
       clearRepeatGroup(name, index);
     }
   };
+
   return (
-    <FromContext.Provider value={{ ...form, ...pattern, index }}>
+    <FromContext.Provider value={{ ...group, index }}>
       {children}
       <Button
         colorScheme="red"
@@ -48,49 +68,11 @@ const Row = ({ index, children }) => {
   );
 };
 
-const GroupRepeat = ({
-  min,
-  max,
-  name,
-  children,
-  ...props
-}) => {
-  const {
-    state,
-    registerField,
-    unregisterField,
-    appendRepeatGroup,
-  } = useContext(FromContext);
+const GroupRepeat = ({ children, ...props }) => {
+  const { max, name } = props;
+  const { state, appendRepeatGroup } = useContext(FromContext);
 
-  const numberOfGroups = state.values?.[name].length;
-
-  const validators = React.Children.map(children, (child) => {
-    if (React.isValidElement(child)) {
-      return { validator: child.props.validator };
-    }
-    return child;
-  });
-
-  useEffect(() => {
-    const groupValidator = (event) => {
-      const { groupIndex } = event;
-      if (validators[groupIndex]?.validator) {
-        const { validator } = validators[groupIndex];
-        const result = validator(event);
-        console.log(result);
-        return result;
-      }
-      console.log('first', event);
-      return null;
-    };
-
-    registerField({ name, validator: groupValidator, ...props });
-
-    return () => {
-      unregisterField({ name, ...props });
-    };
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  const numberOfGroups = state.values?.[name]?.length;
 
   const onAddGroup = () => {
     if (typeof parseInt(max, 10) === 'number') {
@@ -103,10 +85,7 @@ const GroupRepeat = ({
   };
 
   return (
-    <GroupContext.Provider value={{
-      min, max, name, numberOfGroups,
-    }}
-    >
+    <GroupContext.Provider value={{ numberOfGroups, ...props }}>
       {[...Array(numberOfGroups)].map((e, i) => (
         <Row key={i} index={i} {...props}>{children}</Row>
       ))}

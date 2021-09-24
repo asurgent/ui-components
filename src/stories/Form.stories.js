@@ -35,8 +35,8 @@ const Template = () => (
         // tree: values['field-3'],
       })}
       validators={{ number: (val) => ({ isValid: val.length > 0, error: 'Cant be empty' }) }}
-      initialErrors={{ field: 'Your WRONG' }}
-      initialValues={{ repeat: [{ hello: '1', bye: '2' }, { hello: '3', bye: '4' }] }}
+      initialErrors={{ field: 'Your WRONG', repeat: [null, { hello: 'BU' }] }}
+      // initialValues={{ repeat: [{ hello: '1', bye: '2' }, { hello: '3', bye: '4' }] }}
       onChange={(a) => console.log('onChange', a)}
       onReset={(a) => console.log('onReset', a)}
       onSubmit={(a) => new Promise((resolve) => {
@@ -67,25 +67,26 @@ const Template = () => (
               </Field>
             </Box> */}
 
-            <Text
+            {/* <Text
               name="hellothere"
               label="Provide name"
               helperText="we are careful"
-              validator={({ value }) => ({ isValid: value.length > 0, error: 'Cant be empty' })}
-            />
+              validator={({ value }) =>
+              ({ isValid: (value || '').length > 0, error: 'Cant be empty' })}
+            /> */}
 
-            <GroupRepeat name="repeat" min={1} max={3}>
+            <GroupRepeat name="repeat" min={1} max={3} formatter={(values) => ({ 'im-a-wrapper': values })}>
               <Text
                 name="hello"
                 label="Provide name"
                 helperText="we are careful"
-                validator={({ value }) => ({ isValid: value.length > 0, error: 'Cant be empty' })}
+                validator={({ value }) => ({ isValid: (value || '').length > 0, error: 'Cant be empty' })}
               />
-              <Text
+              <Switch
                 name="bye"
                 label="Provide name"
                 helperText="we are careful"
-                validator={({ value }) => ({ isValid: value.length > 0, error: 'Cant be empty' })}
+                validator={({ value }) => ({ isValid: (value || '').length > 0, error: 'Cant be empty' })}
               />
             </GroupRepeat>
 
