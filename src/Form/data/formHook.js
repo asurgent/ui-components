@@ -32,12 +32,6 @@ export const prevent = (fn) => (e) => {
 
 const reducer = (state, msg) => {
   switch (msg.type) {
-    case 'REGISTER_FIELD':
-      return { ...state, values: { ...state.values, [msg.payload.name]: msg.payload.value } };
-    case 'REMOVE_FIELD': {
-      const { [msg.payload.name]: remove, ...rest } = state.values;
-      return { ...state, values: rest };
-    }
     case 'SET_FIELD_ERROR':
       return {
         ...state,
@@ -53,27 +47,7 @@ const reducer = (state, msg) => {
       return { ...state, ...msg.payload };
     case 'UPDATE_VALUE':
       return { ...state, values: { ...state.values, [msg.payload.name]: msg.payload.value } };
-    case 'APPEND_REPEAT_GROUP': {
-      const group = [...(state.values?.[msg.payload.name] || []), {}];
-      return {
-        ...state,
-        values: {
-          ...state.values,
-          [msg.payload.name]: group,
-        },
-      };
-    } case 'REMOVE_REPEAT_GROUP': {
-      const group = state.values?.[msg.payload.name];
-      const newGroup = group.filter((_, index) => index !== msg.payload.index);
-
-      return {
-        ...state,
-        values: {
-          ...state.values,
-          [msg.payload.name]: newGroup,
-        },
-      };
-    } case 'SET_SUBMIT':
+    case 'SET_SUBMIT':
       return { ...state, isSubmitting: msg.payload };
     case 'SET_SUBMIT_COUNT':
       return { ...state, submitCount: msg.payload };
@@ -128,21 +102,75 @@ export const useForm = ({
   },
   []);
 
-  const appendRepeatGroup = useCallback((name) => {
-    dispatch({
-      type: 'APPEND_REPEAT_GROUP',
-      payload: { name },
-    });
-  },
-  []);
+  const appendRepeatGroup = useCallback((name, max) => {
+    const group = state.values?.[name];
+    const newGroup = [...(group || []), {}];
 
-  const clearRepeatGroup = useCallback((name, index) => {
-    dispatch({
-      type: 'REMOVE_REPEAT_GROUP',
-      payload: { name, index },
-    });
+    const message = {
+      type: 'UPDATE_VALUE',
+      payload: { name, value: newGroup },
+    };
+
+    if (typeof max === 'number' && group) {
+      if (max > group.length) {
+        dispatch(message);
+      }
+    } else {
+      dispatch(message);
+    }
   },
-  []);
+  [state.values]);
+
+  const clearRepeatGroup = useCallback((name, index, min) => {
+    const group = state.values?.[name];
+    const newGroup = group.filter((_, idx) => index !== idx);
+    console.log(newGroup);
+
+    const message = {
+      type: 'UPDATE_VALUE',
+      payload: { name, value: newGroup },
+    };
+
+    if (typeof min === 'number' && group) {
+      if (min <= group.length) {
+        dispatch(message);
+      }
+    } else {
+      dispatch(message);
+    }
+  },
+  [state.values]);
+
+  const getRepeatGroupArray = useCallback(({ name, min }) => {
+    const group = state.values?.[name];
+
+    if (!group) {
+      const message = {
+        type: 'UPDATE_VALUE',
+        payload: { name, value: Array.from(Array(5), (_, i) => ({})) },
+      };
+      dispatch(message);
+    } else if (group.length < min) {
+      const message = {
+        type: 'UPDATE_VALUE',
+        payload: { name, value: Array.from(Array(5), (_, i) => group[i] || ({})) },
+      };
+      dispatch(message);
+    }
+
+    return group.map((val, i) => `${JSON.stringify(val)}-${i}`) || [];
+  }, [state.values]);
+
+  const handleRepeatGroupChange = useCallback((values, name, index) => {
+    const groupValues = rest.state.values[name];
+
+    if (groupValues) {
+      const newGroupValues = groupValues.map((item, i) => (index === i ? { ...values } : item));
+      rest.handleChange({ target: { name, value: newGroupValues } });
+    } else {
+      rest.handleChange({ target: { name, value: [{ ...values }] } });
+    }
+  }, [rest]);
 
   const registerGroup = useCallback(({ name, ...groupHook }) => {
     groupRegistry.current[name] = { ...groupHook };
@@ -163,7 +191,7 @@ export const useForm = ({
   const resetForm = useCallback(() => {
     const values = initialValues.current;
     const errors = initialErrors.current;
-    console.log(rest.name, errors, values);
+
     dispatch({
       type: 'RESET_FORM',
       payload: {
@@ -178,7 +206,7 @@ export const useForm = ({
       .forEach((group) => {
         group.handleReset();
       });
-  }, [rest.name]);
+  }, []);
 
   const getFormValues = useCallback((changeEvent) => {
     const getter = () => {
@@ -295,10 +323,12 @@ export const useForm = ({
     handleChange,
     setFieldError,
     getFieldProps,
-    appendRepeatGroup,
-    clearRepeatGroup,
     registerGroup,
     unregisterGroup,
     runValidators,
+    appendRepeatGroup,
+    clearRepeatGroup,
+    getRepeatGroupArray,
+    handleRepeatGroupChange,
   };
 };

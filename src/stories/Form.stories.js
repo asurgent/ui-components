@@ -35,8 +35,8 @@ const Template = () => (
         // tree: values['field-3'],
       })}
       validators={{ number: (val) => ({ isValid: val.length > 0, error: 'Cant be empty' }) }}
-      initialErrors={{ field: 'Your WRONG', repeat: [null, { hello: 'BU' }] }}
-      // initialValues={{ repeat: [{ hello: '1', bye: '2' }, { hello: '3', bye: '4' }] }}
+      initialErrors={{ field: 'Your WRONG', repeat: { 0: { hello: 'BU' } } }}
+      initialValues={{ repeat: [{ hello: '1' }, { hello: '3' }] }}
       onChange={(a) => console.log('onChange', a)}
       onReset={(a) => console.log('onReset', a)}
       onSubmit={(a) => new Promise((resolve) => {
@@ -75,18 +75,21 @@ const Template = () => (
               ({ isValid: (value || '').length > 0, error: 'Cant be empty' })}
             /> */}
 
-            <GroupRepeat name="repeat" min={1} max={3} formatter={(values) => ({ 'im-a-wrapper': values })}>
+            <GroupRepeat
+              toArray
+              name="repeat"
+              min={4}
+              // max={3}
+              // formatter={(values) => ({ 'im-a-wrapper': values })}
+            >
               <Text
                 name="hello"
                 label="Provide name"
                 helperText="we are careful"
-                validator={({ value }) => ({ isValid: (value || '').length > 0, error: 'Cant be empty' })}
-              />
-              <Switch
-                name="bye"
-                label="Provide name"
-                helperText="we are careful"
-                validator={({ value }) => ({ isValid: (value || '').length > 0, error: 'Cant be empty' })}
+                validator={(a) => {
+                  const { value } = a;
+                  return ({ isValid: (value || '').length > 0, error: 'Cant be empty' });
+                }}
               />
             </GroupRepeat>
 
