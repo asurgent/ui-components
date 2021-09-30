@@ -141,26 +141,6 @@ export const useForm = ({
   },
   [state.values]);
 
-  const getRepeatGroupArray = useCallback(({ name, min }) => {
-    const group = state.values?.[name];
-
-    if (!group) {
-      const message = {
-        type: 'UPDATE_VALUE',
-        payload: { name, value: Array.from(Array(5), (_, i) => ({})) },
-      };
-      dispatch(message);
-    } else if (group.length < min) {
-      const message = {
-        type: 'UPDATE_VALUE',
-        payload: { name, value: Array.from(Array(5), (_, i) => group[i] || ({})) },
-      };
-      dispatch(message);
-    }
-
-    return group.map((val, i) => `${JSON.stringify(val)}-${i}`) || [];
-  }, [state.values]);
-
   const handleRepeatGroupChange = useCallback((values, name, index) => {
     const groupValues = rest.state.values[name];
 
@@ -328,7 +308,6 @@ export const useForm = ({
     runValidators,
     appendRepeatGroup,
     clearRepeatGroup,
-    getRepeatGroupArray,
     handleRepeatGroupChange,
   };
 };

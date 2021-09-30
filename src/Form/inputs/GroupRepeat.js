@@ -1,13 +1,13 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
-import React, { useContext, useEffect } from 'react';
+import React, { useContext, useEffect, useMemo } from 'react';
 import { Button, IconButton, Flex } from '@chakra-ui/react';
 import MdiIcon from '@mdi/react';
 import { mdiClose } from '@mdi/js';
 import { FromContext, GroupContext } from '../data/formContext';
 import { useForm } from '../data/formHook';
 
-const Row = ({ index, children }) => {
+export const Row = ({ index, children }) => {
   const {
     name,
     min,
@@ -64,28 +64,48 @@ const Row = ({ index, children }) => {
   );
 };
 
-const GroupRepeat = ({ children, ...props }) => {
+export const GroupRepeat = ({ children, addNewButton, ...props }) => {
   const { min, max, name } = props;
-  const { state, appendRepeatGroup, getRepeatGroupArray } = useContext(FromContext);
-  const numberOfGroups = state.values?.[name]?.length;
+  const {
+    state,
+    dispatch,
+    appendRepeatGroup,
+  } = useContext(FromContext);
 
-  const onAddGroup = () => appendRepeatGroup(name, max);
+  useEffect(() => {
+    const group = state.values?.[name];
+    const newGroup = Array.from(Array(min || 0), (_, i) => group[i] || ({}));
+    const message = {
+      type: 'UPDATE_VALUE',
+      payload: { name, value: newGroup },
+    };
+    dispatch(message);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [min]);
+
+  const numberOfGroups = useMemo(() => state.values?.[name]?.length,
+    [name, state.values]);
+
+  const groups = useMemo(() => {
+    const group = (state.values?.[name] || []);
+    return group.map((_, index) => `${index}-${new Date().getTime()}`);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [numberOfGroups]);
 
   return (
     <GroupContext.Provider value={{ numberOfGroups, ...props }}>
-      {getRepeatGroupArray({ min, max, name }).map((key, idx) => (
+      {groups?.map((key, idx) => (
         <Row key={key} index={idx} {...props}>{children}</Row>
       ))}
       <Button
         colorScheme="green"
         disabled={max && max === numberOfGroups}
         variant="outline"
-        onClick={onAddGroup}
+        onClick={() => appendRepeatGroup(name, max)}
       >
         Add
       </Button>
     </GroupContext.Provider>
   );
 };
-
 export default GroupRepeat;
