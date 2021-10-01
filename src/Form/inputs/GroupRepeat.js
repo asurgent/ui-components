@@ -10,67 +10,29 @@ import { FromContext, GroupContext } from '../data/formContext';
 import { useForm } from '../data/useForm';
 import { useRepeatGroup } from '../data/useRepeatGroup';
 
-// const useRepeatGroup = () => {
-//   const {
-//     name, min, numberOfGroups,
-//   } = useContext(GroupContext);
-//   const { dispatch, state, initialValues } = useContext(FromContext);
-
-//   useEffect(() => {
-//     const group = initialValues?.[name];
-//     const total = group?.length > (min || 0) ? group?.length : min;
-//     const newGroup = Array.from(Array(total || 0), (_, i) => group[i] || ({}));
-//     dispatch({
-//       type: 'UPDATE_VALUE',
-//       payload: { name, value: newGroup },
-//     });
-//   // eslint-disable-next-line react-hooks/exhaustive-deps
-//   }, [min]);
-
-//   const groups = useMemo(() => {
-//     const group = (state.values?.[name] || []);
-
-//     return group.map((_, index) => ({
-//       key: `${index}-${new Date().getTime()}`,
-//       initialValues: state.values[name]?.[index] || {},
-//       initialErrors: state.errors[name]?.[index] || {},
-//     }));
-//   // eslint-disable-next-line react-hooks/exhaustive-deps
-//   }, [numberOfGroups]);
-
-//   return groups;
-// };
-
 export const Row = ({
   index,
   initialValues,
   initialErrors,
   children,
 }) => {
-  const { name, formatter } = useContext(GroupContext);
-
-  const {
-    registerGroup,
-    unregisterGroup,
-    clearRepeatGroup,
-    ...form
-  } = useContext(FromContext);
-
+  const { name } = useContext(GroupContext);
+  const parent = useContext(FromContext);
   const group = useForm({
-    ...form,
+    ...parent,
     name,
     index,
-    formatter,
     initialValues,
     initialErrors,
     onChange: (values) => group.handleRepeatGroupChange(values, name, index),
   });
 
   useEffect(() => {
-    registerGroup({ name: name + index, ...group });
+    const { registerField, unregisterField } = parent;
+    registerField({ name: name + index, ...group }, true);
 
     return () => {
-      unregisterGroup({ name: name + index, ...group });
+      unregisterField({ name: name + index, ...group }, true);
     };
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -135,7 +97,12 @@ export const RepeatAddRow = ({ children, colorScheme, ...props }) => {
   } = useContext(GroupContext);
 
   if (typeof children === 'function') {
-    return children();
+    return children({
+      max,
+      name,
+      numberOfGroups,
+      appendRepeatGroup,
+    });
   }
 
   return (
@@ -152,26 +119,8 @@ export const RepeatAddRow = ({ children, colorScheme, ...props }) => {
 
 export const RepeatGroup = ({ children, ...props }) => {
   const { min, max, name } = props;
-  const {
-    state,
-    dispatch,
-    initialValues,
-  } = useContext(FromContext);
-
-  // useEffect(() => {
-  //   const group = initialValues?.[name];
-  //   const total = group?.length > (min || 0) ? group?.length : min;
-  //   const newGroup = Array.from(Array(total || 0), (_, i) => group[i] || ({}));
-  //   const message = {
-  //     type: 'UPDATE_VALUE',
-  //     payload: { name, value: newGroup },
-  //   };
-  //   dispatch(message);
-  // // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, [min]);
-
-  const numberOfGroups = useMemo(() => state.values?.[name]?.length,
-    [name, state.values]);
+  const { state } = useContext(FromContext);
+  const numberOfGroups = useMemo(() => state.values?.[name]?.length, [name, state.values]);
 
   const ctxValue = {
     numberOfGroups,

@@ -1,60 +1,14 @@
-/* eslint-disable react/prop-types */
 /* eslint-disable no-unused-vars */
 import {
-  useLayoutEffect,
   useRef,
   useEffect,
   useReducer,
   useCallback,
 } from 'react';
 
-export const useEventCallback = (fn) => {
-  const ref = useRef(fn);
-  // we copy a ref to the callback scoped to the current state/props on each render
-  useLayoutEffect(() => {
-    ref.current = fn;
-  });
-
-  return useCallback((...args) => ref.current(...args), [ref]);
-};
-
-export const prevent = (fn) => (e) => {
-  if (e && e.preventDefault && typeof e.preventDefault === 'function') {
-    e.preventDefault();
-  }
-
-  if (e && e.stopPropagation && typeof e.preventDefault === 'function') {
-    e.stopPropagation();
-  }
-
-  fn(e);
-};
-
-const reducer = (state, msg) => {
-  switch (msg.type) {
-    case 'SET_FIELD_ERROR':
-      return {
-        ...state,
-        errors: { ...state.errors, [msg.payload.name]: msg.payload.value },
-      };
-    case 'CLEAR_FIELD_ERROR': {
-      const { [msg.payload.name]: _, ...rest } = state.errors;
-      return {
-        ...state,
-        errors: { ...rest },
-      };
-    } case 'RESET_FORM':
-      return { ...state, ...msg.payload };
-    case 'UPDATE_VALUE':
-      return { ...state, values: { ...state.values, [msg.payload.name]: msg.payload.value } };
-    case 'SET_SUBMIT':
-      return { ...state, isSubmitting: msg.payload };
-    case 'SET_SUBMIT_COUNT':
-      return { ...state, submitCount: msg.payload };
-    default:
-      return { ...state };
-  }
-};
+import useEventCallback from '../../data/useEventCallback';
+import withPrevent from '../../data/withPrevent';
+import { formReducer } from './reducer';
 
 export const useForm = ({
   onSubmit,
@@ -79,7 +33,7 @@ export const useForm = ({
     };
   }, []);
 
-  const [state, dispatch] = useReducer(reducer, {
+  const [state, dispatch] = useReducer(formReducer, {
     errors: initialErrors.current || {},
     values: initialValues.current,
     submitCount: 0,
@@ -196,20 +150,20 @@ export const useForm = ({
     }
   }, [rest]);
 
-  const registerGroup = useCallback(({ name, ...groupHook }) => {
-    groupRegistry.current[name] = { ...groupHook };
-  }, [groupRegistry]);
-
-  const unregisterGroup = useCallback(({ name }) => {
-    delete groupRegistry.current[name];
-  }, [groupRegistry]);
-
-  const registerField = useCallback(({ name, validator }) => {
-    fieldRegistry.current[name] = { validator };
+  const registerField = useCallback(({ name, validator, ...restProps }, isGroup = false) => {
+    if (isGroup) {
+      groupRegistry.current[name] = { ...restProps };
+    } else {
+      fieldRegistry.current[name] = { validator };
+    }
   }, [fieldRegistry]);
 
-  const unregisterField = useCallback(({ name }) => {
-    delete fieldRegistry.current[name];
+  const unregisterField = useCallback(({ name }, isGroup = false) => {
+    if (isGroup) {
+      delete groupRegistry.current[name];
+    } else {
+      delete fieldRegistry.current[name];
+    }
   }, [fieldRegistry]);
 
   const resetForm = useCallback(() => {
@@ -247,7 +201,7 @@ export const useForm = ({
     return getter();
   }, [formatter, state.values]);
 
-  const handleChange = useEventCallback(prevent((event) => {
+  const handleChange = useEventCallback(withPrevent((event) => {
     //  we can assume its a normal user-triggerd-event
     if (event.target) {
       const { name, value } = event.target;
@@ -263,7 +217,7 @@ export const useForm = ({
     }
   }), []);
 
-  const handleSubmit = useEventCallback(prevent(() => {
+  const handleSubmit = useEventCallback(withPrevent(() => {
     const event = async () => {
       if (onSubmit && typeof onSubmit === 'function') {
         runValidators();
@@ -277,7 +231,7 @@ export const useForm = ({
     event();
   }), [fieldRegistry]);
 
-  const handleReset = useEventCallback(prevent(() => {
+  const handleReset = useEventCallback(withPrevent(() => {
     resetForm();
     if (onReset && typeof onReset === 'function') {
       const getter = () => {
@@ -313,8 +267,6 @@ export const useForm = ({
     handleChange,
     setFieldError,
     getFieldProps,
-    registerGroup,
-    unregisterGroup,
     runValidators,
     appendRepeatGroup,
     clearRepeatGroup,
