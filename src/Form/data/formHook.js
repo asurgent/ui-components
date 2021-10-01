@@ -35,10 +35,10 @@ const reducer = (state, msg) => {
     case 'SET_FIELD_ERROR':
       return {
         ...state,
-        errors: { ...state.errors, [msg.payload.field]: msg.payload.value },
+        errors: { ...state.errors, [msg.payload.name]: msg.payload.value },
       };
     case 'CLEAR_FIELD_ERROR': {
-      const { [msg.payload.field]: _, ...rest } = state.errors;
+      const { [msg.payload.name]: _, ...rest } = state.errors;
       return {
         ...state,
         errors: { ...rest },
@@ -86,21 +86,55 @@ export const useForm = ({
     isSubmitting: false,
   });
 
-  const clearFieldError = useCallback((field) => {
+  const clearFieldError = useCallback((name) => {
     dispatch({
       type: 'CLEAR_FIELD_ERROR',
-      payload: { field },
+      payload: { name },
     });
   },
   []);
 
-  const setFieldError = useCallback((field, value) => {
+  const setFieldError = useCallback((name, value) => {
     dispatch({
       type: 'SET_FIELD_ERROR',
-      payload: { field, value },
+      payload: { name, value },
     });
   },
   []);
+
+  const runValidator = useCallback((event) => {
+    const { name } = event;
+    const fieldValidator = fieldRegistry.current?.[name]?.validator;
+    const providerValidator = validators?.[name];
+
+    const setter = (result) => {
+      if (result?.isValid === true || result?.isValid === undefined) {
+        clearFieldError(name);
+      } else {
+        setFieldError(name, result?.error);
+      }
+    };
+
+    if (fieldValidator && typeof fieldValidator === 'function') {
+      setter(fieldValidator(event));
+    } else if (providerValidator && typeof providerValidator === 'function') {
+      setter(providerValidator(event));
+    }
+  }, [clearFieldError, setFieldError, validators]);
+
+  const runValidators = useCallback(() => {
+    Object.entries(fieldRegistry.current)
+      .forEach(([name, { validator }]) => {
+        if (validator) {
+          runValidator({ name, value: state.values[name] });
+        }
+      });
+
+    Object.values(groupRegistry.current)
+      .forEach((group) => {
+        group.runValidators();
+      });
+  }, [runValidator, state.values]);
 
   const appendRepeatGroup = useCallback((name, max) => {
     const group = state.values?.[name];
@@ -123,23 +157,33 @@ export const useForm = ({
 
   const clearRepeatGroup = useCallback((name, index, min) => {
     const group = state.values?.[name];
-    const newGroup = group.filter((_, idx) => index !== idx);
-    console.log(newGroup);
+    const errors = state.errors?.[name];
 
-    const message = {
+    const newGroup = group.filter((_, idx) => index !== idx);
+
+    const groupMessage = {
       type: 'UPDATE_VALUE',
       payload: { name, value: newGroup },
     };
 
     if (typeof min === 'number' && group) {
       if (min <= group.length) {
-        dispatch(message);
+        dispatch(groupMessage);
       }
     } else {
-      dispatch(message);
+      dispatch(groupMessage);
     }
-  },
-  [state.values]);
+
+    if (errors) {
+      const newError = errors.filter((_, idx) => index !== idx);
+      console.log(errors, newError);
+      const errorMessage = {
+        type: 'SET_FIELD_ERROR',
+        payload: { name, value: newError },
+      };
+      dispatch(errorMessage);
+    }
+  }, [state.errors, state.values]);
 
   const handleRepeatGroupChange = useCallback((values, name, index) => {
     const groupValues = rest.state.values[name];
@@ -202,40 +246,6 @@ export const useForm = ({
     }
     return getter();
   }, [formatter, state.values]);
-
-  const runValidator = useCallback((event) => {
-    const { name } = event;
-    const fieldValidator = fieldRegistry.current?.[name]?.validator;
-    const providerValidator = validators?.[name];
-
-    const setter = (result) => {
-      if (result?.isValid === true || result?.isValid === undefined) {
-        clearFieldError(name);
-      } else {
-        setFieldError(name, result?.error);
-      }
-    };
-
-    if (fieldValidator && typeof fieldValidator === 'function') {
-      setter(fieldValidator(event));
-    } else if (providerValidator && typeof providerValidator === 'function') {
-      setter(providerValidator(event));
-    }
-  }, [clearFieldError, setFieldError, validators]);
-
-  const runValidators = useCallback(() => {
-    Object.entries(fieldRegistry.current)
-      .forEach(([name, { validator }]) => {
-        if (validator) {
-          runValidator({ name, value: state.values[name] });
-        }
-      });
-
-    Object.values(groupRegistry.current)
-      .forEach((group) => {
-        group.runValidators();
-      });
-  }, [runValidator, state.values]);
 
   const handleChange = useEventCallback(prevent((event) => {
     //  we can assume its a normal user-triggerd-event

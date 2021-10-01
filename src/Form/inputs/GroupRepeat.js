@@ -7,7 +7,12 @@ import { mdiClose } from '@mdi/js';
 import { FromContext, GroupContext } from '../data/formContext';
 import { useForm } from '../data/formHook';
 
-export const Row = ({ index, children }) => {
+export const Row = ({
+  index,
+  initialValues,
+  initialErrors,
+  children,
+}) => {
   const {
     name,
     min,
@@ -27,8 +32,8 @@ export const Row = ({ index, children }) => {
     name,
     index,
     formatter,
-    initialValues: form.state.values[name]?.[index] || {},
-    initialErrors: form.state.errors[name]?.[index] || {},
+    initialValues,
+    initialErrors,
     onChange: (values) => group.handleRepeatGroupChange(values, name, index),
   });
 
@@ -70,11 +75,13 @@ export const GroupRepeat = ({ children, addNewButton, ...props }) => {
     state,
     dispatch,
     appendRepeatGroup,
+    initialValues,
   } = useContext(FromContext);
 
   useEffect(() => {
-    const group = state.values?.[name];
-    const newGroup = Array.from(Array(min || 0), (_, i) => group[i] || ({}));
+    const group = initialValues?.[name];
+    const total = group?.length > (min || 0) ? group?.length : min;
+    const newGroup = Array.from(Array(total || 0), (_, i) => group[i] || ({}));
     const message = {
       type: 'UPDATE_VALUE',
       payload: { name, value: newGroup },
@@ -88,14 +95,26 @@ export const GroupRepeat = ({ children, addNewButton, ...props }) => {
 
   const groups = useMemo(() => {
     const group = (state.values?.[name] || []);
-    return group.map((_, index) => `${index}-${new Date().getTime()}`);
+    return group.map((_, index) => ({
+      key: `${index}-${new Date().getTime()}`,
+      initialValues: state.values[name]?.[index] || {},
+      initialErrors: state.errors[name]?.[index] || {},
+    }));
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [numberOfGroups]);
 
   return (
     <GroupContext.Provider value={{ numberOfGroups, ...props }}>
-      {groups?.map((key, idx) => (
-        <Row key={key} index={idx} {...props}>{children}</Row>
+      {groups?.map((row, idx) => (
+        <Row
+          key={row.key}
+          index={idx}
+          initialValues={row.initialValues}
+          initialErrors={row.initialErrors}
+          {...props}
+        >
+          {children}
+        </Row>
       ))}
       <Button
         colorScheme="green"

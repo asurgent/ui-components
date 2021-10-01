@@ -35,7 +35,7 @@ const Template = () => (
         // tree: values['field-3'],
       })}
       validators={{ number: (val) => ({ isValid: val.length > 0, error: 'Cant be empty' }) }}
-      initialErrors={{ field: 'Your WRONG', repeat: { 0: { hello: 'BU' } } }}
+      initialErrors={{ field: 'Your WRONG', repeat: [{ hello: 'BU' }] }}
       initialValues={{ repeat: [{ hello: '1' }, { hello: '3' }] }}
       onChange={(a) => console.log('onChange', a)}
       onReset={(a) => console.log('onReset', a)}
@@ -78,7 +78,7 @@ const Template = () => (
             <GroupRepeat
               toArray
               name="repeat"
-              min={4}
+              // min={4}
               // max={3}
               // formatter={(values) => ({ 'im-a-wrapper': values })}
             >
