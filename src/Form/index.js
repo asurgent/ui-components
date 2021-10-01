@@ -7,7 +7,11 @@ import Switch from './inputs/Switch';
 import Email from './inputs/Email';
 import Date from './inputs/Date';
 import RadioGroup from './inputs/RadioGroup';
-import GroupRepeat from './inputs/GroupRepeat';
+import {
+  RepeatGroup,
+  RepeatPattern,
+  RepeatAddRow,
+} from './inputs/GroupRepeat';
 
 export {
   FormProvider,
@@ -19,5 +23,7 @@ export {
   Email,
   Date,
   RadioGroup,
-  GroupRepeat,
+  RepeatGroup,
+  RepeatPattern,
+  RepeatAddRow,
 };

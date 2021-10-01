@@ -13,7 +13,9 @@ import {
   Email,
   RadioGroup,
   Date,
-  GroupRepeat,
+  RepeatGroup,
+  RepeatPattern,
+  RepeatAddRow,
 } from '../Form';
 
 const Story = {
@@ -75,23 +77,28 @@ const Template = () => (
               ({ isValid: (value || '').length > 0, error: 'Cant be empty' })}
             /> */}
 
-            <GroupRepeat
+            <RepeatGroup
               toArray
               name="repeat"
               // min={4}
               // max={3}
               // formatter={(values) => ({ 'im-a-wrapper': values })}
             >
-              <Text
-                name="hello"
-                label="Provide name"
-                helperText="we are careful"
-                validator={(a) => {
-                  const { value } = a;
-                  return ({ isValid: (value || '').length > 0, error: 'Cant be empty' });
-                }}
-              />
-            </GroupRepeat>
+              <RepeatPattern>
+                <Text
+                  name="hello"
+                  label="Provide name"
+                  helperText="we are careful"
+                  validator={(a) => {
+                    const { value } = a;
+                    return ({ isValid: (value || '').length > 0, error: 'Cant be empty' });
+                  }}
+                />
+              </RepeatPattern>
+              <RepeatAddRow colorScheme="pink" mb={5}>
+                Add new row
+              </RepeatAddRow>
+            </RepeatGroup>
 
             {/*
             <Text

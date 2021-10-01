@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { FromContext } from './data/formContext';
-import { useForm } from './data/formHook';
+import { useForm } from './data/useForm';
 
 export const FormProvider = ({ children, ...props }) => {
   const form = useForm(props);
