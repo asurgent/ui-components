@@ -1,29 +1,33 @@
 import { FormProvider } from './FormProvider';
 import { Field } from './Field';
-import Text from './inputs/Text';
-import TextArea from './inputs/TextArea';
-import Number from './inputs/Number';
-import Switch from './inputs/Switch';
-import Email from './inputs/Email';
-import Date from './inputs/Date';
-import RadioGroup from './inputs/RadioGroup';
+import TextInput from './inputs/Text';
+import TextAreaInput from './inputs/TextArea';
+import NumberInput from './inputs/Number';
+import SwitchInput from './inputs/Switch';
+import EmailInput from './inputs/Email';
+import DateInput from './inputs/Date';
+import RadioGroupInput from './inputs/RadioGroup';
 import {
   RepeatGroup,
   RepeatPattern,
   RepeatAddRow,
+  RepeatHeader,
+  RepeatEmptyState,
 } from './inputs/GroupRepeat';
 
 export {
   FormProvider,
   Field,
-  Text,
-  TextArea,
-  Number,
-  Switch,
-  Email,
-  Date,
-  RadioGroup,
+  TextInput,
+  TextAreaInput,
+  NumberInput,
+  SwitchInput,
+  EmailInput,
+  DateInput,
+  RadioGroupInput,
   RepeatGroup,
   RepeatPattern,
   RepeatAddRow,
+  RepeatHeader,
+  RepeatEmptyState,
 };

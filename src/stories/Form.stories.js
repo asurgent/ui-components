@@ -2,20 +2,24 @@
 /* eslint-disable react/button-has-type */
 /* eslint-disable react/destructuring-assignment */
 import React from 'react';
-import { Box, Button, Flex } from '@chakra-ui/react';
+import {
+  Box, Button, Flex, Heading, Text,
+} from '@chakra-ui/react';
 import {
   FormProvider,
   Field,
-  Text,
-  TextArea,
-  Number,
-  Switch,
-  Email,
-  RadioGroup,
-  Date,
+  TextInput,
+  TextAreaInput,
+  NumberInput,
+  SwitchInput,
+  EmailInput,
+  RadioGroupInput,
+  DateInput,
   RepeatGroup,
   RepeatPattern,
   RepeatAddRow,
+  RepeatHeader,
+  RepeatEmptyState,
 } from '../Form';
 
 const Story = {
@@ -38,7 +42,7 @@ const Template = () => (
       })}
       validators={{ number: (val) => ({ isValid: val.length > 0, error: 'Cant be empty' }) }}
       initialErrors={{ field: 'Your WRONG', repeat: [{ hello: 'BU' }] }}
-      initialValues={{ repeat: [{ hello: '1' }, { hello: '3' }] }}
+      // initialValues={{ repeat: [{ hello: '1' }, { hello: '3' }] }}
       onChange={(a) => console.log('onChange', a)}
       onReset={(a) => console.log('onReset', a)}
       onSubmit={(a) => new Promise((resolve) => {
@@ -78,26 +82,34 @@ const Template = () => (
             /> */}
 
             <RepeatGroup
-              toArray
               name="repeat"
-              // min={4}
-              // max={3}
-              // formatter={(values) => ({ 'im-a-wrapper': values })}
+              min={4}
+              max={6}
             >
+              <RepeatHeader>
+                <Heading size="md" mb={1}>Group config</Heading>
+                <Text fontSize="small">
+                  This section you will add multipple configuration object that will bla bla bla bla
+                </Text>
+              </RepeatHeader>
+              <RepeatEmptyState>
+                <Heading size="sm" mb={1}>Well, well, well...</Heading>
+                <Text>
+                  You havent added any new repat rows yet,
+                  please klick the plus sign above to append a row.
+                  Please do or everything will explode, somewhere.
+                </Text>
+              </RepeatEmptyState>
               <RepeatPattern>
-                <Text
+                <TextInput
                   name="hello"
-                  label="Provide name"
-                  helperText="we are careful"
+                  label="Configuration"
                   validator={(a) => {
                     const { value } = a;
                     return ({ isValid: (value || '').length > 0, error: 'Cant be empty' });
                   }}
                 />
               </RepeatPattern>
-              <RepeatAddRow colorScheme="pink" mb={5}>
-                Add new row
-              </RepeatAddRow>
             </RepeatGroup>
 
             {/*

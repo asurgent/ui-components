@@ -37,6 +37,7 @@ export const useForm = ({
     errors: initialErrors.current || {},
     values: initialValues.current,
     submitCount: 0,
+    resetCount: 0,
     isSubmitting: false,
   });
 
@@ -90,66 +91,6 @@ export const useForm = ({
       });
   }, [runValidator, state.values]);
 
-  const appendRepeatGroup = useCallback((name, max) => {
-    const group = state.values?.[name];
-    const newGroup = [...(group || []), {}];
-
-    const message = {
-      type: 'UPDATE_VALUE',
-      payload: { name, value: newGroup },
-    };
-
-    if (typeof max === 'number' && group) {
-      if (max > group.length) {
-        dispatch(message);
-      }
-    } else {
-      dispatch(message);
-    }
-  },
-  [state.values]);
-
-  const clearRepeatGroup = useCallback((name, index, min) => {
-    const group = state.values?.[name];
-    const errors = state.errors?.[name];
-
-    const newGroup = group.filter((_, idx) => index !== idx);
-
-    const groupMessage = {
-      type: 'UPDATE_VALUE',
-      payload: { name, value: newGroup },
-    };
-
-    if (typeof min === 'number' && group) {
-      if (min <= group.length) {
-        dispatch(groupMessage);
-      }
-    } else {
-      dispatch(groupMessage);
-    }
-
-    if (errors) {
-      const newError = errors.filter((_, idx) => index !== idx);
-      console.log(errors, newError);
-      const errorMessage = {
-        type: 'SET_FIELD_ERROR',
-        payload: { name, value: newError },
-      };
-      dispatch(errorMessage);
-    }
-  }, [state.errors, state.values]);
-
-  const handleRepeatGroupChange = useCallback((values, name, index) => {
-    const groupValues = rest.state.values[name];
-
-    if (groupValues) {
-      const newGroupValues = groupValues.map((item, i) => (index === i ? { ...values } : item));
-      rest.handleChange({ target: { name, value: newGroupValues } });
-    } else {
-      rest.handleChange({ target: { name, value: [{ ...values }] } });
-    }
-  }, [rest]);
-
   const registerField = useCallback(({ name, validator, ...restProps }, isGroup = false) => {
     if (isGroup) {
       groupRegistry.current[name] = { ...restProps };
@@ -202,7 +143,6 @@ export const useForm = ({
   }, [formatter, state.values]);
 
   const handleChange = useEventCallback(withPrevent((event) => {
-    //  we can assume its a normal user-triggerd-event
     if (event.target) {
       const { name, value } = event.target;
       dispatch({ type: 'UPDATE_VALUE', payload: { name, value } });
@@ -268,8 +208,5 @@ export const useForm = ({
     setFieldError,
     getFieldProps,
     runValidators,
-    appendRepeatGroup,
-    clearRepeatGroup,
-    handleRepeatGroupChange,
   };
 };

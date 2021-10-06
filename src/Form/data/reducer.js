@@ -12,7 +12,7 @@ export const formReducer = (state, msg) => {
         errors: { ...rest },
       };
     } case 'RESET_FORM':
-      return { ...state, ...msg.payload };
+      return { ...state, ...msg.payload, resetCount: state.resetCount + 1 };
     case 'UPDATE_VALUE':
       return { ...state, values: { ...state.values, [msg.payload.name]: msg.payload.value } };
     case 'SET_SUBMIT':
