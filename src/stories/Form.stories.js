@@ -52,12 +52,8 @@ const Template = () => (
       {({ state }) => (
         <>
           <Flex flexDirection="column">
-            <DateInput
-              label="Provide name"
-              helperText="we are careful"
-              name="Date"
-            />
-            {/* <Box mb={4}>
+
+            <Box mb={4}>
               <Field
                 name="field"
                 validator={({ value }) => ({ isInvalid: !value, error: 'Cant be empty' })}
@@ -148,6 +144,7 @@ const Template = () => (
             />
 
             <DateInput
+              dateTime
               label="Provide name"
               helperText="we are careful"
               name="Date"
@@ -161,7 +158,7 @@ const Template = () => (
                 { value: 1, label: 'Im number #1' },
                 { value: 2, label: 'Im number #2' },
               ]}
-            /> */}
+            />
 
           </Flex>
 

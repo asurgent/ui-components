@@ -1,15 +1,45 @@
-/* eslint-disable no-unused-vars */
 import React, { useContext } from 'react';
-import PropTypes from 'prop-types';
 import Moment from 'moment';
 import MomentUtils from '@date-io/moment';
-import { Input } from '@material-ui/core';
-import { Input as InputField } from '@chakra-ui/react';
-import { DatePicker, DateTimePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
-
+import {
+  Input,
+  InputGroup,
+  InputRightElement,
+} from '@chakra-ui/react';
+import {
+  DatePicker,
+  DateTimePicker,
+  MuiPickersUtilsProvider,
+} from '@material-ui/pickers';
+import MdiIcon from '@mdi/react';
+import { mdiCalendar } from '@mdi/js';
 import { FieldContext } from '../data/formContext';
 import { withFormControl } from '../withWrapper';
-import 'react-datepicker/dist/react-datepicker.css';
+
+const renderInput = ({ onClick, onChange, value }) => {
+  const handleOnChange = (...args) => {
+    if (onChange) {
+      onChange(...args);
+    }
+  };
+  return (
+    <InputGroup>
+      <InputRightElement
+        onClick={onClick}
+        pointerEvents="none"
+        color="gray.300"
+      >
+        <MdiIcon size={0.7} path={mdiCalendar} />
+      </InputRightElement>
+      <Input
+        type="text"
+        value={value}
+        onClick={onClick}
+        onChange={handleOnChange}
+      />
+    </InputGroup>
+  );
+};
 
 const Date = withFormControl((props) => {
   const { name, onChange, value } = useContext(FieldContext);
@@ -22,40 +52,32 @@ const Date = withFormControl((props) => {
     minDateMessage,
   } = props;
 
-  const renderInput = () => (
-    <InputField
-      type="text"
-      onClick={props.onClick}
-      value={props.value}
-      onChange={props.onChange}
-    />
-  );
-
   const Component = dateTime ? DateTimePicker : DatePicker;
+
+  const handleOnChange = (date) => {
+    onChange({
+      target: {
+        value: Moment(date).toString(),
+        name,
+      },
+    });
+  };
 
   return (
     <MuiPickersUtilsProvider utils={MomentUtils}>
       <Component
         fullWidth
         ampm={false}
-        format="YYYY-MM-DD hh:mm"
+        format={`YYYY-MM-DD${dateTime ? ' hh:mm' : ''}`}
         disabled={disabled}
         maxDate={maxDate}
         minDate={minDate}
         value={value || Moment()}
-        onChange={(date) => {
-          console.log(date);
-          onChange({
-            target: {
-              value: Moment(date).toString(),
-              name,
-            },
-          });
-        }}
+        onChange={handleOnChange}
         maxDateMessage={maxDateMessage}
         minDateMessage={minDateMessage}
         inputVariant="outlined"
-        // TextFieldComponent={renderInput}
+        TextFieldComponent={renderInput}
       />
     </MuiPickersUtilsProvider>
   );
