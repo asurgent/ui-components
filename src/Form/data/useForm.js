@@ -17,6 +17,9 @@ export const useForm = ({
   validateOnChange,
   validators,
   formatter,
+  parent,
+  onFieldError,
+  onFieldValid,
   ...rest
 }) => {
   const isMounted = useRef(false);
@@ -46,27 +49,27 @@ export const useForm = ({
       type: 'CLEAR_FIELD_ERROR',
       payload: { name },
     });
-  },
-  []);
+  }, []);
 
   const setFieldError = useCallback((name, value) => {
     dispatch({
       type: 'SET_FIELD_ERROR',
       payload: { name, value },
     });
-  },
-  []);
+  }, []);
 
-  const runValidator = useCallback((event) => {
-    const { name } = event;
+  const runValidator = useEventCallback((event) => {
+    const { name, value } = event;
     const fieldValidator = fieldRegistry.current?.[name]?.validator;
     const providerValidator = validators?.[name];
 
     const setter = (result) => {
-      if (result?.isValid === true || result?.isValid === undefined) {
-        clearFieldError(name);
+      if (result?.isInvalid === true) {
+        onFieldError({ name, ...result });
+        setFieldError(name, { name, ...result });
       } else {
-        setFieldError(name, result?.error);
+        onFieldValid({ name, value });
+        clearFieldError(name);
       }
     };
 
@@ -75,9 +78,9 @@ export const useForm = ({
     } else if (providerValidator && typeof providerValidator === 'function') {
       setter(providerValidator(event));
     }
-  }, [clearFieldError, setFieldError, validators]);
+  });
 
-  const runValidators = useCallback(() => {
+  const runValidators = useEventCallback(() => {
     Object.entries(fieldRegistry.current)
       .forEach(([name, { validator }]) => {
         if (validator) {
@@ -89,11 +92,11 @@ export const useForm = ({
       .forEach((group) => {
         group.runValidators();
       });
-  }, [runValidator, state.values]);
+  });
 
-  const registerField = useCallback(({ name, validator, ...restProps }, isGroup = false) => {
+  const registerField = useCallback(({ name, validator, group }, isGroup = false) => {
     if (isGroup) {
-      groupRegistry.current[name] = { ...restProps };
+      groupRegistry.current[name] = group;
     } else {
       fieldRegistry.current[name] = { validator };
     }
@@ -155,7 +158,7 @@ export const useForm = ({
     if (onChange && typeof onChange === 'function') {
       onChange(getFormValues(event.target), state);
     }
-  }), []);
+  }));
 
   const handleSubmit = useEventCallback(withPrevent(() => {
     const event = async () => {
@@ -183,7 +186,7 @@ export const useForm = ({
       };
       onReset(getter());
     }
-  }), []);
+  }));
 
   const getFieldProps = useCallback(({ name, ...fieldProps }) => {
     const props = {
@@ -205,6 +208,7 @@ export const useForm = ({
     handleReset,
     handleSubmit,
     handleChange,
+    clearFieldError,
     setFieldError,
     getFieldProps,
     runValidators,

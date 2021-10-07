@@ -1,9 +1,11 @@
+/* eslint-disable no-param-reassign */
 /* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
 import React, {
   useMemo,
   useEffect,
   useContext,
+  useRef,
 } from 'react';
 import {
   Flex,
@@ -17,33 +19,47 @@ import MdiIcon from '@mdi/react';
 import { mdiPlus, mdiAlertDecagram } from '@mdi/js';
 import { FromContext, GroupContext } from '../data/formContext';
 import { useForm } from '../data/useForm';
-import { useRepeatPattern } from '../data/useRepeatPattern';
+import { useRepeatGroup } from '../data/useRepeatGroup';
 import translation from '../Form.translation';
 
 export const Row = ({
-  name,
+  rowName,
   index,
   initialValues,
   initialErrors,
+  errorReference,
   children,
 }) => {
   const parent = useContext(FromContext);
-  const { handleRepeatGroupChange } = useRepeatPattern();
+  const { handleGroupValidation, handleRepeatGroupChange } = useRepeatGroup();
+
+  useEffect(() => {
+    handleGroupValidation(errorReference.current);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   const group = useForm({
     ...parent,
-    name,
-    index,
+    parent,
     initialValues,
     initialErrors,
     onChange: (values) => handleRepeatGroupChange(values, index),
+    onFieldError: (err) => {
+      errorReference.current[index] = err;
+      handleGroupValidation(errorReference.current);
+    },
+    onFieldValid: () => {
+      delete errorReference.current[index];
+      handleGroupValidation(errorReference.current);
+    },
   });
 
   useEffect(() => {
     const { registerField, unregisterField } = parent;
-    registerField({ name: name + index, ...group }, true);
+    registerField({ name: rowName, group }, true);
 
     return () => {
-      unregisterField({ name: name + index, ...group }, true);
+      unregisterField({ name: rowName }, true);
     };
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -55,21 +71,22 @@ export const Row = ({
   );
 };
 
-export const RepeatPattern = ({ children, forwardProps }) => {
+export const RepeatGroup = ({ children }) => {
+  const errorReference = useRef({});
   const { t } = translation;
-  const { clearRepeatGroup, groups } = useRepeatPattern(true);
+  const { clearRepeatGroup, groups } = useRepeatGroup(true);
   const { min, numberOfGroups, name } = useContext(GroupContext);
   const disabled = useMemo(() => (min && min >= numberOfGroups), [min, numberOfGroups]);
 
   return (
     groups?.map(({ key, initialValues, initialErrors }, index) => (
       <Row
+        errorReference={errorReference}
         key={key}
-        name={name}
         index={index}
+        rowName={name + index}
         initialValues={initialValues}
         initialErrors={initialErrors}
-        {...forwardProps}
       >
         { typeof children === 'function' && (
           children({
@@ -82,7 +99,6 @@ export const RepeatPattern = ({ children, forwardProps }) => {
           <Flex
             marginX={2}
             p={4}
-            pb={0}
             borderBottom="1px solid"
             borderColor="gray.300"
             _last={{ borderBottom: 'none' }}
@@ -110,7 +126,7 @@ export const RepeatPattern = ({ children, forwardProps }) => {
 
 export const RepeatAddRow = ({ children, colorScheme, ...props }) => {
   const { t } = translation;
-  const { appendRepeatGroup } = useRepeatPattern();
+  const { appendRepeatGroup } = useRepeatGroup();
   const { max, numberOfGroups } = useContext(GroupContext);
   const disabled = useMemo(() => (max && max === numberOfGroups), [max, numberOfGroups]);
 
@@ -190,9 +206,8 @@ export const RepeatEmptyState = ({ children, icon = mdiAlertDecagram }) => {
   return null;
 };
 
-export const RepeatGroup = ({
+export const RepeatInput = ({
   children,
-  addRowHeader,
   ...props
 }) => {
   const { min, max, name } = props;

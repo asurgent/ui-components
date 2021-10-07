@@ -3,7 +3,7 @@ export const formReducer = (state, msg) => {
     case 'SET_FIELD_ERROR':
       return {
         ...state,
-        errors: { ...state.errors, [msg.payload.name]: msg.payload.value },
+        errors: { ...state.errors, [msg.payload.name]: { ...msg.payload.value } },
       };
     case 'CLEAR_FIELD_ERROR': {
       const { [msg.payload.name]: _, ...rest } = state.errors;

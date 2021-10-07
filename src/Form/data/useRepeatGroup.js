@@ -7,7 +7,7 @@ import {
 } from 'react';
 import { FromContext, GroupContext } from './formContext';
 
-export const useRepeatPattern = (initialize) => {
+export const useRepeatGroup = (initialize) => {
   const {
     min,
     max,
@@ -100,10 +100,19 @@ export const useRepeatPattern = (initialize) => {
     }
   }, [name, parent]);
 
+  const handleGroupValidation = useCallback((errorState) => {
+    if (Object.keys(errorState).length === 0) {
+      parent.clearFieldError(name, errorState);
+    } else {
+      parent.setFieldError(name, errorState);
+    }
+  }, [name, parent]);
+
   return {
     groups,
     clearRepeatGroup,
     appendRepeatGroup,
+    handleGroupValidation,
     handleRepeatGroupChange,
   };
 };

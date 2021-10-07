@@ -16,7 +16,7 @@ import {
   RadioGroupInput,
   DateInput,
   RepeatGroup,
-  RepeatPattern,
+  RepeatInput,
   RepeatAddRow,
   RepeatHeader,
   RepeatEmptyState,
@@ -27,23 +27,20 @@ const Story = {
   component: FormProvider,
   argTypes: {},
 };
-//
+
 export default Story;
 
 const Template = () => (
   <Box width="25rem" height="25rem" m={5} borderRadius="5px" border>
     <FormProvider
       validateOnChange
-      formatter={(values) => ({
-        ...values,
-        // one: values.field,
-        // two: values['field-2'],
-        // tree: values['field-3'],
-      })}
-      validators={{ number: (val) => ({ isValid: val.length > 0, error: 'Cant be empty' }) }}
-      initialErrors={{ field: 'Your WRONG', repeat: [{ hello: 'BU' }] }}
+      formatter={(values) => ({ ...values })}
+      validators={{ number: ({ value }) => ({ isInvalid: value > 0, error: 'Cant be empty' }) }}
+      // initialErrors={{ field: 'Your WRONG', repeat: [{ hello: 'BU' }] }}
       // initialValues={{ repeat: [{ hello: '1' }, { hello: '3' }] }}
-      onChange={(a) => console.log('onChange', a)}
+      onFieldError={(a) => console.log('onError', a)}
+      onFieldValid={(a) => console.log('onValid', a)}
+      onChange={(a, _state) => console.log('onChange', a)}
       onReset={(a) => console.log('onReset', a)}
       onSubmit={(a) => new Promise((resolve) => {
         setTimeout(() => {
@@ -55,33 +52,35 @@ const Template = () => (
       {({ state }) => (
         <>
           <Flex flexDirection="column">
-            {/* <Box mb={4}>
+            <Box mb={4}>
               <Field
                 name="field"
-                validator={(val) => ({ isValid: val.length === 0, error: 'Cant be empty' })}
+                validator={({ value }) => ({ isInvalid: !value, error: 'Cant be empty' })}
               >
                 {(field, { errors }) => (
                   <>
                     <input {...field} type="text" style={{ border: '1px solid black' }} />
-                    { errors[field.name] && (
+                    { errors[field.name]?.error && (
                     <Box bg="red" p="5px">
-                      {errors[field.name]}
+                      {errors[field.name].error}
                     </Box>
                     )}
                   </>
                 )}
               </Field>
-            </Box> */}
+            </Box>
 
-            {/* <Text
+            <Text
               name="hellothere"
               label="Provide name"
               helperText="we are careful"
-              validator={({ value }) =>
-              ({ isValid: (value || '').length > 0, error: 'Cant be empty' })}
-            /> */}
+              validator={({ value }) => ({
+                isInvalid: (value || '').length === 0,
+                error: 'Cant be empty',
+              })}
+            />
 
-            <RepeatGroup
+            <RepeatInput
               name="repeat"
               min={4}
               max={6}
@@ -100,72 +99,62 @@ const Template = () => (
                   Please do or everything will explode, somewhere.
                 </Text>
               </RepeatEmptyState>
-              <RepeatPattern>
+              <RepeatGroup>
                 <TextInput
-                  name="hello"
+                  name="property-1"
                   label="Configuration"
-                  validator={(a) => {
-                    const { value } = a;
-                    return ({ isValid: (value || '').length > 0, error: 'Cant be empty' });
-                  }}
+                  validator={({ value }) => ({ isInvalid: (value || '').length === 0, error: 'Cant be empty' })}
                 />
-              </RepeatPattern>
-            </RepeatGroup>
+              </RepeatGroup>
+            </RepeatInput>
 
-            {/*
             <Text
               label="Provide name"
-              isRequired
               helperText="we are careful"
               name="field"
-              validator={(val) => ({ isValid: val.length > 0, error: 'Cant be empty' })}
+              validator={({ value }) => ({ isInvalid: (value || '').length === 0, error: 'Cant be empty' })}
             />
 
-            <TextArea
+            <TextAreaInput
               label="Provide name"
-              isRequired
               helperText="we are careful"
               name="field"
-              validator={(val) => ({ isValid: val.length > 0, error: 'Cant be empty' })}
+              validator={({ value }) => ({ isInvalid: (value || '').length === 0, error: 'Cant be empty' })}
             />
 
-            <Number
+            <NumberInput
               label="Provide name"
-              isRequired
               helperText="we are careful"
               name="number"
             />
 
-            <Switch
+            <SwitchInput
               label="Provide name"
               helperText="we are careful"
               name="switch"
             />
 
-            <Email
+            <EmailInput
               label="Provide name"
-              isRequired
               helperText="we are careful"
               name="Email"
             />
 
-            <Date
+            <DateInput
               label="Provide name"
-              isRequired
               helperText="we are careful"
               name="Date"
             />
 
-            <RadioGroup
+            <RadioGroupInput
               label="Provide name"
-              isRequired
               helperText="we are careful"
               name="RadioGroup"
               options={[
                 { value: 1, label: 'Im number #1' },
                 { value: 2, label: 'Im number #2' },
               ]}
-            /> */}
+            />
 
           </Flex>
 

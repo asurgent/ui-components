@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
 import React from 'react';
 import {
@@ -30,14 +31,14 @@ export const withFormControl = (Component, componentProps) => (props) => {
       {(field, { errors }) => (
         <FormControl
           mb={4}
-          isInvalid={errors[field.name]}
+          isInvalid={errors[field.name]?.error}
           id={`field-${name}`}
           isRequired={isRequired}
           {...formControllProps}
         >
           {label && <FormLabel mt={0} mb={1} fontFamily="Poppins" {...formLabelProps}>{label}</FormLabel>}
           <Component {...restProps} />
-          <FormErrorMessage mt={1}>{errorMessage || errors[field.name]}</FormErrorMessage>
+          <FormErrorMessage mt={1}>{errorMessage || errors[field.name]?.error}</FormErrorMessage>
           {helperText && <FormHelperText mt={1}>{helperText}</FormHelperText>}
         </FormControl>
       )}

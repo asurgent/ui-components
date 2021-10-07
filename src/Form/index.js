@@ -8,8 +8,8 @@ import EmailInput from './inputs/Email';
 import DateInput from './inputs/Date';
 import RadioGroupInput from './inputs/RadioGroup';
 import {
+  RepeatInput,
   RepeatGroup,
-  RepeatPattern,
   RepeatAddRow,
   RepeatHeader,
   RepeatEmptyState,
@@ -26,7 +26,7 @@ export {
   DateInput,
   RadioGroupInput,
   RepeatGroup,
-  RepeatPattern,
+  RepeatInput,
   RepeatAddRow,
   RepeatHeader,
   RepeatEmptyState,
