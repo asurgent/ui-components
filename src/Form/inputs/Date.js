@@ -1,47 +1,64 @@
+/* eslint-disable no-unused-vars */
 import React, { useContext } from 'react';
 import PropTypes from 'prop-types';
-import { Input } from '@chakra-ui/react';
-import DatePicker from 'react-datepicker';
 import Moment from 'moment';
+import MomentUtils from '@date-io/moment';
+import { Input } from '@material-ui/core';
+import { Input as InputField } from '@chakra-ui/react';
+import { DatePicker, DateTimePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
+
 import { FieldContext } from '../data/formContext';
 import { withFormControl } from '../withWrapper';
 import 'react-datepicker/dist/react-datepicker.css';
 
-const TimeInput = ({ value, onChange }) => (
-  <Input
-    value={value}
-    onChange={(e) => onChange(e.target.value)}
-  />
-);
-
-TimeInput.propTypes = {
-  value: PropTypes.instanceOf(Object).isRequired,
-  onChange: PropTypes.func.isRequired,
-};
-
-const Email = withFormControl((props) => {
+const Date = withFormControl((props) => {
   const { name, onChange, value } = useContext(FieldContext);
-  const { placeholder, dateTime } = props;
+  const {
+    dateTime,
+    disabled,
+    maxDate,
+    minDate,
+    maxDateMessage,
+    minDateMessage,
+  } = props;
+
+  const renderInput = () => (
+    <InputField
+      type="text"
+      onClick={props.onClick}
+      value={props.value}
+      onChange={props.onChange}
+    />
+  );
+
+  const Component = dateTime ? DateTimePicker : DatePicker;
 
   return (
-    <DatePicker
-      {...props}
-      placeholderText={placeholder}
-      name={name}
-      selected={Moment.isDate(value) ? value : Moment().toDate()}
-      customInput={<Input />}
-      dateFormat={dateTime ? 'yyyy-MM-dd HH:mm' : 'yyyy-MM-dd'}
-      onChange={(date) => onChange({
-        target: {
-          value: Moment.isDate(date) ? date : Moment().toDate(),
-          name,
-        },
-      })}
-      showTimeInput
-      customTimeInput={<TimeInput />}
-    />
-
+    <MuiPickersUtilsProvider utils={MomentUtils}>
+      <Component
+        fullWidth
+        ampm={false}
+        format="YYYY-MM-DD hh:mm"
+        disabled={disabled}
+        maxDate={maxDate}
+        minDate={minDate}
+        value={value || Moment()}
+        onChange={(date) => {
+          console.log(date);
+          onChange({
+            target: {
+              value: Moment(date).toString(),
+              name,
+            },
+          });
+        }}
+        maxDateMessage={maxDateMessage}
+        minDateMessage={minDateMessage}
+        inputVariant="outlined"
+        // TextFieldComponent={renderInput}
+      />
+    </MuiPickersUtilsProvider>
   );
 });
 
-export default Email;
+export default Date;

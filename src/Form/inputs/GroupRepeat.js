@@ -1,6 +1,4 @@
-/* eslint-disable no-param-reassign */
-/* eslint-disable no-unused-vars */
-/* eslint-disable react/prop-types */
+import PropTypes from 'prop-types';
 import React, {
   useMemo,
   useEffect,
@@ -23,8 +21,8 @@ import { useRepeatGroup } from '../data/useRepeatGroup';
 import translation from '../Form.translation';
 
 export const Row = ({
-  rowName,
   index,
+  rowName,
   initialValues,
   initialErrors,
   errorReference,
@@ -33,11 +31,6 @@ export const Row = ({
   const parent = useContext(FromContext);
   const { handleGroupValidation, handleRepeatGroupChange } = useRepeatGroup();
 
-  useEffect(() => {
-    handleGroupValidation(errorReference.current);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
   const group = useForm({
     ...parent,
     parent,
@@ -45,10 +38,12 @@ export const Row = ({
     initialErrors,
     onChange: (values) => handleRepeatGroupChange(values, index),
     onFieldError: (err) => {
+      // eslint-disable-next-line no-param-reassign
       errorReference.current[index] = err;
       handleGroupValidation(errorReference.current);
     },
     onFieldValid: () => {
+      // eslint-disable-next-line no-param-reassign
       delete errorReference.current[index];
       handleGroupValidation(errorReference.current);
     },
@@ -69,6 +64,19 @@ export const Row = ({
       {children}
     </FromContext.Provider>
   );
+};
+
+Row.propTypes = {
+  children: PropTypes.oneOfType([PropTypes.any]).isRequired,
+  rowName: PropTypes.string.isRequired,
+  index: PropTypes.number.isRequired,
+  initialValues: PropTypes.instanceOf(Object),
+  initialErrors: PropTypes.instanceOf(Object),
+  errorReference: PropTypes.instanceOf(Object).isRequired,
+};
+Row.defaultProps = {
+  initialValues: {},
+  initialErrors: {},
 };
 
 export const RepeatGroup = ({ children }) => {
@@ -124,6 +132,10 @@ export const RepeatGroup = ({ children }) => {
   );
 };
 
+RepeatGroup.propTypes = {
+  children: PropTypes.oneOfType([PropTypes.any]).isRequired,
+};
+
 export const RepeatAddRow = ({ children, colorScheme, ...props }) => {
   const { t } = translation;
   const { appendRepeatGroup } = useRepeatGroup();
@@ -149,6 +161,15 @@ export const RepeatAddRow = ({ children, colorScheme, ...props }) => {
       </Button>
     </Tooltip>
   );
+};
+
+RepeatAddRow.propTypes = {
+  children: PropTypes.oneOfType([PropTypes.any]),
+  colorScheme: PropTypes.string,
+};
+RepeatAddRow.defaultProps = {
+  children: null,
+  colorScheme: 'gray',
 };
 
 export const RepeatHeader = ({ children }) => {
@@ -181,7 +202,11 @@ export const RepeatHeader = ({ children }) => {
   );
 };
 
-export const RepeatEmptyState = ({ children, icon = mdiAlertDecagram }) => {
+RepeatHeader.propTypes = {
+  children: PropTypes.oneOfType([PropTypes.any]).isRequired,
+};
+
+export const RepeatEmptyState = ({ children, icon }) => {
   const { numberOfGroups } = useContext(GroupContext);
 
   if (numberOfGroups === 0 || !numberOfGroups) {
@@ -206,6 +231,14 @@ export const RepeatEmptyState = ({ children, icon = mdiAlertDecagram }) => {
   return null;
 };
 
+RepeatEmptyState.propTypes = {
+  children: PropTypes.oneOfType([PropTypes.any]).isRequired,
+  icon: PropTypes.oneOfType([PropTypes.any]),
+};
+RepeatEmptyState.defaultProps = {
+  icon: mdiAlertDecagram,
+};
+
 export const RepeatInput = ({
   children,
   ...props
@@ -228,4 +261,15 @@ export const RepeatInput = ({
       </Box>
     </GroupContext.Provider>
   );
+};
+
+RepeatInput.propTypes = {
+  children: PropTypes.oneOfType([PropTypes.any]).isRequired,
+  name: PropTypes.string.isRequired,
+  min: PropTypes.oneOfType([PropTypes.number, PropTypes.instanceOf(null)]),
+  max: PropTypes.oneOfType([PropTypes.number, PropTypes.instanceOf(null)]),
+};
+RepeatInput.defaultProps = {
+  min: null,
+  max: null,
 };

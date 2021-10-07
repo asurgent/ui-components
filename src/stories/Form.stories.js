@@ -52,7 +52,12 @@ const Template = () => (
       {({ state }) => (
         <>
           <Flex flexDirection="column">
-            <Box mb={4}>
+            <DateInput
+              label="Provide name"
+              helperText="we are careful"
+              name="Date"
+            />
+            {/* <Box mb={4}>
               <Field
                 name="field"
                 validator={({ value }) => ({ isInvalid: !value, error: 'Cant be empty' })}
@@ -70,7 +75,7 @@ const Template = () => (
               </Field>
             </Box>
 
-            <Text
+            <TextInput
               name="hellothere"
               label="Provide name"
               helperText="we are careful"
@@ -103,23 +108,25 @@ const Template = () => (
                 <TextInput
                   name="property-1"
                   label="Configuration"
-                  validator={({ value }) => ({ isInvalid: (value || '').length === 0, error: 'Cant be empty' })}
+                  validator={({ value }) => ({
+                    isInvalid: (value || '')
+                      .length === 0,
+                    error: 'Cant be empty',
+                  })}
                 />
               </RepeatGroup>
             </RepeatInput>
 
-            <Text
+            <TextInput
               label="Provide name"
               helperText="we are careful"
               name="field"
-              validator={({ value }) => ({ isInvalid: (value || '').length === 0, error: 'Cant be empty' })}
             />
 
             <TextAreaInput
               label="Provide name"
               helperText="we are careful"
               name="field"
-              validator={({ value }) => ({ isInvalid: (value || '').length === 0, error: 'Cant be empty' })}
             />
 
             <NumberInput
@@ -154,7 +161,7 @@ const Template = () => (
                 { value: 1, label: 'Im number #1' },
                 { value: 2, label: 'Im number #2' },
               ]}
-            />
+            /> */}
 
           </Flex>
 
