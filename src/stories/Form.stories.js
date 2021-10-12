@@ -35,7 +35,7 @@ const Template = () => (
     <FormProvider
       validateOnChange
       formatter={(values) => ({ ...values })}
-      validators={{ number: ({ value }) => ({ isInvalid: value > 0, error: 'Cant be empty' }) }}
+      validators={{ number: ({ value }) => ({ isInvalid: value > 0, error: 'Cant be above 0' }) }}
       // initialErrors={{ field: 'Your WRONG', repeat: [{ hello: 'BU' }] }}
       // initialValues={{ repeat: [{ hello: '1' }, { hello: '3' }] }}
       onFieldError={(a) => console.log('onError', a)}
