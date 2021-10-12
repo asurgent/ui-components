@@ -73,7 +73,7 @@ const Template = () => (
 
             <TextInput
               name="hellothere"
-              label="Provide name"
+              label="Text input"
               helperText="we are careful"
               validator={({ value }) => ({
                 isInvalid: (value || '').length === 0,
@@ -114,44 +114,44 @@ const Template = () => (
             </RepeatInput>
 
             <TextInput
-              label="Provide name"
+              label="Text input"
               helperText="we are careful"
               name="field"
             />
 
             <TextAreaInput
-              label="Provide name"
+              label="Textarea input"
               helperText="we are careful"
               name="field"
             />
 
             <NumberInput
-              label="Provide name"
+              label="Number input"
               helperText="we are careful"
               name="number"
             />
 
             <SwitchInput
-              label="Provide name"
+              label="Switch input"
               helperText="we are careful"
               name="switch"
             />
 
             <EmailInput
-              label="Provide name"
+              label="Email input"
               helperText="we are careful"
               name="Email"
             />
 
             <DateInput
               dateTime
-              label="Provide name"
+              label="Date input"
               helperText="we are careful"
               name="Date"
             />
 
             <RadioGroupInput
-              label="Provide name"
+              label="Radio input"
               helperText="we are careful"
               name="RadioGroup"
               options={[
