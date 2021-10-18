@@ -57,34 +57,6 @@ const Template = () => (
       {({ state }) => (
         <>
           <Flex flexDirection="column">
-            {/* <RadioGroupInput
-              label="Provide name"
-              helperText="we are careful"
-              name="radioGroup"
-              options={[
-                { value: 1, label: 'Im number #1' },
-                { value: 2, label: 'Im number #2' },
-              ]}
-            /> */}
-            {/* <TextAreaInput
-              label="Provide name"
-              helperText="we are careful"
-              name="field"
-              validator={({ value }) => ({
-                isInvalid: (value || '').length === 0,
-                error: 'Cant be empty',
-              })}
-            /> */}
-            <NumberInput
-              label="Provide name"
-              helperText="we are careful"
-              name="number"
-              // validator={({ value }) => {
-              //   console.log('value', value);
-              //   return ({ isInvalid: !value || value > 0, error: 'Cant be empty' });
-              // }}
-            />
-            {/*
             <Box mb={4}>
               <Field
                 name="field"
@@ -181,8 +153,6 @@ const Template = () => (
               helperText="we are careful"
               name="Date"
             />
-
-             */}
 
           </Flex>
 
