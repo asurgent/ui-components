@@ -35,16 +35,21 @@ const Template = () => (
     <FormProvider
       validateOnChange
       formatter={(values) => ({ ...values })}
-      validators={{ number: ({ value }) => ({ isInvalid: value > 0, error: 'Cant be empty' }) }}
+      validators={{
+        number: ({ value }) => {
+          console.log('value', value);
+          return ({ isInvalid: !value || value > 0, error: 'Cant be empty' });
+        },
+      }}
       // initialErrors={{ field: 'Your WRONG', repeat: [{ hello: 'BU' }] }}
-      // initialValues={{ repeat: [{ hello: '1' }, { hello: '3' }] }}
-      onFieldError={(a) => console.log('onError', a)}
-      onFieldValid={(a) => console.log('onValid', a)}
-      onChange={(a, _state) => console.log('onChange', a)}
-      onReset={(a) => console.log('onReset', a)}
+      initialValues={{ repeat: [{ hello: '1' }, { hello: '3' }], radioGroup: 1 }}
+      // onFieldError={(a) => console.log('onError', a)}
+      // onFieldValid={(a) => console.log('onValid', a)}
+      // onChange={(a, _state) => console.log('onChange', a)}
+      // onReset={(a) => console.log('onReset', a)}
       onSubmit={(a) => new Promise((resolve) => {
         setTimeout(() => {
-          console.log('onSubmit', a);
+          // console.log('onSubmit', a);
           resolve(a);
         }, 1000);
       })}
@@ -52,7 +57,34 @@ const Template = () => (
       {({ state }) => (
         <>
           <Flex flexDirection="column">
-
+            {/* <RadioGroupInput
+              label="Provide name"
+              helperText="we are careful"
+              name="radioGroup"
+              options={[
+                { value: 1, label: 'Im number #1' },
+                { value: 2, label: 'Im number #2' },
+              ]}
+            /> */}
+            {/* <TextAreaInput
+              label="Provide name"
+              helperText="we are careful"
+              name="field"
+              validator={({ value }) => ({
+                isInvalid: (value || '').length === 0,
+                error: 'Cant be empty',
+              })}
+            /> */}
+            <NumberInput
+              label="Provide name"
+              helperText="we are careful"
+              name="number"
+              // validator={({ value }) => {
+              //   console.log('value', value);
+              //   return ({ isInvalid: !value || value > 0, error: 'Cant be empty' });
+              // }}
+            />
+            {/*
             <Box mb={4}>
               <Field
                 name="field"
@@ -150,15 +182,7 @@ const Template = () => (
               name="Date"
             />
 
-            <RadioGroupInput
-              label="Provide name"
-              helperText="we are careful"
-              name="RadioGroup"
-              options={[
-                { value: 1, label: 'Im number #1' },
-                { value: 2, label: 'Im number #2' },
-              ]}
-            />
+             */}
 
           </Flex>
 

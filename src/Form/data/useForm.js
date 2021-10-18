@@ -64,10 +64,10 @@ export const useForm = ({
 
     const setter = (result) => {
       if (result?.isInvalid === true) {
-        onFieldError({ name, ...result });
+        if (onFieldError) { onFieldError({ name, ...result }); }
         setFieldError(name, { name, ...result });
       } else {
-        onFieldValid({ name, value });
+        if (onFieldValid) { onFieldValid({ name, value }); }
         clearFieldError(name);
       }
     };
@@ -81,10 +81,8 @@ export const useForm = ({
 
   const runValidators = useEventCallback(() => {
     Object.entries(fieldRegistry.current)
-      .forEach(([name, { validator }]) => {
-        if (validator) {
-          runValidator({ name, value: state.values[name] });
-        }
+      .forEach(([name]) => {
+        runValidator({ name, value: state.values[name] });
       });
 
     Object.values(groupRegistry.current)

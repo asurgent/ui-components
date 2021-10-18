@@ -14,6 +14,7 @@ export const withFormControl = (Component, componentProps) => (props) => {
     isRequired,
     helperText,
     errorMessage,
+    validator,
     ...restProps
   } = props;
 
@@ -27,7 +28,7 @@ export const withFormControl = (Component, componentProps) => (props) => {
   const fieldProps = componentProps?.fieldProps || {};
 
   return (
-    <Field {...fieldProps} {...restProps}>
+    <Field {...fieldProps} validator={validator} {...restProps}>
       {(field, { errors }) => (
         <FormControl
           mb={4}
