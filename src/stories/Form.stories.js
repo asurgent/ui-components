@@ -42,14 +42,14 @@ const Template = () => (
         },
       }}
       // initialErrors={{ field: 'Your WRONG', repeat: [{ hello: 'BU' }] }}
-      initialValues={{ repeat: [{ hello: '1' }, { hello: '3' }], radioGroup: 1 }}
-      // onFieldError={(a) => console.log('onError', a)}
-      // onFieldValid={(a) => console.log('onValid', a)}
-      // onChange={(a, _state) => console.log('onChange', a)}
-      // onReset={(a) => console.log('onReset', a)}
+      initialValues={{ repeat: [{ hello: '1' }, { hello: '3' }], radioGroup: '1' }}
+      onFieldError={(a) => console.log('onError', a)}
+      onFieldValid={(a) => console.log('onValid', a)}
+      onChange={(a, _state) => console.log('onChange', a)}
+      onReset={(a) => console.log('onReset', a)}
       onSubmit={(a) => new Promise((resolve) => {
         setTimeout(() => {
-          // console.log('onSubmit', a);
+          console.log('onSubmit', a);
           resolve(a);
         }, 1000);
       })}
@@ -77,7 +77,7 @@ const Template = () => (
 
             <TextInput
               name="hellothere"
-              label="Provide name"
+              label="Text input"
               helperText="we are careful"
               validator={({ value }) => ({
                 isInvalid: (value || '').length === 0,
@@ -118,40 +118,50 @@ const Template = () => (
             </RepeatInput>
 
             <TextInput
-              label="Provide name"
+              label="Text input"
               helperText="we are careful"
               name="field"
             />
 
             <TextAreaInput
-              label="Provide name"
+              label="Textarea input"
               helperText="we are careful"
               name="field"
             />
 
             <NumberInput
-              label="Provide name"
+              label="Number input"
               helperText="we are careful"
               name="number"
             />
 
             <SwitchInput
-              label="Provide name"
+              label="Switch input"
               helperText="we are careful"
               name="switch"
             />
 
             <EmailInput
-              label="Provide name"
+              label="Email input"
               helperText="we are careful"
               name="Email"
             />
 
             <DateInput
               dateTime
-              label="Provide name"
+              label="Date input"
               helperText="we are careful"
               name="Date"
+            />
+
+            <RadioGroupInput
+              label="Radio input"
+              helperText="we are careful"
+              name="radioGroup"
+              options={[
+                { value: '1', label: 'Im number #1' },
+                { value: '2', label: 'Im number #2' },
+              ]}
             />
 
           </Flex>
