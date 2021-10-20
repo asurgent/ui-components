@@ -1,4 +1,5 @@
 import { FormProvider } from './FormProvider';
+import { FormProviderDeclarative } from './FormProviderDeclarative';
 import { Field } from './Field';
 import TextInput from './inputs/Text';
 import TextAreaInput from './inputs/TextArea';
@@ -17,6 +18,7 @@ import {
 
 export {
   FormProvider,
+  FormProviderDeclarative,
   Field,
   TextInput,
   TextAreaInput,

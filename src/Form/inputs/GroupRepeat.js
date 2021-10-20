@@ -110,7 +110,7 @@ export const RepeatGroup = ({ children }) => {
             borderBottom="1px solid"
             borderColor="gray.300"
             _last={{ borderBottom: 'none' }}
-            flexDirection="column"
+            flexDirection="row"
           >
             {children}
             <Tooltip
