@@ -4,7 +4,7 @@ import React, {
   useMemo,
   useState,
 } from 'react';
-import PropTypes from 'prop-types';
+import { useMutation } from 'react-query';
 import {
   Flex,
   Button,
@@ -26,7 +26,6 @@ import {
   Text,
   Center,
   Heading,
-  Wrap,
 } from '@chakra-ui/react';
 import MdiIcon from '@mdi/react';
 import {
@@ -34,48 +33,43 @@ import {
   mdiClose,
   mdiChevronDown,
 } from '@mdi/js';
-import { TableFilterTagGroup } from '../FilterTagGroup';
+import { withFormControl } from '../withWrapper';
 import { VirtualRender } from '../../VirtualRender';
-import { TableContext } from '../data/context';
-import { FILTER_KEY } from '../data/constants';
-import translation from '../Table.translation';
+import { FieldContext, FilterSelectContext } from '../data/formContext';
+import translation from '../Form.translation';
 
-export const FilterContentComponent = ({
-  filterKey,
-  searchPlaceholder,
-  configuration,
-  handleFilterClick,
-}) => {
+const FilterContentComponent = () => {
+  const searchPlaceholder = 'Search here';
   const { t } = translation;
   const [search, setSearch] = useState('');
-  const { dataSource, state } = useContext(TableContext);
-  const {
-    mutate,
-    data,
-    isLoading,
-  } = dataSource;
+
+  const field = useContext(FieldContext);
+  const { facet, dataSource } = useContext(FilterSelectContext);
+  const { mutate, data, isLoading } = dataSource;
+  console.log(data);
+  const handleFilterClick = (e) => {
+    const newValue = new Set(field.value);
+    newValue.add(e);
+    field.onChange({ target: { value: [...newValue], name: field.name } });
+  };
 
   useEffect(() => {
-    mutate({ isFilterTrigger: true, filterKey, ...state.getState() });
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    mutate();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const items = useMemo(() => {
-    console.log(filterKey, data?.facets?.[filterKey]);
-    if (!data || isLoading || !data.facets?.[filterKey]) {
+    if (!data || isLoading || !data.facets?.[facet]) {
       return [];
     }
 
-    const sortedItems = data.facets?.[filterKey].map((filter) => {
-      const { title, value, subtitle } = configuration(filter);
-      const isSelected = state.getKey(FILTER_KEY)?.[filterKey]?.includes(value);
-      return {
-        title,
-        value,
-        subtitle,
-        isSelected,
-      };
-    })
+    const sortedItems = data.facets?.[facet]
+      .map((filter) => ({
+        title: filter.value,
+        value: filter.value,
+        subtitle: filter.count,
+        isSelected: field.value?.includes(filter.value),
+      }))
       .filter(({ title }) => {
         if (title) {
           return title
@@ -107,7 +101,7 @@ export const FilterContentComponent = ({
 
     return sortedItems;
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [data, isLoading, search, state.getKey(FILTER_KEY)]);
+  }, [data, isLoading, search, field.value]);
 
   return (
     <>
@@ -149,9 +143,9 @@ export const FilterContentComponent = ({
                 <Flex alignItems="center">
                   <Code>{subtitle}</Code>
                   {isSelected && (
-                  <Box ml={3}>
-                    <MdiIcon path={mdiCheck} size={0.6} />
-                  </Box>
+                    <Box ml={3}>
+                      <MdiIcon path={mdiCheck} size={0.6} />
+                    </Box>
                   )}
                 </Flex>
               </Button>
@@ -174,49 +168,44 @@ export const FilterContentComponent = ({
   );
 };
 
-export const FilterSelectComponent = ({
-  title,
+const FilterSelectComponent = withFormControl(({
+  filterPlaceholder,
+  facet,
+  service,
   label,
-  filterKey,
-  color,
-  renderTags,
-  children,
 }) => {
   const { t } = translation;
-  const { state } = useContext(TableContext);
-  const hasAppliedFilter = !!state.getKey(FILTER_KEY)?.[filterKey]?.length;
+  const {
+    name,
+    value,
+    onChange,
+  } = useContext(FieldContext);
 
   const handleClearFilter = () => {
-    const { [filterKey]: target, ...current } = state.getKey(FILTER_KEY);
-    state.setKey(FILTER_KEY, { ...current });
+    onChange({ target: { value: [], name } });
   };
+  const hasAppliedFilter = !!value?.length;
+  const dataSource = useMutation(service, {});
 
   return (
-    <Stack>
-      { title && (
-        <Text fontSize="xs" mt={1}>
-          {title}
-        </Text>
-      )}
+    <FilterSelectContext.Provider value={{ facet, dataSource }}>
       <Popover placement="bottom">
         {({ isOpen }) => (
           <>
             <ButtonGroup
-              size="sm"
+              width="max"
+              size="md"
               isAttached
-              width="auto"
               variant="outline"
               colorScheme="gray"
             >
               <PopoverTrigger>
                 <Button
                   justifyContent="space-between"
-                  mr="-px"
-                  isFullWidth
                   iconSpacing
                   rightIcon={<MdiIcon path={mdiChevronDown} size={0.8} />}
                 >
-                  {label}
+                  {filterPlaceholder}
                 </Button>
               </PopoverTrigger>
               { hasAppliedFilter && (
@@ -239,58 +228,14 @@ export const FilterSelectComponent = ({
               <PopoverArrow />
               <PopoverCloseButton />
               <PopoverBody>
-                {isOpen && children({
-                  searchPlaceholder: `${t('search', 'ui')} ${label.toLowerCase()}...`,
-                })}
+                {isOpen && <FilterContentComponent />}
               </PopoverBody>
             </PopoverContent>
           </>
         )}
       </Popover>
-
-      { renderTags && (
-        <Box>
-          <Wrap spacing={2}>
-            <TableFilterTagGroup
-              color={color}
-              filterKey={filterKey}
-              filterTitle={label}
-            />
-          </Wrap>
-        </Box>
-      )}
-    </Stack>
+    </FilterSelectContext.Provider>
   );
-};
+});
 
-FilterSelectComponent.propTypes = {
-  title: PropTypes.string,
-  label: PropTypes.string.isRequired,
-  filterKey: PropTypes.string.isRequired,
-  color: PropTypes.oneOfType([PropTypes.string, PropTypes.oneOf([null])]),
-  renderTags: PropTypes.bool,
-  children: PropTypes.func.isRequired,
-};
-
-FilterSelectComponent.defaultProps = {
-  title: '',
-  color: null,
-  renderTags: false,
-};
-
-FilterContentComponent.propTypes = {
-  filterKey: PropTypes.string,
-  searchPlaceholder: PropTypes.string,
-  configuration: PropTypes.func,
-  handleFilterClick: PropTypes.func.isRequired,
-};
-
-FilterContentComponent.defaultProps = {
-  filterKey: '',
-  searchPlaceholder: '',
-  configuration: (filter) => ({
-    title: filter.value,
-    value: filter.value,
-    subtitle: filter.count,
-  }),
-};
+export default FilterSelectComponent;

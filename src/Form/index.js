@@ -8,6 +8,7 @@ import SwitchInput from './inputs/Switch';
 import EmailInput from './inputs/Email';
 import DateInput from './inputs/Date';
 import RadioGroupInput from './inputs/RadioGroup';
+import FilterSelect from './inputs/FilterSelect';
 import {
   RepeatInput,
   RepeatGroup,
@@ -32,4 +33,5 @@ export {
   RepeatAddRow,
   RepeatHeader,
   RepeatEmptyState,
+  FilterSelect,
 };

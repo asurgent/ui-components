@@ -20,7 +20,11 @@ import {
   RepeatAddRow,
   RepeatHeader,
   RepeatEmptyState,
+  FilterSelect,
 } from '../Form';
+import mockAzureSearch from './mocks/mockAzureSearch';
+
+const mockService = mockAzureSearch();
 
 const Story = {
   title: 'Components/Form',
@@ -74,6 +78,14 @@ const Template = () => (
                 )}
               </Field>
             </Box>
+            <FilterSelect
+              label="Filter"
+              filterPlaceholder="Select Filter"
+              name="filter-field"
+              helperText="we are careful"
+              facet="key"
+              service={mockService}
+            />
 
             <TextInput
               name="hellothere"
