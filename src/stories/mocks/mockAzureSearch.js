@@ -2,7 +2,7 @@ const facetKeyDefault = { key: 'key', count: 5, configure: (ixd) => ({ value: `I
 const resultsDefault = { configure: (idx) => ({ value: `Row ${idx}` }), count: 5 };
 
 const mockService = (
-  facetKeys = [...facetKeyDefault],
+  facetKeys = [facetKeyDefault],
   results = { ...resultsDefault },
   count = 5,
   pages = 1,

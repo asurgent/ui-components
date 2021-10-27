@@ -8,8 +8,8 @@ export default addTranslation({
     removeRowDisabled: 'Kan ej ta bort rad',
     removeRow: 'Ta bort rad',
     noMatch: 'Ingen matchning',
-    removeFilter: 'Ta bort filter',
-    clearAppliedFilters: 'Ta bort alla filter för',
+    removeFilteritem: 'Ta bort',
+    clearAppliedFilters: 'Ta bort alla valda alternativ',
     changeFilter: 'Ändra filter',
   },
   en: {
@@ -18,8 +18,8 @@ export default addTranslation({
     removeRowDisabled: 'Can\'t remove row',
     removeRow: 'Remove row',
     noMatch: 'No match for ',
-    removeFilter: 'Remove filter',
-    clearAppliedFilters: 'Clear applied filters for',
+    removeFilteritem: 'Remove',
+    clearAppliedFilters: 'Clear all selected items',
     changeFilter: 'Change filter',
   },
 });

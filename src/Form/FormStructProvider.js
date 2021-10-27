@@ -11,7 +11,7 @@ import EmailInput from './inputs/Email';
 import DateInput from './inputs/Date';
 import RadioGroupInput from './inputs/RadioGroup';
 
-export const FormProviderDeclarative = ({ struct, ...props }) => {
+export const FormStructProvider = ({ struct, ...props }) => {
   const form = useForm(props);
   const { handleReset, handleSubmit } = form;
 
@@ -108,6 +108,6 @@ export const FormProviderDeclarative = ({ struct, ...props }) => {
   );
 };
 
-FormProviderDeclarative.propTypes = {
+FormStructProvider.propTypes = {
   struct: PropTypes.oneOfType([PropTypes.array]).isRequired,
 };

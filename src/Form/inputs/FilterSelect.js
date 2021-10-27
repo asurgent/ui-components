@@ -1,3 +1,5 @@
+/* eslint-disable react/prop-types */
+/* eslint-disable no-unused-vars */
 import React, {
   useContext,
   useEffect,
@@ -26,6 +28,10 @@ import {
   Text,
   Center,
   Heading,
+  Wrap,
+  Tag,
+  TagLabel,
+  TagCloseButton,
 } from '@chakra-ui/react';
 import MdiIcon from '@mdi/react';
 import {
@@ -38,19 +44,67 @@ import { VirtualRender } from '../../VirtualRender';
 import { FieldContext, FilterSelectContext } from '../data/formContext';
 import translation from '../Form.translation';
 
+const TableFilterTag = ({
+  value,
+  color,
+}) => {
+  const { t } = translation;
+  const { onChange, name } = useContext(FieldContext);
+
+  const handleRemoveItem = () => {
+    onChange({ target: { value: [], name } });
+  };
+
+  return (
+    <Tag
+      size="sm"
+      borderRadius="full"
+      variant="solid"
+      colorScheme={color}
+    >
+      <Tooltip hasArrow label={value} placement="auto">
+        <TagLabel isTruncated>{value}</TagLabel>
+      </Tooltip>
+      <Tooltip hasArrow label={t('removeFilteritem', 'ui')} placement="auto">
+        <Flex>
+          <TagCloseButton onClick={handleRemoveItem} />
+        </Flex>
+      </Tooltip>
+    </Tag>
+  );
+};
+
+export const TableFilterTagGroup = ({
+  color,
+}) => {
+  const { value } = useContext(FieldContext);
+
+  return (value || []).map((item) => (
+    <TableFilterTag
+      key={item}
+      value={item}
+      color={color}
+    />
+  ));
+};
+
 const FilterContentComponent = () => {
   const searchPlaceholder = 'Search here';
   const { t } = translation;
   const [search, setSearch] = useState('');
 
   const field = useContext(FieldContext);
-  const { facet, dataSource } = useContext(FilterSelectContext);
+  const { facet, dataSource, single } = useContext(FilterSelectContext);
   const { mutate, data, isLoading } = dataSource;
-  console.log(data);
+
   const handleFilterClick = (e) => {
-    const newValue = new Set(field.value);
-    newValue.add(e);
-    field.onChange({ target: { value: [...newValue], name: field.name } });
+    if (single) {
+      field.onChange({ target: { value: [e], name: field.name } });
+    } else {
+      const newValue = new Set(field.value);
+      newValue.add(e);
+      field.onChange({ target: { value: [...newValue], name: field.name } });
+    }
   };
 
   useEffect(() => {
@@ -169,10 +223,13 @@ const FilterContentComponent = () => {
 };
 
 const FilterSelectComponent = withFormControl(({
+  single,
   filterPlaceholder,
   facet,
   service,
   label,
+  renderTags = true,
+  color,
 }) => {
   const { t } = translation;
   const {
@@ -184,16 +241,17 @@ const FilterSelectComponent = withFormControl(({
   const handleClearFilter = () => {
     onChange({ target: { value: [], name } });
   };
+
   const hasAppliedFilter = !!value?.length;
   const dataSource = useMutation(service, {});
 
   return (
-    <FilterSelectContext.Provider value={{ facet, dataSource }}>
+    <FilterSelectContext.Provider value={{ facet, dataSource, single }}>
       <Popover placement="bottom">
         {({ isOpen }) => (
           <>
             <ButtonGroup
-              width="max"
+              width="100%"
               size="md"
               isAttached
               variant="outline"
@@ -201,6 +259,8 @@ const FilterSelectComponent = withFormControl(({
             >
               <PopoverTrigger>
                 <Button
+                  width="100%"
+                  display="flex"
                   justifyContent="space-between"
                   iconSpacing
                   rightIcon={<MdiIcon path={mdiChevronDown} size={0.8} />}
@@ -209,7 +269,7 @@ const FilterSelectComponent = withFormControl(({
                 </Button>
               </PopoverTrigger>
               { hasAppliedFilter && (
-                <Tooltip hasArrow label={`${t('clearAppliedFilters', 'ui')} ${label}`} placement="auto">
+                <Tooltip hasArrow label={`${t('clearAppliedFilters', 'ui')}`} placement="auto">
                   <IconButton
                     onClick={handleClearFilter}
                     aria-label={t('removeFilter', 'ui')}
@@ -233,7 +293,15 @@ const FilterSelectComponent = withFormControl(({
             </PopoverContent>
           </>
         )}
+
       </Popover>
+      { renderTags && (
+        <Box mt={2}>
+          <Wrap spacing={2}>
+            <TableFilterTagGroup color={color} />
+          </Wrap>
+        </Box>
+      )}
     </FilterSelectContext.Provider>
   );
 });

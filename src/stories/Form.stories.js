@@ -21,20 +21,19 @@ import {
   RepeatHeader,
   RepeatEmptyState,
   FilterSelect,
+  FormStructProvider,
 } from '../Form';
 import mockAzureSearch from './mocks/mockAzureSearch';
 
-const mockService = mockAzureSearch();
-
-const Story = {
+const FormStory = {
   title: 'Components/Form',
-  component: FormProvider,
+  component: Box,
   argTypes: {},
 };
 
-export default Story;
+export default FormStory;
 
-const Template = () => (
+const FormTemplate = () => (
   <Box width="25rem" height="25rem" m={5} borderRadius="5px" border>
     <FormProvider
       validateOnChange
@@ -78,13 +77,15 @@ const Template = () => (
                 )}
               </Field>
             </Box>
+
             <FilterSelect
+              single
               label="Filter"
               filterPlaceholder="Select Filter"
               name="filter-field"
               helperText="we are careful"
               facet="key"
-              service={mockService}
+              service={mockAzureSearch()}
             />
 
             <TextInput
@@ -192,5 +193,5 @@ const Template = () => (
   </Box>
 );
 
-export const Primary = Template.bind({});
-Primary.args = {};
+export const PrimaryForm = FormTemplate.bind({});
+PrimaryForm.args = {};
