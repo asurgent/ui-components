@@ -142,6 +142,28 @@ export const useForm = ({
     return getter();
   }, [formatter, state.values]);
 
+  const handleReset = useEventCallback(withPrevent(() => {
+    resetForm();
+    if (onReset && typeof onReset === 'function') {
+      const getter = () => {
+        if (formatter && typeof formatter === 'function') {
+          return formatter(initialValues.current);
+        }
+
+        return initialValues.current;
+      };
+
+      if (onReset && typeof onReset === 'function') {
+        onReset({
+          values: getter(),
+          handleReset,
+          setFieldError,
+          clearFieldError,
+        });
+      }
+    }
+  }));
+
   const handleChange = useEventCallback(withPrevent((event) => {
     if (event.target) {
       const { name, value } = event.target;
@@ -153,7 +175,13 @@ export const useForm = ({
     }
 
     if (onChange && typeof onChange === 'function') {
-      onChange(getFormValues(event.target), state);
+      onReset({
+        state,
+        values: getFormValues(event.target),
+        handleReset,
+        setFieldError,
+        clearFieldError,
+      });
     }
   }));
 
@@ -163,27 +191,20 @@ export const useForm = ({
         runValidators();
         dispatch({ type: 'SET_SUBMIT', payload: true });
         dispatch({ type: 'SET_SUBMIT_COUNT', payload: state.submitCount + 1 });
-        await onSubmit({ ...state, values: getFormValues() });
+        await onSubmit({
+          state,
+          values: getFormValues(),
+          handleReset,
+          handleSubmit,
+          setFieldError,
+          clearFieldError,
+        });
         dispatch({ type: 'SET_SUBMIT', payload: false });
       }
     };
 
     event();
   }), [fieldRegistry]);
-
-  const handleReset = useEventCallback(withPrevent(() => {
-    resetForm();
-    if (onReset && typeof onReset === 'function') {
-      const getter = () => {
-        if (formatter && typeof formatter === 'function') {
-          return formatter(initialValues.current);
-        }
-
-        return initialValues.current;
-      };
-      onReset(getter());
-    }
-  }));
 
   const getFieldProps = useCallback(({ name, ...fieldProps }) => {
     const props = {
