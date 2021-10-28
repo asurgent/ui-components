@@ -10,8 +10,9 @@ import SwitchInput from './inputs/Switch';
 import EmailInput from './inputs/Email';
 import DateInput from './inputs/Date';
 import RadioGroupInput from './inputs/RadioGroup';
+import FilterSelect from './inputs/FilterSelect';
 
-export const FormStructProvider = ({ struct, ...props }) => {
+export const FormStructProvider = ({ struct, services, ...props }) => {
   const form = useForm(props);
   const { handleReset, handleSubmit } = form;
 
@@ -25,12 +26,16 @@ export const FormStructProvider = ({ struct, ...props }) => {
           helperText,
           tooltip,
           options,
+          service,
+          placeholder,
+          facet,
           props: fieldProps,
         }) => {
           switch (type) {
             case 'text':
               return (
                 <TextInput
+                  key={name}
                   tooltip={tooltip}
                   label={label}
                   helperText={helperText}
@@ -41,6 +46,7 @@ export const FormStructProvider = ({ struct, ...props }) => {
             case 'textarea':
               return (
                 <TextAreaInput
+                  key={name}
                   tooltip={tooltip}
                   label={label}
                   helperText={helperText}
@@ -51,6 +57,7 @@ export const FormStructProvider = ({ struct, ...props }) => {
             case 'number':
               return (
                 <NumberInput
+                  key={name}
                   tooltip={tooltip}
                   label={label}
                   helperText={helperText}
@@ -61,6 +68,7 @@ export const FormStructProvider = ({ struct, ...props }) => {
             case 'switch':
               return (
                 <SwitchInput
+                  key={name}
                   tooltip={tooltip}
                   label={label}
                   helperText={helperText}
@@ -71,6 +79,7 @@ export const FormStructProvider = ({ struct, ...props }) => {
             case 'email':
               return (
                 <EmailInput
+                  key={name}
                   tooltip={tooltip}
                   label={label}
                   helperText={helperText}
@@ -81,6 +90,7 @@ export const FormStructProvider = ({ struct, ...props }) => {
             case 'date':
               return (
                 <DateInput
+                  key={name}
                   tooltip={tooltip}
                   label={label}
                   helperText={helperText}
@@ -91,11 +101,26 @@ export const FormStructProvider = ({ struct, ...props }) => {
             case 'radiogroup':
               return (
                 <RadioGroupInput
+                  key={name}
                   tooltip={tooltip}
                   label={label}
                   helperText={helperText}
                   name={name}
                   options={options}
+                  {...fieldProps}
+                />
+              );
+            case 'filterSelect':
+              return (
+                <FilterSelect
+                  key={name}
+                  label={label}
+                  name={name}
+                  tooltip={tooltip}
+                  helperText={helperText}
+                  filterPlaceholder={placeholder}
+                  facet={facet || services?.[name]?.facet}
+                  service={service || services?.[name]?.service}
                   {...fieldProps}
                 />
               );
@@ -108,6 +133,10 @@ export const FormStructProvider = ({ struct, ...props }) => {
   );
 };
 
+FormStructProvider.defaultProps = {
+  services: {},
+};
 FormStructProvider.propTypes = {
   struct: PropTypes.oneOfType([PropTypes.array]).isRequired,
+  services: PropTypes.instanceOf(Object),
 };

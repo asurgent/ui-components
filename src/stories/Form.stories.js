@@ -193,5 +193,90 @@ const FormTemplate = () => (
   </Box>
 );
 
-export const PrimaryForm = FormTemplate.bind({});
-PrimaryForm.args = {};
+export const Primary = FormTemplate.bind({});
+Primary.args = {};
+
+const StructFormTemplate = () => (
+  <Box width="25rem" height="25rem" m={5} borderRadius="5px" border>
+    <FormStructProvider
+      services={{ filterSelect: { service: mockAzureSearch(), facet: 'key' } }}
+      struct={[
+        {
+          type: 'text',
+          name: 'hello',
+          label: 'Hello',
+          helperText: 'its okay',
+          tooltip: 'IM the tooltip',
+        },
+        {
+          name: 'textarea',
+          type: 'textarea',
+          label: 'textarea',
+          helperText: 'textarea',
+          tooltip: 'textarea',
+        }, {
+          name: 'number',
+          type: 'number',
+          label: 'number',
+          helperText: 'number',
+          tooltip: 'number',
+        }, {
+          name: 'switch',
+          type: 'switch',
+          label: 'switch',
+          helperText: 'switch',
+          tooltip: 'switch',
+        }, {
+          name: 'email',
+          type: 'email',
+          label: 'email',
+          helperText: 'email',
+          tooltip: 'email',
+        }, {
+          name: 'date',
+          type: 'date',
+          label: 'date',
+          helperText: 'date',
+          tooltip: 'date',
+        }, {
+          name: 'radiogroup',
+          type: 'radiogroup',
+          label: 'radiogroup',
+          helperText: 'radiogroup',
+          tooltip: 'radiogroup',
+          options: [],
+        }, {
+          name: 'filterSelect',
+          type: 'filterSelect',
+          label: 'filterSelect',
+          helperText: 'filterSelect',
+          tooltip: 'filterSelect',
+          placeholder: 'Select Filter',
+        },
+      ]}
+      validateOnChange
+      formatter={(values) => ({ ...values })}
+      validators={{
+        number: ({ value }) => {
+          console.log('value', value);
+          return ({ isInvalid: !value || value > 0, error: 'Cant be empty' });
+        },
+      }}
+      // initialErrors={{ field: 'Your WRONG', repeat: [{ hello: 'BU' }] }}
+      // initialValues={{ repeat: [{ hello: '1' }, { hello: '3' }], radioGroup: '1' }}
+      onFieldError={(a) => console.log('onError', a)}
+      onFieldValid={(a) => console.log('onValid', a)}
+      onChange={(a, _state) => console.log('onChange', a)}
+      onReset={(a) => console.log('onReset', a)}
+      onSubmit={(a) => new Promise((resolve) => {
+        setTimeout(() => {
+          console.log('onSubmit', a);
+          resolve(a);
+        }, 1000);
+      })}
+    />
+  </Box>
+);
+
+export const Struct = StructFormTemplate.bind({});
+Struct.args = {};
