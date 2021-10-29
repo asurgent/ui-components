@@ -203,10 +203,10 @@ const StructFormTemplate = () => (
       struct={[
         {
           type: 'text',
-          name: 'hello',
-          label: 'Hello',
-          helperText: 'its okay',
-          tooltip: 'IM the tooltip',
+          name: 'text',
+          label: 'text',
+          helperText: 'text',
+          tooltip: 'text',
         },
         {
           name: 'textarea',
@@ -244,7 +244,7 @@ const StructFormTemplate = () => (
           label: 'radiogroup',
           helperText: 'radiogroup',
           tooltip: 'radiogroup',
-          options: [],
+          options: [1, 2, 3],
         }, {
           name: 'filterSelect',
           type: 'filterSelect',
@@ -274,7 +274,18 @@ const StructFormTemplate = () => (
           resolve(a);
         }, 1000);
       })}
-    />
+    >
+      {({ state }) => (
+        <Flex justifyContent="space-between">
+          <Button type="submit" colorScheme="green" isLoading={state.isSubmitting}>
+            submit
+          </Button>
+          <Button type="reset" colorScheme="red">
+            reset
+          </Button>
+        </Flex>
+      )}
+    </FormStructProvider>
   </Box>
 );
 

@@ -131,7 +131,7 @@ export const useForm = ({
 
   const callbackActionList = useEventCallback((event) => ({
     state,
-    values: getFormValues(event.target),
+    values: getFormValues(event?.target),
     reset: handleReset,
     setFieldError,
     clearFieldError,

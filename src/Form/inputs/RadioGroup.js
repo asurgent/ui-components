@@ -18,9 +18,12 @@ const RadioGroupComponent = withFormControl((props) => {
       value={selected}
     >
       <Stack direction={direction || 'row'}>
-        { options.map(({ value, label }) => (
-          <Radio value={`${value}`} key={value}>{label}</Radio>
-        ))}
+        { options.map((item) => {
+          if (item?.label) {
+            return (<Radio value={`${item.value}`} key={item.value}>{item.label}</Radio>);
+          }
+          return (<Radio value={`${item}`} key={item}>{item}</Radio>);
+        })}
       </Stack>
     </RadioGroup>
   );
