@@ -57,6 +57,12 @@ export const TableRowCards = ({ children }) => {
 
   return (rows || []).map((item, index) => (children(item, index)));
 };
+TableRowCards.propTypes = {
+  children: PropTypes.oneOfType([PropTypes.any]),
+};
+TableRowCards.defaultProps = {
+  children: null,
+};
 
 export const TableRows = ({ children }) => {
   const {
@@ -93,4 +99,10 @@ export const TableRows = ({ children }) => {
   }
 
   return (rows || []).map((row, index) => children(row, index, GridRow));
+};
+TableRows.propTypes = {
+  children: PropTypes.oneOfType([PropTypes.any]),
+};
+TableRows.defaultProps = {
+  children: null,
 };
