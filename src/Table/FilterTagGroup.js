@@ -38,6 +38,10 @@ const TableFilterTag = ({
     }
   };
 
+  if (configure?.render === false) {
+    return null;
+  }
+
   const label = configure ? configure(filterKey, value) : `${filterTitle || filterKey}: ${value}`;
 
   return (
