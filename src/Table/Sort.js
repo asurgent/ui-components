@@ -49,7 +49,7 @@ export const TableSort = () => {
             <MdiIcon
               size={0.8}
               path={mdiSort}
-              rotate={state.getKey(ORDER_DESC) ? 0 : 180}
+              rotate={state.getKey(ORDER_DESC) ? 180 : 0}
             />
           )}
         />
