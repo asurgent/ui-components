@@ -9,7 +9,8 @@ export default addTranslation({
     removeRow: 'Ta bort rad',
     noMatch: 'Ingen matchning',
     removeFilteritem: 'Ta bort',
-    clearAppliedFilters: 'Ta bort alla valda alternativ',
+    clearFilters: 'Ta bort alla valda alternativ',
+    clearAllFilters: 'Ta bort valt alternativ',
     changeFilter: 'Ändra filter',
   },
   en: {
@@ -19,7 +20,8 @@ export default addTranslation({
     removeRow: 'Remove row',
     noMatch: 'No match for ',
     removeFilteritem: 'Remove',
-    clearAppliedFilters: 'Clear all selected items',
+    clearFilters: 'Clear selected item',
+    clearAllFilters: 'Clear all selected items',
     changeFilter: 'Change filter',
   },
 });

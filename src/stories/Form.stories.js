@@ -81,11 +81,16 @@ const FormTemplate = () => (
             <FilterSelect
               single
               label="Filter"
-              filterPlaceholder="Select Filter"
+              placeholder="Select Filter"
               name="filter-field"
               helperText="we are careful"
               facet="key"
               service={mockAzureSearch()}
+              configuration={(filter) => ({
+                title: filter.value,
+                value: filter.value,
+                subtitle: null,
+              })}
             />
 
             <TextInput

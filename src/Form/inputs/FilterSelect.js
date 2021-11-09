@@ -94,7 +94,12 @@ const FilterContentComponent = () => {
   const [search, setSearch] = useState('');
 
   const field = useContext(FieldContext);
-  const { facet, dataSource, single } = useContext(FilterSelectContext);
+  const {
+    facet,
+    dataSource,
+    single,
+    configuration,
+  } = useContext(FilterSelectContext);
   const { mutate, data, isLoading } = dataSource;
 
   const handleFilterClick = (e) => {
@@ -118,12 +123,17 @@ const FilterContentComponent = () => {
     }
 
     const sortedItems = data.facets?.[facet]
-      .map((filter) => ({
-        title: filter.value,
-        value: filter.value,
-        subtitle: filter.count,
-        isSelected: field.value?.includes(filter.value),
-      }))
+      .map((filter) => {
+        const { title, value, subtitle } = configuration(filter);
+        const isSelected = field.value?.includes(filter.value);
+
+        return {
+          title,
+          value,
+          subtitle,
+          isSelected,
+        };
+      })
       .filter(({ title }) => {
         if (title) {
           return title
@@ -191,13 +201,14 @@ const FilterContentComponent = () => {
                 onClick={() => handleFilterClick(value)}
                 style={{ display: 'flex', justifyContent: 'space-between' }}
                 variant="unstyled"
+                backgroundColor={isSelected ? 'gray.100' : 'transparent'}
                 isFullWidth
               >
-                <Text fontSize="small" isTruncated mr={3}>{title}</Text>
+                <Text ml={2} fontSize="small" isTruncated mr={3}>{title}</Text>
                 <Flex alignItems="center">
                   <Code>{subtitle}</Code>
                   {isSelected && (
-                    <Box ml={3}>
+                    <Box ml={3} mr={2}>
                       <MdiIcon path={mdiCheck} size={0.6} />
                     </Box>
                   )}
@@ -224,12 +235,17 @@ const FilterContentComponent = () => {
 
 const FilterSelectComponent = withFormControl(({
   single,
-  filterPlaceholder,
+  placeholder,
   facet,
   service,
   label,
-  renderTags = true,
+  renderTags = !single,
   color,
+  configuration = (filter) => ({
+    title: filter.value,
+    value: filter.value,
+    subtitle: filter.count,
+  }),
 }) => {
   const { t } = translation;
   const {
@@ -245,8 +261,21 @@ const FilterSelectComponent = withFormControl(({
   const hasAppliedFilter = !!value?.length;
   const dataSource = useMutation(service, {});
 
+  const renderPlaceholder = useMemo(() => {
+    if (single && value?.[0]) {
+      return value[0];
+    }
+    return placeholder;
+  }, [placeholder, single, value]);
+
   return (
-    <FilterSelectContext.Provider value={{ facet, dataSource, single }}>
+    <FilterSelectContext.Provider value={{
+      facet,
+      single,
+      dataSource,
+      configuration,
+    }}
+    >
       <Popover placement="bottom">
         {({ isOpen }) => (
           <>
@@ -265,11 +294,11 @@ const FilterSelectComponent = withFormControl(({
                   iconSpacing
                   rightIcon={<MdiIcon path={mdiChevronDown} size={0.8} />}
                 >
-                  {filterPlaceholder}
+                  {renderPlaceholder}
                 </Button>
               </PopoverTrigger>
               { hasAppliedFilter && (
-                <Tooltip hasArrow label={`${t('clearAppliedFilters', 'ui')}`} placement="auto">
+                <Tooltip hasArrow label={`${t(single ? 'clearFilters' : 'clearAllFilters', 'ui')}`} placement="auto">
                   <IconButton
                     onClick={handleClearFilter}
                     aria-label={t('removeFilter', 'ui')}
@@ -279,7 +308,7 @@ const FilterSelectComponent = withFormControl(({
               ) }
             </ButtonGroup>
 
-            <PopoverContent maxWidth="500px">
+            <PopoverContent>
               <PopoverHeader fontWeight="semibold">
                 {t('changeFilter', 'ui')}
                 {' '}
