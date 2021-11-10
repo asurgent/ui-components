@@ -22,6 +22,13 @@ import {
   TableFilterTriState,
   TableFilterStack,
 } from '../Table';
+import mockAzureSearch from './mocks/mockAzureSearch';
+
+const mockService = mockAzureSearch([
+  { key: 'customer_display_name' },
+  { key: 'resource_group' },
+  { key: 'type' },
+]);
 
 export default {
   title: 'Components/Table',
@@ -40,7 +47,6 @@ const CardComp = () => (
 );
 
 const mockPayloadParser = (state, azureSearchParser) => {
-  console.log(state);
   const parsers = {
     filter: {
       customer_display_name: (val) => `${val} less than something cool`,
@@ -53,51 +59,6 @@ const mockPayloadParser = (state, azureSearchParser) => {
 
   return azureSearchParser.items(state, parsers);
 };
-
-const mockService = async () => new Promise((resolve) => {
-  resolve({
-    facets: {
-      customer_display_name: [
-        { label: 'a-1', count: 123 },
-        { label: 'a-2', count: 123 },
-        { label: 'a-3', count: 123 },
-        { label: 'a-4', count: 123 },
-        { label: 'a-5', count: 123 },
-        { label: 'a-6', count: 123 },
-        { label: 'a-7', count: 123 },
-        { label: 'a-8', count: 123 },
-        { label: 'a-9', count: 123 },
-        { label: 'a-10', count: 123 },
-        { label: 'a-11', count: 123 },
-        { label: 'a-12', count: 123 },
-        { label: 'a-13', count: 123 },
-        { label: 'a-14', count: 123 },
-        { label: 'a-15', count: 123 },
-      ],
-      customer_display_name2: [
-        { label: 'a-1', count: 123 },
-        { label: 'a-2', count: 123 },
-        { label: 'a-3', count: 123 },
-        { label: 'a-4', count: 123 },
-        { label: 'a-5', count: 123 },
-        { label: 'a-6', count: 123 },
-        { label: 'a-7', count: 123 },
-        { label: 'a-8', count: 123 },
-        { label: 'a-9', count: 123 },
-        { label: 'a-10', count: 123 },
-        { label: 'a-11', count: 123 },
-        { label: 'a-12', count: 123 },
-        { label: 'a-13', count: 123 },
-        { label: 'a-14', count: 123 },
-        { label: 'a-15', count: 123 },
-      ],
-    },
-    page: 1,
-    result: [{ value: 'hello' }, { value: 'bye' }],
-    total_pages: 2,
-    total_count: 2,
-  });
-});
 
 const Template = () => (
   <TableSearchProvider
@@ -171,7 +132,7 @@ const Template = () => (
       <TableFilterSelect
         renderTags={false}
         label="Customers"
-        filterKey="customer_display_name_2"
+        filterKey="resource_group"
       />
       <TableFilterTriState
         label="Stale"

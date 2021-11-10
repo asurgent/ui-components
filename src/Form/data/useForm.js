@@ -57,40 +57,6 @@ export const useForm = ({
     });
   }, []);
 
-  const runValidator = useEventCallback((event) => {
-    const { name, value } = event;
-    const fieldValidator = fieldRegistry.current?.[name]?.validator;
-    const providerValidator = validators?.[name];
-
-    const setter = (result) => {
-      if (result?.isInvalid === true) {
-        if (onFieldError) { onFieldError({ name, ...result }); }
-        setFieldError(name, { name, ...result });
-      } else {
-        if (onFieldValid) { onFieldValid({ name, value }); }
-        clearFieldError(name);
-      }
-    };
-
-    if (fieldValidator && typeof fieldValidator === 'function') {
-      setter(fieldValidator(event));
-    } else if (providerValidator && typeof providerValidator === 'function') {
-      setter(providerValidator(event));
-    }
-  });
-
-  const runValidators = useEventCallback(() => {
-    Object.entries(fieldRegistry.current)
-      .forEach(([name]) => {
-        runValidator({ name, value: state.values[name] });
-      });
-
-    Object.values(groupRegistry.current)
-      .forEach((group) => {
-        group.runValidators();
-      });
-  });
-
   const registerField = useCallback(({ name, validator, group }, isGroup = false) => {
     if (isGroup) {
       groupRegistry.current[name] = group;
@@ -142,6 +108,72 @@ export const useForm = ({
     return getter();
   }, [formatter, state.values]);
 
+  const handleReset = useEventCallback(withPrevent(() => {
+    resetForm();
+    if (onReset && typeof onReset === 'function') {
+      const getter = () => {
+        if (formatter && typeof formatter === 'function') {
+          return formatter(initialValues.current);
+        }
+
+        return initialValues.current;
+      };
+
+      if (onReset && typeof onReset === 'function') {
+        onReset({
+          values: getter(),
+          setFieldError,
+          clearFieldError,
+        });
+      }
+    }
+  }));
+
+  const callbackActionList = useEventCallback((event) => ({
+    state,
+    values: getFormValues(event?.target),
+    reset: handleReset,
+    setFieldError,
+    clearFieldError,
+  }));
+
+  const runValidator = useEventCallback((event) => {
+    const { name, value } = event;
+    const fieldValidator = fieldRegistry.current?.[name]?.validator;
+    const providerValidator = validators?.[name];
+    const setter = (result) => {
+      if (result?.isInvalid === true) {
+        if (onFieldError) {
+          onFieldError({ fieldError: { name, ...result }, ...callbackActionList() });
+        }
+        setFieldError(name, { name, ...result });
+      } else {
+        if (onFieldValid) {
+          onFieldValid({ fieldValid: { name, value }, ...callbackActionList() });
+        }
+        clearFieldError(name);
+      }
+    };
+
+    if (fieldValidator && typeof fieldValidator === 'function') {
+      setter(fieldValidator(event));
+    } else if (providerValidator && typeof providerValidator === 'function') {
+      setter(providerValidator(event));
+    }
+  });
+
+  const runValidators = useEventCallback(() => {
+    Object.entries(fieldRegistry.current)
+      .forEach(([name]) => {
+        runValidator({ name, value: state.values[name] });
+      });
+
+    Object.values(groupRegistry.current)
+      .forEach((group) => {
+        group.runValidators();
+      });
+  });
+
   const handleChange = useEventCallback(withPrevent((event) => {
     if (event.target) {
       const { name, value } = event.target;
@@ -153,7 +185,7 @@ export const useForm = ({
     }
 
     if (onChange && typeof onChange === 'function') {
-      onChange(getFormValues(event.target), state);
+      onChange(callbackActionList(event.target));
     }
   }));
 
@@ -163,27 +195,13 @@ export const useForm = ({
         runValidators();
         dispatch({ type: 'SET_SUBMIT', payload: true });
         dispatch({ type: 'SET_SUBMIT_COUNT', payload: state.submitCount + 1 });
-        await onSubmit({ ...state, values: getFormValues() });
+        await onSubmit(callbackActionList());
         dispatch({ type: 'SET_SUBMIT', payload: false });
       }
     };
 
     event();
   }), [fieldRegistry]);
-
-  const handleReset = useEventCallback(withPrevent(() => {
-    resetForm();
-    if (onReset && typeof onReset === 'function') {
-      const getter = () => {
-        if (formatter && typeof formatter === 'function') {
-          return formatter(initialValues.current);
-        }
-
-        return initialValues.current;
-      };
-      onReset(getter());
-    }
-  }));
 
   const getFieldProps = useCallback(({ name, ...fieldProps }) => {
     const props = {

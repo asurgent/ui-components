@@ -6,7 +6,10 @@ import {
   FormLabel,
   FormErrorMessage,
   FormHelperText,
+  Tooltip,
 } from '@chakra-ui/react';
+import MdiIcon from '@mdi/react';
+import { mdiHelpCircleOutline } from '@mdi/js';
 import { Field } from './Field';
 
 export const withFormControl = (Component, componentProps) => (props) => {
@@ -15,6 +18,7 @@ export const withFormControl = (Component, componentProps) => (props) => {
     helperText,
     errorMessage,
     validator,
+    tooltip,
     ...restProps
   } = props;
 
@@ -37,7 +41,30 @@ export const withFormControl = (Component, componentProps) => (props) => {
           isRequired={isRequired}
           {...formControllProps}
         >
-          {label && <FormLabel mt={0} mb={1} fontFamily="Poppins" {...formLabelProps}>{label}</FormLabel>}
+          {label && (
+          <FormLabel
+            mt={0}
+            mb={1}
+            mr={0}
+            fontFamily="Poppins"
+            {...formLabelProps}
+            flexDirection="row"
+            display="flex"
+            alignItems="center"
+            justifyContent="space-between"
+          >
+            {label}
+            {tooltip && (
+              <Tooltip
+                hasArrow
+                label={tooltip}
+                placement="auto"
+              >
+                <MdiIcon path={mdiHelpCircleOutline} size={0.7} />
+              </Tooltip>
+            )}
+          </FormLabel>
+          )}
           <Component {...restProps} />
           <FormErrorMessage mt={1}>{errorMessage || errors[field.name]?.error}</FormErrorMessage>
           {helperText && <FormHelperText mt={1}>{helperText}</FormHelperText>}

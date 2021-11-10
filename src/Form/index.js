@@ -1,4 +1,5 @@
 import { FormProvider } from './FormProvider';
+import { FormStructProvider } from './FormStructProvider';
 import { Field } from './Field';
 import TextInput from './inputs/Text';
 import TextAreaInput from './inputs/TextArea';
@@ -7,6 +8,7 @@ import SwitchInput from './inputs/Switch';
 import EmailInput from './inputs/Email';
 import DateInput from './inputs/Date';
 import RadioGroupInput from './inputs/RadioGroup';
+import FilterSelect from './inputs/FilterSelect';
 import {
   RepeatInput,
   RepeatGroup,
@@ -17,6 +19,7 @@ import {
 
 export {
   FormProvider,
+  FormStructProvider,
   Field,
   TextInput,
   TextAreaInput,
@@ -30,4 +33,5 @@ export {
   RepeatAddRow,
   RepeatHeader,
   RepeatEmptyState,
+  FilterSelect,
 };

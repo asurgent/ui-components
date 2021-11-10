@@ -20,17 +20,20 @@ import {
   RepeatAddRow,
   RepeatHeader,
   RepeatEmptyState,
+  FilterSelect,
+  FormStructProvider,
 } from '../Form';
+import mockAzureSearch from './mocks/mockAzureSearch';
 
-const Story = {
+const FormStory = {
   title: 'Components/Form',
-  component: FormProvider,
+  component: Box,
   argTypes: {},
 };
 
-export default Story;
+export default FormStory;
 
-const Template = () => (
+const FormTemplate = () => (
   <Box width="25rem" height="25rem" m={5} borderRadius="5px" border>
     <FormProvider
       validateOnChange
@@ -74,6 +77,21 @@ const Template = () => (
                 )}
               </Field>
             </Box>
+
+            <FilterSelect
+              single
+              label="Filter"
+              placeholder="Select Filter"
+              name="filter-field"
+              helperText="we are careful"
+              facet="key"
+              service={mockAzureSearch()}
+              configuration={(filter) => ({
+                title: filter.value,
+                value: filter.value,
+                subtitle: null,
+              })}
+            />
 
             <TextInput
               name="hellothere"
@@ -180,5 +198,101 @@ const Template = () => (
   </Box>
 );
 
-export const Primary = Template.bind({});
+export const Primary = FormTemplate.bind({});
 Primary.args = {};
+
+const StructFormTemplate = () => (
+  <Box width="25rem" height="25rem" m={5} borderRadius="5px" border>
+    <FormStructProvider
+      services={{ filterSelect: { service: mockAzureSearch(), facet: 'key' } }}
+      struct={[
+        {
+          type: 'text',
+          name: 'text',
+          label: 'text',
+          helperText: 'text',
+          tooltip: 'text',
+        },
+        {
+          name: 'textarea',
+          type: 'textarea',
+          label: 'textarea',
+          helperText: 'textarea',
+          tooltip: 'textarea',
+        }, {
+          name: 'number',
+          type: 'number',
+          label: 'number',
+          helperText: 'number',
+          tooltip: 'number',
+        }, {
+          name: 'switch',
+          type: 'switch',
+          label: 'switch',
+          helperText: 'switch',
+          tooltip: 'switch',
+        }, {
+          name: 'email',
+          type: 'email',
+          label: 'email',
+          helperText: 'email',
+          tooltip: 'email',
+        }, {
+          name: 'date',
+          type: 'date',
+          label: 'date',
+          helperText: 'date',
+          tooltip: 'date',
+        }, {
+          name: 'radiogroup',
+          type: 'radiogroup',
+          label: 'radiogroup',
+          helperText: 'radiogroup',
+          tooltip: 'radiogroup',
+          options: [1, 2, 3],
+        }, {
+          name: 'filterSelect',
+          type: 'filterSelect',
+          label: 'filterSelect',
+          helperText: 'filterSelect',
+          tooltip: 'filterSelect',
+          placeholder: 'Select Filter',
+        },
+      ]}
+      validateOnChange
+      formatter={(values) => ({ ...values })}
+      validators={{
+        number: ({ value }) => {
+          console.log('value', value);
+          return ({ isInvalid: !value || value > 0, error: 'Cant be empty' });
+        },
+      }}
+      // initialErrors={{ field: 'Your WRONG', repeat: [{ hello: 'BU' }] }}
+      // initialValues={{ repeat: [{ hello: '1' }, { hello: '3' }], radioGroup: '1' }}
+      onFieldError={(a) => console.log('onError', a)}
+      onFieldValid={(a) => console.log('onValid', a)}
+      onChange={(a, _state) => console.log('onChange', a)}
+      onReset={(a) => console.log('onReset', a)}
+      onSubmit={(a) => new Promise((resolve) => {
+        setTimeout(() => {
+          console.log('onSubmit', a);
+          resolve(a);
+        }, 1000);
+      })}
+    >
+      {({ state }) => (
+        <Flex justifyContent="space-between">
+          <Button type="submit" colorScheme="green" isLoading={state.isSubmitting}>
+            submit
+          </Button>
+          <Button type="reset" colorScheme="red">
+            reset
+          </Button>
+        </Flex>
+      )}
+    </FormStructProvider>
+  </Box>
+);
+
+export const Struct = StructFormTemplate.bind({});
+Struct.args = {};
