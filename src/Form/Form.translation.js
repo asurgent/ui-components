@@ -7,7 +7,7 @@ export default addTranslation({
     addRowDisabled: 'Kan ej lägga till fler rader',
     removeRowDisabled: 'Kan ej ta bort rad',
     removeRow: 'Ta bort rad',
-    noMatch: 'Ingen matchning',
+    noMatch: 'Ingen matchning för ',
     removeFilteritem: 'Ta bort',
     clearFilters: 'Ta bort alla valda alternativ',
     clearAllFilters: 'Ta bort valt alternativ',

@@ -8,7 +8,7 @@ export default addTranslation({
     noData: 'Inga resultat',
     totalItems: 'Totalt',
     download: 'Ladda ner',
-    noMatch: 'Ingen matchning',
+    noMatch: 'Ingen matchning för ',
     removeFilter: 'Ta bort filter',
     clearAppliedFilters: 'Ta bort alla filter för',
     changeFilter: 'Ändra filter',
