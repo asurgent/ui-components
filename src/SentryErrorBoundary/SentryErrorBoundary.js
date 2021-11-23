@@ -7,7 +7,6 @@ const SentryErrorBoundary = ({ children, errorInfo = '', fallback }) => (
     fallback={fallback}
     beforeCapture={(_, error) => {
       const childIndentifier = children?.type?.name || children?.type || 'unknown';
-      console.log('childIndentifier', childIndentifier);
       Sentry.withScope((scope) => {
         scope.setTag('childComponent', childIndentifier);
         Sentry.setExtra('errorInfo', errorInfo);
