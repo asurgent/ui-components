@@ -7,6 +7,8 @@ module.exports = {
   addons: [
     "@storybook/preset-create-react-app",
     "storybook-addon-performance/register",
+    '@storybook/addon-essentials',
+    "@storybook/addon-controls",
   ],
   typescript: {
     reactDocgen: false,

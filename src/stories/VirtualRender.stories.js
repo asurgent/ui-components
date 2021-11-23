@@ -1,12 +1,14 @@
 /* eslint-disable react/destructuring-assignment */
 import React from 'react';
 import { Box, Flex } from '@chakra-ui/react';
+import { withPerformance } from 'storybook-addon-performance';
 import { VirtualRender } from '../VirtualRender';
 
 const Story = {
   title: 'Components/Virtual Render',
   component: VirtualRender,
   argTypes: {},
+  decorators: [withPerformance],
 };
 
 export default Story;

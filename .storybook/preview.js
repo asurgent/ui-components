@@ -25,7 +25,7 @@ i18next
     react: { wait: true },
   });
 
-addComponentTranslations()
+addComponentTranslations();
 
 
 const queryClient = new QueryClient({

@@ -1,5 +1,6 @@
 /* eslint-disable no-unused-vars */
 import React from 'react';
+import { withPerformance } from 'storybook-addon-performance';
 import {
   Box, Flex,
 } from '@chakra-ui/react';
@@ -38,6 +39,7 @@ export default {
       type: 'boolean',
     },
   },
+  decorators: [withPerformance],
 };
 
 const CardComp = () => (
