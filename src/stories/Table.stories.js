@@ -140,9 +140,11 @@ const Template = () => (
         renderTags
       />
       <TableFilterBool
+        title="asdf"
         label="Show Hidden"
         filterKey="hidden"
         renderTags
+        horizontal
       />
 
     </TableFilterStack>

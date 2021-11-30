@@ -5,8 +5,31 @@ import { Switch, Stack, Text } from '@chakra-ui/react';
 import { TableContext } from './data/context';
 import { FILTER_KEY } from './data/constants';
 
+const StackComp = ({ horizontal, children }) => {
+  if (horizontal) {
+    return (
+      <Stack display="flex" direction="row-reverse" alignItems="center">
+        <>
+          {children}
+        </>
+      </Stack>
+    );
+  }
+  return (
+    <Stack>
+      <>
+        {children}
+      </>
+    </Stack>
+  );
+};
+StackComp.propTypes = {
+  children: PropTypes.oneOfType([PropTypes.any]).isRequired,
+  horizontal: PropTypes.bool.isRequired,
+};
+
 export const TableFilterBool = ({
-  filterKey, title, labelSize, switchSize,
+  filterKey, title, labelSize, switchSize, horizontal,
 }) => {
   const { state } = useContext(TableContext);
   const appliedFilterState = state.getKey(FILTER_KEY)?.[filterKey]?.[0];
@@ -22,9 +45,9 @@ export const TableFilterBool = ({
   };
 
   return (
-    <Stack>
+    <StackComp horizontal={horizontal}>
       { title && (
-        <Text fontSize={labelSize} mt={1}>
+        <Text fontSize={labelSize} ml={horizontal ? 2 : 0}>
           {title}
         </Text>
       )}
@@ -37,7 +60,7 @@ export const TableFilterBool = ({
           : handleActivateFilter()
         )}
       />
-    </Stack>
+    </StackComp>
   );
 };
 
@@ -46,10 +69,12 @@ TableFilterBool.propTypes = {
   filterKey: PropTypes.string.isRequired,
   labelSize: PropTypes.string,
   switchSize: PropTypes.string,
+  horizontal: PropTypes.bool,
 };
 
 TableFilterBool.defaultProps = {
   title: '',
-  labelSize: 'xs',
+  labelSize: 'sm',
   switchSize: 'lg',
+  horizontal: false,
 };
