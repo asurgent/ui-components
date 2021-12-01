@@ -62,6 +62,7 @@ const mockPayloadParser = (state, azureSearchParser) => {
 
 const Template = () => (
   <TableSearchProvider
+    initialValues={{ hidden: [true], stale: [false] }}
     pageSize={20}
     payload={mockPayloadParser}
     fetcher={mockService}

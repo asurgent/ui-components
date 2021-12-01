@@ -5,7 +5,7 @@ export const PAGE_SIZE = 'size';
 export const ORDER_KEY = 'order';
 export const ORDER_DESC = 'order_desc';
 
-export const initalState = {
+export const initialState = {
   [QUERY_KEY]: '',
   [FILTER_KEY]: {},
   [ORDER_KEY]: null,

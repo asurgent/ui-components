@@ -7,7 +7,7 @@ import useUrlState from '../data/useUrlState';
 import useAzureSeachPayload from '../data/azureSearch/useAzureSeachPayload';
 import useAzureSearchGetAllResults from '../data/azureSearch/useAzureSearchGetAllResults';
 import {
-  initalState,
+  initialState,
   QUERY_KEY,
   PAGE_KEY,
   FILTER_KEY,
@@ -49,6 +49,7 @@ export const TableSearchProvider = ({
   pageSize = 20,
   urlStateKey = 'test',
   noUrlState,
+  initialValues,
 }) => {
   const [showLoader, loader] = useBoolean();
   const [rows, setRows] = useState(null);
@@ -73,7 +74,12 @@ export const TableSearchProvider = ({
   });
 
   const trigger = stateHandler(rowsQuery.mutate, sort);
-  const state = useUrlState(urlStateKey, initalState, trigger, noUrlState);
+
+  if (initialValues) {
+    Object.assign(initialState, { filter: { ...initialState.filter, ...initialValues } });
+  }
+
+  const state = useUrlState(urlStateKey, initialState, trigger, noUrlState);
 
   const downloadPayload = (page, size) => payload({
     ...state.current,
@@ -128,10 +134,12 @@ TableSearchProvider.propTypes = {
   pageSize: PropTypes.number,
   urlStateKey: PropTypes.string,
   noUrlState: PropTypes.bool,
+  initialValues: PropTypes.instanceOf(Object),
 };
 
 TableSearchProvider.defaultProps = {
   pageSize: 20,
   urlStateKey: '',
   noUrlState: false,
+  initialValues: null,
 };
