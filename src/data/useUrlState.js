@@ -11,16 +11,16 @@ const update = (key, state, search) => {
   return `?${queryString.stringify(query)}`;
 };
 
-const initialize = (key, initalState, location) => {
+const initialize = (key, initialState, location) => {
   try {
     const search = queryString.parse(location.search);
     return JSON.parse(atob(search[key]));
   } catch (err) {
-    return initalState || {};
+    return initialState || {};
   }
 };
 
-const useUrlState = (stateKey = 'q', initalState, trigger, noUrlState = false) => {
+const useUrlState = (stateKey = 'q', initialState, trigger, noUrlState = false) => {
   const history = useHistory();
   const [prev, setPrev] = useState(null);
   const [current, setCurrent] = useState(null);
@@ -56,7 +56,7 @@ const useUrlState = (stateKey = 'q', initalState, trigger, noUrlState = false) =
 
       trigger(iface, current, prev);
     } else {
-      const existingState = initialize(stateKey, initalState, location);
+      const existingState = initialize(stateKey, initialState, location);
       setCurrent(existingState);
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
