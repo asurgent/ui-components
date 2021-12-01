@@ -75,11 +75,20 @@ export const TableSearchProvider = ({
 
   const trigger = stateHandler(rowsQuery.mutate, sort);
 
-  if (initialValues) {
-    Object.assign(initialState, { filter: { ...initialState.filter, ...initialValues } });
-  }
+  const initialStateWithValues = {
+    ...initialState,
+    filter: {
+      ...initialState.filter,
+      ...(initialValues || {}),
+    },
+  };
 
-  const state = useUrlState(urlStateKey, initialState, trigger, noUrlState);
+  const state = useUrlState(
+    urlStateKey,
+    initialStateWithValues,
+    trigger,
+    noUrlState,
+  );
 
   const downloadPayload = (page, size) => payload({
     ...state.current,
