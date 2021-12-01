@@ -24,7 +24,7 @@ npm run storybook
 
 
 ## Relase a package update
-This repo uses [github-actions](https://help.github.com/en/actions/automating-your-workflow-with-github-actions/configuring-workflows) that automatically publish a new package whenever there a new release is published at. A release is automatically created when run eg. `npm version patch`.
+This repo uses [github-actions](https://help.github.com/en/actions/automating-your-workflow-with-github-actions/configuring-workflows) that automatically publish a new package whenever there a new release is published at.
 
 You have basically 3 ways of increasing the version number (full explanation in package.json)
 1. Merge your branch to the main-branch. Switch over to the main branch and:
