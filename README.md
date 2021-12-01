@@ -27,10 +27,10 @@ npm run storybook
 This repo uses [github-actions](https://help.github.com/en/actions/automating-your-workflow-with-github-actions/configuring-workflows) that automatically publish a new package whenever there a new release is published at. A release is automatically created when run eg. `npm version patch`.
 
 You have basically 3 ways of increasing the version number (full explanation in package.json)
-0. Merge your branch to the main-branch. Switch over to the main branch and:
-1. Publishing a small patch? Run - `npm run version:patch`
-2. Publishing a minor update? Run - `npm run version:minor`
-3. Publishing a major update? Run - `npm run version:major` 
+1. Merge your branch to the main-branch. Switch over to the main branch and:
+2. Publishing a small patch? Run - `npm run version:patch`
+3. Publishing a minor update? Run - `npm run version:minor`
+4. Publishing a major update? Run - `npm run version:major` 
 
 [Read more](https://docs.npmjs.com/cli/version)
 
