@@ -7,7 +7,7 @@ This library contains the basic set of asurgent's components. It exposes React A
 Install and use in your project
 
 ```bash
-npm install --save @asurgent/ui
+npm install --save @asurgent/ui-components
 ```
 
 ## Run locally
@@ -16,10 +16,10 @@ This project uses storybook help view and develop components.
 
 To run storybook locally:
 ```bash
-git clone git@github.com:asurgent/ui.git
+git clone git@github.com:asurgent/ui-components.git
 
-cd @asurgent/ui
-npm run storybook
+cd @asurgent/ui-components
+npm start
 ```
 
 
