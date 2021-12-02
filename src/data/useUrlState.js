@@ -5,7 +5,7 @@ import queryString from 'query-string';
 const update = (key, state, search) => {
   const query = {
     ...queryString.parse(search),
-    [key]: btoa(JSON.stringify(state)),
+    [key]: window.btoa(JSON.stringify(state)),
   };
 
   return `?${queryString.stringify(query)}`;
@@ -14,7 +14,7 @@ const update = (key, state, search) => {
 const initialize = (key, initialState, location) => {
   try {
     const search = queryString.parse(location.search);
-    return JSON.parse(atob(search[key]));
+    return JSON.parse(window.atob(search[key]));
   } catch (err) {
     return initialState || {};
   }
