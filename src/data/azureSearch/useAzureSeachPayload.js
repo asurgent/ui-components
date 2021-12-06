@@ -69,6 +69,7 @@ const useAzureSeachPayload = (pageSize) => ({
   items: (state, parsers) => ({ ...generate(state, pageSize, parsers) }),
   facets: (state, filterKey, parsers) => {
     const {
+      query,
       [tableState.FILTER_KEY]: filter,
     } = state;
     const { [filterKey]: _target, ...rest } = filter || {};
@@ -77,7 +78,7 @@ const useAzureSeachPayload = (pageSize) => ({
     return {
       ...generate(removeSelfFromState, 0, parsers),
       facets: [`${filterKey}, count:0`],
-      search_string: '',
+      search_string: `${query}*`,
     };
   },
 });
