@@ -61,7 +61,6 @@ export const FilterContentComponent = ({
   }, []);
 
   const items = useMemo(() => {
-    console.log(filterKey, data?.facets?.[filterKey]);
     if (!data || isLoading || !data.facets?.[filterKey]) {
       return [];
     }
