@@ -16,7 +16,7 @@ const scrollToTop = () => {
   window.scrollTo({ top: 0, behavior: 'smooth' });
 };
 
-export const TablePagination = ({ delta }) => {
+export const TablePagination = ({ delta, withTopScroll }) => {
   const { state, pageCount } = useContext(TableContext);
   const currentPage = state.getKey(PAGE_KEY);
 
@@ -25,7 +25,7 @@ export const TablePagination = ({ delta }) => {
     if (val >= 1) {
       state.setKey(PAGE_KEY, val);
     }
-    scrollToTop();
+    if (withTopScroll) scrollToTop();
   };
 
   const handleNextPage = () => {
@@ -33,12 +33,12 @@ export const TablePagination = ({ delta }) => {
     if (val <= pageCount) {
       state.setKey(PAGE_KEY, val);
     }
-    scrollToTop();
+    if (withTopScroll) scrollToTop();
   };
 
   const handlePageClick = (pageKey, pageValue) => {
     state.setKey(pageKey, pageValue);
-    scrollToTop();
+    if (withTopScroll) scrollToTop();
   };
 
   const pages = paginationCalculator(currentPage, pageCount, delta);
@@ -90,7 +90,9 @@ export const TablePagination = ({ delta }) => {
 
 TablePagination.propTypes = {
   delta: PropTypes.number,
+  withTopScroll: PropTypes.bool,
 };
 TablePagination.defaultProps = {
   delta: 4,
+  withTopScroll: true,
 };
