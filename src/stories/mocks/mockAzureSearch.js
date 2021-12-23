@@ -4,8 +4,8 @@ const resultsDefault = { configure: (idx) => ({ value: `Row ${idx}` }), count: 5
 const mockService = (
   facetKeys = [facetKeyDefault],
   results = { ...resultsDefault },
-  count = 5,
-  pages = 1,
+  count = 50,
+  pages = 5,
   page = 1,
 ) => async () => new Promise((resolve) => {
   const facets = {
