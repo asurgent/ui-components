@@ -14,7 +14,7 @@ const resultsDefault = {
   count: 10,
 };
 
-const test = (key, array) => array.reduce((acc, cur) => {
+const countFacets = (key, array) => array.reduce((acc, cur) => {
   const store = cur[key];
   const numberOfStores = acc[store] ? acc[store] + 1 : 1;
   return { ...acc, [store]: numberOfStores };
@@ -23,42 +23,45 @@ const test = (key, array) => array.reduce((acc, cur) => {
 const mergeFacets = (facetKeys) => ({
   ...(facetKeys.reduce((acc, facet) => {
     const merger = { ...facetKeyDefault, ...facet };
-    console.log('merger', merger);
 
-    console.log('mockedData', mockedData);
-    console.log('facet', facet);
+    const countedFacets = countFacets(facet.key, mockedData);
 
-    const mytest = test(facet.key, mockedData);
-    console.log('my test', mytest);
-    console.log('merger.key', merger.key);
+    const formattedFacets = Object
+      .entries(countedFacets)
+      .map((fac) => ({ value: fac[0], count: fac[1] }));
 
-    const facetResult = Array.from({ length: merger.count }).map((_, i) => merger.configure(i));
-    console.log('facetResult', facetResult);
-
-    const v = Object.entries(mytest).map((el) => ({ value: el[0], count: el[1] }));
     return {
       ...acc,
-      [merger.key]: v,
+      [merger.key]: formattedFacets,
     };
   }, {})),
 });
 
+const filterResult = (query, array) => array.filter((r) => {
+  const values = Object.values(r).map((val) => val.toLocaleLowerCase());
+  const regex = new RegExp(`${query}`, 'gi');
+  if (values.some((el) => el.match(regex))) {
+    return r;
+  }
+  return null;
+});
+
 const mockService = (
   facetKeys = [facetKeyDefault],
-  results = { ...resultsDefault },
+  results = mockedData,
   count = 50,
   pages = 5,
   page = 1,
-) => async () => new Promise((resolve) => {
-  console.log('facetKeys', facetKeys);
 
+) => async (_, payload) => new Promise((resolve) => {
+  const { query } = payload;
   const facets = mergeFacets(facetKeys);
-  const mergeResults = { ...resultsDefault, ...results };
+  const filtered = filterResult(query, mockedData);
 
   resolve({
     facets,
     page,
-    result: Array.from({ length: mergeResults.count }).map((_, i) => mergeResults.configure(i)),
+    result: filtered,
     total_pages: pages,
     total_count: count,
   });

@@ -52,16 +52,10 @@ const mockPayloadParser = (state, azureSearchParser) => {
     },
   };
 
-  console.log('state', state);
-
   if (state.isFilterTrigger) {
-    const something = azureSearchParser.facets(state, state.filterKey, parsers);
-    console.log('something', something);
-    return something;
+    return azureSearchParser.facets(state, state.filterKey, parsers);
   }
-  const something = azureSearchParser.items(state, parsers);
-  console.log('something', something);
-  return something;
+  return azureSearchParser.items(state, parsers);
 };
 
 const Template = () => (
@@ -108,7 +102,7 @@ const Template = () => (
         configuration={(filter) => ({
           title: `Affär: ${filter.value}`,
           value: filter.value,
-          subtitle: `${filter.count} users`,
+          subtitle: `${filter.count} types`,
         })}
       />
       <TableFilterSelect
