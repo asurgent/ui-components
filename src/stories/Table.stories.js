@@ -26,7 +26,6 @@ import mockAzureSearch from './mocks/mockAzureSearch';
 
 const mockService = mockAzureSearch([
   { key: 'customer_display_name' },
-  { key: 'resource_group' },
   { key: 'type' },
 ]);
 
@@ -56,21 +55,19 @@ const mockPayloadParser = (state, azureSearchParser) => {
   if (state.isFilterTrigger) {
     return azureSearchParser.facets(state, state.filterKey, parsers);
   }
-
   return azureSearchParser.items(state, parsers);
 };
 
 const Template = () => (
   <TableSearchProvider
-    initialValues={{ hidden: [true], stale: [false] }}
+    /* initialValues={{ hidden: [true], stale: [false] }} */
     pageSize={20}
     payload={mockPayloadParser}
     fetcher={mockService}
-    urlStateKey="tetare"
+    urlStateKey="urlStateKey"
     sort={[
-      { label: 'Name', value: 'name' },
       {
-        label: 'Created', value: 'created_at', desc: false, default: true,
+        label: 'Name', value: 'name', desc: false, default: true,
       },
     ]}
   >
@@ -89,33 +86,11 @@ const Template = () => (
           renderTags
         />
         <TableFilterSelect
-          title="changeResourceGroup"
-          label="resourceGroup"
-          filterKey="resource_group"
-          color="red"
-          renderTags
-        />
-        <TableFilterSelect
           title="changeType"
           label="type"
           filterKey="type"
           color="green"
           renderTags
-        />
-        <TableFilterTriState
-          title="changeIsMapped"
-          label="isMapped"
-          filterKey="is_mapped"
-        />
-        <TableFilterTriState
-          title="changeIsHidden"
-          label="isHidden"
-          filterKey="is_hidden"
-        />
-        <TableFilterBool
-          title="changeIStale"
-          label="isStale"
-          filterKey="is_stale"
         />
       </TableDrawer>
     </TableHeader>
@@ -125,27 +100,16 @@ const Template = () => (
         label="Customers"
         filterKey="customer_display_name"
         configuration={(filter) => ({
-          title: `hej ${filter.label}`,
-          value: filter.label,
-          subtitle: `${filter.count} users`,
+          title: `Affär: ${filter.value}`,
+          value: filter.value,
+          subtitle: `${filter.count} types`,
         })}
       />
       <TableFilterSelect
         renderTags={false}
-        label="Customers"
-        filterKey="resource_group"
-      />
-      <TableFilterTriState
-        label="Stale"
-        filterKey="stale"
-        renderTags
-      />
-      <TableFilterBool
-        title="asdf"
-        label="Show Hidden"
-        filterKey="hidden"
-        renderTags
-        horizontal
+        label="Type"
+        filterKey="type"
+        color="green"
       />
 
     </TableFilterStack>
@@ -155,24 +119,19 @@ const Template = () => (
     />
     <TableResultCount />
     <TableBody columns={[
-      { label: 'one', size: 'minmax(500px, 1fr)', render: false },
-      { label: 'two' },
-      { label: 'three' },
+      { label: 'Customer', size: '10rem' },
+      { label: 'Type', size: '1fr' },
     ]}
     >
       <TableBodyHeader />
       <TableRows>
         {(data, idx, RowComponent) => (
           <RowComponent key={idx}>
-            <Flex p={2} alignItems="center">{data.value}</Flex>
-            <Flex p={2} alignItems="center">hej</Flex>
-            <Flex p={2} alignItems="center">abc</Flex>
+            <Flex p={2} alignItems="center">{data.customer_display_name}</Flex>
+            <Flex p={2} alignItems="center">{data.type}</Flex>
           </RowComponent>
         )}
       </TableRows>
-      <TableRowCards>
-        {(_, idx) => <CardComp key={idx} />}
-      </TableRowCards>
     </TableBody>
     <TablePagination delta={4} />
   </TableSearchProvider>
@@ -180,3 +139,10 @@ const Template = () => (
 
 export const Primary = Template.bind({});
 Primary.args = {};
+
+/*
+Card version:
+ <TableRowCards>
+    {(_, idx) => <CardComp key={idx} />}
+  </TableRowCards>
+*/
