@@ -3,6 +3,15 @@ import { mockDBRes } from './mockResults';
 
 const mockedData = mockDBRes(20);
 
+const filterResult = (query, array) => array.filter((r) => {
+  const values = Object.values(r).map((val) => val.toLocaleLowerCase());
+  const regex = new RegExp(`${query}`, 'gi');
+  if (values.some((el) => el.match(regex))) {
+    return r;
+  }
+  return null;
+});
+
 const facetKeyDefault = {
   key: 'key',
   count: 5,
@@ -20,11 +29,13 @@ const countFacets = (key, array) => array.reduce((acc, cur) => {
   return { ...acc, [store]: numberOfStores };
 }, {});
 
-const mergeFacets = (facetKeys) => ({
+const mergeFacets = (query, facetKeys) => ({
   ...(facetKeys.reduce((acc, facet) => {
     const merger = { ...facetKeyDefault, ...facet };
 
-    const countedFacets = countFacets(facet.key, mockedData);
+    const filtered = filterResult(query, mockedData);
+
+    const countedFacets = countFacets(facet.key, filtered);
 
     const formattedFacets = Object
       .entries(countedFacets)
@@ -37,15 +48,6 @@ const mergeFacets = (facetKeys) => ({
   }, {})),
 });
 
-const filterResult = (query, array) => array.filter((r) => {
-  const values = Object.values(r).map((val) => val.toLocaleLowerCase());
-  const regex = new RegExp(`${query}`, 'gi');
-  if (values.some((el) => el.match(regex))) {
-    return r;
-  }
-  return null;
-});
-
 const mockService = (
   facetKeys = [facetKeyDefault],
   results = mockedData,
@@ -55,7 +57,7 @@ const mockService = (
 
 ) => async (_, payload) => new Promise((resolve) => {
   const { query } = payload;
-  const facets = mergeFacets(facetKeys);
+  const facets = mergeFacets(query, facetKeys);
   const filtered = filterResult(query, mockedData);
 
   resolve({
