@@ -40,7 +40,41 @@ export const theme = extendTheme({
   styles: {
     global: {
       html: {
-        fontSize: '100%',
+        fontSize: '16px',
+        textSizeAdjust: '100%',
+        fontFamily: 'Lato',
+        fontSmoothing: 'antialiased',
+        textRendering: 'optimizelegibility',
+        touchAction: 'manipulation',
+      },
+      h1: {
+        fontSize: '24px!important',
+        lineHeight: '28px',
+        paddingTop: '16px',
+        paddingBottom: '24px',
+      },
+      h2: {
+        fontSize: '22px!important',
+        lineHeight: '24px',
+        marginBottom: '8px',
+      },
+      h3: {
+        fontSize: '16px!important',
+        lineHeight: '24px',
+        marginBottom: '8px',
+      },
+      p: {
+        fontSize: '16px',
+        lineHeight: '20px',
+        marginTop: '8px',
+        marginBottom: '16px',
+      },
+    },
+  },
+  components: {
+    Heading: {
+      baseStyle: {
+        fontWeight: '500',
       },
     },
   },
