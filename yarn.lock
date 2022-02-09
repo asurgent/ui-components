@@ -16,10 +16,10 @@
     "eslint-plugin-react" "^7.22.0"
     "eslint-plugin-react-hooks" "^4.2.0"
 
-"@asurgent/ui@^1.13.180":
-  "integrity" "sha512-XrCVjTxkIHoqwWI3z6KDC8FWrQt1yhu2zSHgWyjaLM9jsCy2QYaZ7Pucgb5DfrO0Iz2JuaunYCVftIW01d42pA=="
-  "resolved" "https://npm.pkg.github.com/download/@asurgent/ui/1.13.180/e6fe260e84ef0bec9686b83f81c46c417e625474acd845858524a5057c383bf9"
-  "version" "1.13.180"
+"@asurgent/ui@^1.13.181":
+  "integrity" "sha512-mPHUpZn+Xq6pBoQfMvAP93PKxYc4ybUWeyQP2awj4ph4XqQ6qYQjglmUvr0UL9ET/NWoXzZ0T4s1feNGcnc9IA=="
+  "resolved" "https://npm.pkg.github.com/download/@asurgent/ui/1.13.181/d4504b3e9070b8f5b77436097f5e8f9adba7231df594ce33115021a7bb189879"
+  "version" "1.13.181"
   dependencies:
     "@chakra-ui/react" "^1.0.0"
     "@date-io/moment" "^1.3.9"
