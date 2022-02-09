@@ -4,9 +4,9 @@ import {
   ChakraProvider, 
   ColorModeScript  
 } from '@chakra-ui/react'
-import { QueryClient,  QueryClientProvider,} from 'react-query';
-import { I18nextProvider,initReactI18next } from 'react-i18next';
-import { i18next, addComponentTranslations } from './../src/translations'
+import { QueryClient, QueryClientProvider,} from 'react-query';
+import { I18nextProvider, initReactI18next } from 'react-i18next';
+import { i18next, addComponentTranslations } from './../src/translations';
 import { theme } from "./../src/style/chakra.config";
 
 i18next
@@ -25,8 +25,7 @@ i18next
     react: { wait: true },
   });
 
-addComponentTranslations()
-
+addComponentTranslations();
 
 const queryClient = new QueryClient({
   defaultOptions: {

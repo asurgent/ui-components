@@ -1,8 +1,8 @@
-import { i18n } from '@asurgent/ui';
+import { i18n } from '@asurgent/ui/dist';
 
 const { i18next, findTranslations } = i18n;
 
-const context = require.context('./../', true, /\.translation.js/);
+const context = require.context('./../', true, /\.translation.js$/);
 const resources = findTranslations(context, 'ui');
 
 export const addComponentTranslations = () => {

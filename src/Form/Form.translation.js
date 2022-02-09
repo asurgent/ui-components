@@ -1,4 +1,4 @@
-import addTranslation from '@asurgent/ui/lib/i18n/addTranslation';
+import addTranslation from '@asurgent/ui/dist/lib/i18n/addTranslation';
 
 export default addTranslation({
   id: 'Form.Component',
