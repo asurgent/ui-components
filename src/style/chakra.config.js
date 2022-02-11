@@ -77,5 +77,11 @@ export const theme = extendTheme({
         fontWeight: '500',
       },
     },
+    Tooltip: {
+      baseStyle: {
+        bg: 'black!important',
+        color: 'white',
+      },
+    },
   },
 });
