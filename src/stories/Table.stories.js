@@ -111,6 +111,12 @@ const Template = () => (
         filterKey="type"
         color="green"
       />
+      <TableFilterBool
+        title="some bool"
+        label="some boole"
+        filterKey="end"
+        horizontal
+      />
 
     </TableFilterStack>
     <TableFilterTags
