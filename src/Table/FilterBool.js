@@ -47,7 +47,7 @@ export const TableFilterBool = ({
   return (
     <StackComp horizontal={horizontal}>
       { title && (
-        <Text fontSize={labelSize} ml={horizontal ? 2 : 0}>
+        <Text fontSize={labelSize} ml={horizontal ? 2 : 0} mt={0} mb={0}>
           {title}
         </Text>
       )}
