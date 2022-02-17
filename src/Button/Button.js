@@ -49,7 +49,7 @@ const defaultProps = {
   variant: 'solid',
 };
 
-const Button2 = ({
+const Button = ({
   children,
   clearStateKeys,
   colorScheme,
@@ -133,7 +133,7 @@ const Button2 = ({
   );
 };
 
-Button2.propTypes = propTypes;
-Button2.defaultProps = defaultProps;
+Button.propTypes = propTypes;
+Button.defaultProps = defaultProps;
 
-export default Button2;
+export default Button;
