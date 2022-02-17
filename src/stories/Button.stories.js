@@ -1,7 +1,7 @@
 /* eslint-disable react/destructuring-assignment */
 import React from 'react';
 import { mdiCalendar, mdiAlertDecagram } from '@mdi/js';
-import Button from '../components/Button/Button2';
+import Button from '../Button';
 
 const Story = {
   title: 'Components/Button',
@@ -37,12 +37,9 @@ const Story = {
 
 export default Story;
 
-const ButtonTemplate = (args) => {
-  console.log('args', args);
-  return (
-    <Button {...args}>{ args.children}</Button>
-  );
-};
+const ButtonTemplate = (args) => (
+  <Button {...args}>{ args.children}</Button>
+);
 
 export const Btn = ButtonTemplate.bind({});
 Btn.args = {
@@ -57,6 +54,6 @@ Btn.args = {
   size: 'md',
   internalLink: null,
   externalLink: null,
-  mailto: 'fart@poop.com',
+  mailto: 'mailman@mailcompany.mail',
   onClick: () => console.log(123),
 };
