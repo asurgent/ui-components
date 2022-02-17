@@ -1,9 +1,5 @@
 import queryString from 'query-string';
 
-export const isExternalLink = (link) => (link || '').toString().match(/^(http(s)?:\/\/)/);
-export const isInteralLink = (link) => (link || '').toString().match(/^(\/)/);
-export const isValidMail = (link) => (link || '').toString().match(/^(.+@.+\.[a-zAZ]+)$/);
-
 export const cleanUpSearchString = (clearStateKeys, location) => {
   const search = queryString.parse(location.search);
 
