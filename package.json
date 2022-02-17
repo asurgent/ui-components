@@ -51,13 +51,15 @@
     "@asurgent/eslint-config-asurgent": "^1.2.1",
     "@babel/cli": "^7.14.3",
     "@babel/preset-react": "^7.13.13",
+    "@storybook/addon-controls": "^6.4.19",
     "@storybook/addons": "^6.2.9",
     "@storybook/preset-create-react-app": "^3.1.7",
     "@storybook/react": "^6.2.9",
     "babel-loader": "^8.2.2",
     "i18next": "^20.3.1",
     "react-i18next": "^11.10.0",
-    "react-scripts": "^4.0.3"
+    "react-scripts": "^4.0.3",
+    "storybook-addon-performance": "^0.16.1"
   },
   "keywords": []
 }
