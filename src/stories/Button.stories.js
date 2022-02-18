@@ -1,7 +1,7 @@
 /* eslint-disable react/destructuring-assignment */
 import React from 'react';
 import { mdiCalendar, mdiAlertDecagram } from '@mdi/js';
-import Button from '../Button';
+import { Button } from '../Button';
 
 const Story = {
   title: 'Components/Button',
