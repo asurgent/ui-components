@@ -8,6 +8,8 @@ import { QueryClient, QueryClientProvider,} from 'react-query';
 import { I18nextProvider, initReactI18next } from 'react-i18next';
 import { i18next, addComponentTranslations } from './../src/translations';
 import { theme } from "./../src/style/chakra.config";
+import { addDecorator } from '@storybook/react';
+import { withPerformance } from 'storybook-addon-performance';
 
 i18next
   .use(initReactI18next)
@@ -26,6 +28,7 @@ i18next
   });
 
 addComponentTranslations();
+addDecorator(withPerformance);
 
 const queryClient = new QueryClient({
   defaultOptions: {
