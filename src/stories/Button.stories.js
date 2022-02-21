@@ -13,6 +13,9 @@ const Story = {
     variant: {
       control: { type: 'select', options: ['solid', 'outline', 'ghost', 'link'] },
     },
+    type: {
+      control: { type: 'select', options: ['submit', 'button'] },
+    },
     size: {
       control: { type: 'select', options: ['xs', 'sm', 'md', 'lg'] },
     },
@@ -55,5 +58,6 @@ Btn.args = {
   internalLink: null,
   externalLink: null,
   mailto: 'mailman@mailcompany.mail',
+  type: null,
   onClick: () => console.log(123),
 };

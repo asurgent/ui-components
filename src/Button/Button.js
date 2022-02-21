@@ -26,6 +26,7 @@ const propTypes = {
   saveToFile: PropTypes.oneOfType([PropTypes.func, PropTypes.bool]),
   saveToFilename: PropTypes.string,
   size: PropTypes.string,
+  type: PropTypes.string,
   variant: PropTypes.string,
 };
 
@@ -41,11 +42,12 @@ const defaultProps = {
   leftIcon: null,
   loadingText: null,
   mailto: null,
-  onClick: (e) => e.preventDefault(),
+  onClick: () => null,
   rightIcon: null,
   saveToFile: false,
   saveToFilename: '',
   size: 'md',
+  type: null,
   variant: 'solid',
 };
 
@@ -66,11 +68,17 @@ const Button = ({
   saveToFile,
   saveToFilename,
   size,
+  type,
   variant,
+  ...rest
 }) => {
   const location = useLocation();
 
   const handleClick = async (event) => {
+    if (type?.toLowerCase() === 'submit') {
+      event.preventDefault();
+    }
+
     if (!disabled) {
       if (saveToFile && typeof saveToFile === 'function') {
         const result = await saveToFile();
@@ -80,9 +88,6 @@ const Button = ({
       if (onClick) {
         onClick(event);
       }
-    } else {
-      event.preventDefault();
-      event.stopPropagation();
     }
   };
 
@@ -127,6 +132,8 @@ const Button = ({
       disabled={disabled}
       size={size}
       onClick={handleClick}
+      type={type}
+      {...rest}
     >
       <Children />
     </ChakraBtn>
