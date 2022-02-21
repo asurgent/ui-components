@@ -31,7 +31,7 @@ const propTypes = {
 };
 
 const defaultProps = {
-  children: 'hejhej',
+  children: null,
   clearStateKeys: [],
   colorScheme: 'asurgent',
   disabled: false,
