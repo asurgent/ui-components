@@ -11,7 +11,7 @@ const Story = {
       control: { type: 'select', options: ['asurgent', 'gold', 'ruby', 'green'] },
     },
     variant: {
-      control: { type: 'select', options: ['solid', 'outline', 'ghost', 'link'] },
+      control: { type: 'select', options: ['solid', 'outline', 'ghost', 'link', 'block'] },
     },
     type: {
       control: { type: 'select', options: ['submit', 'button'] },

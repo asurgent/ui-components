@@ -30,6 +30,21 @@ const propTypes = {
   variant: PropTypes.string,
 };
 
+const blockStyle = {
+  background: 'rgb(255, 255, 255)',
+  border: '2px dashed rgb(218, 218, 218)',
+  boxSizing: 'border-box',
+  height: '8rem',
+  width: '100%',
+  display: 'flex',
+  justifyContent: 'center',
+  alignItems: 'center',
+  textTransform: 'uppercase',
+  color: 'rgb(32, 85, 124)',
+  marginBottom: '1rem',
+  fontWeight: '500',
+};
+
 const defaultProps = {
   children: null,
   clearStateKeys: [],
@@ -121,6 +136,8 @@ const Button = ({
     return children;
   };
 
+  const extraStyling = variant === 'block' ? { ...rest.style, ...blockStyle } : { ...rest.style };
+
   return (
     <ChakraBtn
       leftIcon={leftIcon && <MdiIcon size={0.7} path={leftIcon} />}
@@ -133,6 +150,7 @@ const Button = ({
       size={size}
       onClick={handleClick}
       type={type}
+      style={{ ...extraStyling }}
       {...rest}
     >
       <Children />
