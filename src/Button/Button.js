@@ -9,6 +9,21 @@ import {
   cleanUpSearchString,
 } from './helper';
 
+const blockStyle = {
+  background: 'rgb(255, 255, 255)',
+  border: '2px dashed rgb(218, 218, 218)',
+  boxSizing: 'border-box',
+  height: '8rem',
+  width: '100%',
+  display: 'flex',
+  justifyContent: 'center',
+  alignItems: 'center',
+  textTransform: 'uppercase',
+  color: 'rgb(32, 85, 124)',
+  marginBottom: '1rem',
+  fontWeight: '500',
+};
+
 const propTypes = {
   children: PropTypes.any,
   clearStateKeys: PropTypes.instanceOf(Array),
@@ -26,23 +41,9 @@ const propTypes = {
   saveToFile: PropTypes.oneOfType([PropTypes.func, PropTypes.bool]),
   saveToFilename: PropTypes.string,
   size: PropTypes.string,
+  style: PropTypes.instanceOf(Object),
   type: PropTypes.string,
   variant: PropTypes.string,
-};
-
-const blockStyle = {
-  background: 'rgb(255, 255, 255)',
-  border: '2px dashed rgb(218, 218, 218)',
-  boxSizing: 'border-box',
-  height: '8rem',
-  width: '100%',
-  display: 'flex',
-  justifyContent: 'center',
-  alignItems: 'center',
-  textTransform: 'uppercase',
-  color: 'rgb(32, 85, 124)',
-  marginBottom: '1rem',
-  fontWeight: '500',
 };
 
 const defaultProps = {
@@ -62,6 +63,7 @@ const defaultProps = {
   saveToFile: false,
   saveToFilename: '',
   size: 'md',
+  style: {},
   type: null,
   variant: 'solid',
 };
@@ -83,6 +85,7 @@ const Button = ({
   saveToFile,
   saveToFilename,
   size,
+  style,
   type,
   variant,
   ...rest
@@ -136,7 +139,9 @@ const Button = ({
     return children;
   };
 
-  const extraStyling = variant === 'block' ? { ...rest.style, ...blockStyle } : { ...rest.style };
+  const extraStyling = variant === 'block' ? { ...blockStyle, ...style } : { ...style };
+
+  console.log(extraStyling);
 
   return (
     <ChakraBtn
