@@ -45,7 +45,8 @@
     "react-query": "^3.16.0",
     "react-router": "^5.2.0",
     "react-router-dom": "^5.2.0",
-    "search-query-parser": "^1.5.5"
+    "search-query-parser": "^1.5.5",
+    "styled-components": "^5.3.3"
   },
   "devDependencies": {
     "@asurgent/eslint-config-asurgent": "^1.2.1",
