@@ -34,16 +34,11 @@ export default {
   component: TableSearchProvider,
   argTypes: {
     isLoading: {
-      type: 'boolean',
+      options: [false, true],
+      control: { type: 'radio' },
     },
   },
 };
-
-const CardComp = () => (
-  <Box bg="tomato" p={8}>
-    Hej
-  </Box>
-);
 
 const mockPayloadParser = (state, azureSearchParser) => {
   const parsers = {
@@ -58,7 +53,7 @@ const mockPayloadParser = (state, azureSearchParser) => {
   return azureSearchParser.items(state, parsers);
 };
 
-const Template = () => (
+const Template = (args) => (
   <TableSearchProvider
     /* initialValues={{ hidden: [true], stale: [false] }} */
     pageSize={20}
@@ -70,6 +65,7 @@ const Template = () => (
         label: 'Name', value: 'name', desc: false, default: true,
       },
     ]}
+    {...args}
   >
     <TableHeader>
       <TableSearch />
@@ -144,11 +140,6 @@ const Template = () => (
 );
 
 export const Primary = Template.bind({});
-Primary.args = {};
-
-/*
-Card version:
- <TableRowCards>
-    {(_, idx) => <CardComp key={idx} />}
-  </TableRowCards>
-*/
+Primary.args = {
+  isLoading: false,
+};
