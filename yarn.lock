@@ -7279,9 +7279,9 @@
     "domelementtype" "^2.2.0"
 
 "dompurify@^2.2.7":
-  "integrity" "sha512-xGWt+NHAQS+4tpgbOAI08yxW0Pr256Gu/FNE2frZVTbgrBUn8M7tz7/ktS/LZ2MHeGqz6topj0/xY+y8R5FBFw=="
-  "resolved" "https://registry.npmjs.org/dompurify/-/dompurify-2.3.1.tgz"
-  "version" "2.3.1"
+  "integrity" "sha512-OFP2u/3T1R5CEgWCEONuJ1a5+MFKnOYpkywpUSxv/dj1LeBT1erK+JwM7zK0ROy2BRhqVCf0LRw/kHqKuMkVGg=="
+  "resolved" "https://registry.npmjs.org/dompurify/-/dompurify-2.3.6.tgz"
+  "version" "2.3.6"
 
 "domutils@^1.7.0":
   "integrity" "sha512-Lgd2XcJ/NjEw+7tFvfKxOzCYKZsdct5lczQ2ZaQY8Djz7pfAD3Gbp8ySJWtreII/vDlMVmxwa6pHmdxIYgttDg=="

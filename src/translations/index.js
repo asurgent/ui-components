@@ -1,4 +1,4 @@
-import { i18n } from '@asurgent/ui/dist';
+import * as i18n from '../lib/i18n';
 
 const { i18next, findTranslations } = i18n;
 
