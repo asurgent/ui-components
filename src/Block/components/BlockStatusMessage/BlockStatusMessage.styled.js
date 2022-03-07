@@ -5,12 +5,16 @@ export const ErrorState = styled(BaseBlock)`
     justify-content: center;
     align-items: flex-start;  
     flex-direction: column;
-    background: ${({ theme }) => theme.rgba(theme.ruby800, 0.1)};
-    border: 1px solid ${({ theme }) => theme.rgba(theme.ruby800, 0.8)};
-    border-radius: 5px;
-
     padding: 1rem;
-    @media screen and (min-width: ${(prop) => `${prop.theme.breakPointMobile * 10}px`}) {
+    border: 1px solid;
+    border-radius: 5px;
+    background: ${({ colors }) => colors?.ruby?.['400']};
+    border-color: ${({ colors }) => {
+    console.log(colors?.ruby?.['300']);
+    return colors?.ruby?.['300'];
+  }};
+
+    @media screen and (min-width: ${({ breakpoints }) => breakpoints?.md}) {
         padding: 1rem;
     }
     > b.title {
@@ -23,11 +27,11 @@ export const ErrorState = styled(BaseBlock)`
 `;
 
 export const WarningState = styled(ErrorState)`
-    background: ${({ theme }) => theme.rgba(theme.gold800, 0.1)};
-    border: 1px solid ${({ theme }) => theme.rgba(theme.gold800, 0.8)};
+    background: ${({ colors }) => colors?.gold?.['400']};
+    border-color: ${({ colors }) => colors?.gold?.['100']};
 `;
 
 export const InfoState = styled(ErrorState)`
-    background: ${({ theme }) => theme.rgba(theme.blue100, 0.1)};
-    border-color: ${({ theme }) => theme.rgba(theme.blue100, 0.8)};
+    background: ${({ colors }) => colors?.blue?.['50']};
+    border-color: ${({ colors }) => colors?.blue?.['800']};
 `;

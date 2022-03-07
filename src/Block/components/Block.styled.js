@@ -15,52 +15,75 @@ export const BaseBlock = styled.div`
     return '0';
   }};
     padding: ${({ withPadding }) => (withPadding ? '1rem' : 0)};
-    background: ${({ renderTransparent, theme }) => (renderTransparent === true ? 'transparent' : theme.white)};
-    
-    @media screen and (min-width: ${(prop) => `${prop.theme.breakPointMobile * 10}px`}) {
-        padding: ${({ withPadding }) => (withPadding ? '2rem' : 0)};
-    }
+    background: ${({ renderTransparent }) => (renderTransparent === true ? 'transparent' : '#fff')};
 `;
 
 export const Left = styled(BaseBlock)`
+    @media screen and (min-width: ${({ breakpoints }) => breakpoints?.md}) {
+        padding: ${({ withPadding }) => (withPadding ? '2rem' : 0)};
+    }
     align-items: flex-start;
 `;
 
 export const Center = styled(BaseBlock)`
+    @media screen and (min-width: ${({ breakpoints }) => breakpoints?.md}) {
+        padding: ${({ withPadding }) => (withPadding ? '2rem' : 0)};
+    }
     align-items: center;
 `;
 
 export const Right = styled(BaseBlock)`
+    @media screen and (min-width: ${({ breakpoints }) => breakpoints?.md}) {
+        padding: ${({ withPadding }) => (withPadding ? '2rem' : 0)};
+    }
     align-items: flex-end;
 `;
 
 export const Plain = styled(BaseBlock)`
+    @media screen and (min-width: ${({ breakpoints }) => breakpoints?.md}) {
+        padding: ${({ withPadding }) => (withPadding ? '2rem' : 0)};
+    }
     align-items: flex-start;
 `;
 
 export const Stretch = styled(BaseBlock)`
+    @media screen and (min-width: ${({ breakpoints }) => breakpoints?.md}) {
+        padding: ${({ withPadding }) => (withPadding ? '2rem' : 0)};
+    }
     align-items: stretch;
 `;
 
 export const Bordered = styled(BaseBlock)`
+    @media screen and (min-width: ${({ breakpoints }) => breakpoints?.md}) {
+        padding: ${({ withPadding }) => (withPadding ? '2rem' : 0)};
+    }
     border-radius: 5px;
     background: ${({ theme }) => theme.white};
-    filter: ${({ theme, noShadow }) => (noShadow ? 'none' : `drop-shadow(0 1px 6px ${theme.rgba(theme.black, 0.2)})`)};
-    border: ${({ theme, noShadow }) => (noShadow ? `1px solid ${theme.gray300}` : 'none')};
+    filter: ${({ noShadow }) => (noShadow ? 'none' : 'drop-shadow(0 1px 6px rgba(#000, 0.2))')};
+    border: ${({ colors, noShadow }) => (noShadow ? `1px solid ${colors?.gray?.['300']}` : 'none')};
 `;
 
 export const SpaceBetween = styled(BaseBlock)`
+    @media screen and (min-width: ${({ breakpoints }) => breakpoints?.md}) {
+        padding: ${({ withPadding }) => (withPadding ? '2rem' : 0)};
+    }
     justify-content: space-between;
     flex-direction: row;
     align-items: unset;
 `;
 
 export const Wrap = styled(BaseBlock)`   
+    @media screen and (min-width: ${({ breakpoints }) => breakpoints?.md}) {
+        padding: ${({ withPadding }) => (withPadding ? '2rem' : 0)};
+    }
     flex-wrap: ${({ wrapReverse }) => (wrapReverse === true ? 'wrap-reverse' : 'wrap')};
     flex-direction: unset;
 `;
 
 export const WrapGrid = styled(BaseBlock)`
+    @media screen and (min-width: ${({ breakpoints }) => breakpoints?.md}) {
+        padding: ${({ withPadding }) => (withPadding ? '2rem' : 0)};
+    }
     display: grid;
     grid-template-columns: ${({ columnMinWidth }) => `repeat(auto-fit, minmax(${columnMinWidth || 200}px, 1fr))`};
     grid-gap: ${({ gridGap }) => (gridGap ? `${gridGap}px` : '0')};

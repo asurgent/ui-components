@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { useTheme } from '@chakra-ui/react';
 import { ErrorState, InfoState, WarningState } from './BlockStatusMessage.styled';
 
 const propTypes = {
@@ -23,36 +24,46 @@ const defaultProps = {
 
 const ErrorMessage = ({
   title, children, ...props
-}) => (
-  <ErrorState {...props}>
-    {title && <b className="title">{title}</b>}
-    {children}
-  </ErrorState>
-);
+}) => {
+  const { colors, breakpoints } = useTheme();
+  console.log(colors, breakpoints);
+  return (
+    <ErrorState breakpoints={breakpoints} colors={colors} {...props}>
+      {title && <b className="title">{title}</b>}
+      {children}
+    </ErrorState>
+  );
+};
 
 ErrorMessage.propTypes = propTypes;
 ErrorMessage.defaultProps = defaultProps;
 
 const WarningMessage = ({
   title, children, ...props
-}) => (
-  <WarningState {...props}>
-    {title && <b className="title">{title}</b>}
-    {children}
-  </WarningState>
-);
+}) => {
+  const { colors } = useTheme();
+  return (
+    <WarningState colors={colors} {...props}>
+      {title && <b className="title">{title}</b>}
+      {children}
+    </WarningState>
+  );
+};
 
 WarningMessage.propTypes = propTypes;
 WarningMessage.defaultProps = defaultProps;
 
 const InfoMessage = ({
   title, children, ...props
-}) => (
-  <InfoState {...props}>
-    {title && <b className="title">{title}</b>}
-    {children}
-  </InfoState>
-);
+}) => {
+  const { colors } = useTheme();
+  return (
+    <InfoState colors={colors} {...props}>
+      {title && <b className="title">{title}</b>}
+      {children}
+    </InfoState>
+  );
+};
 
 InfoMessage.propTypes = propTypes;
 InfoMessage.defaultProps = defaultProps;

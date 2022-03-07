@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { useTheme } from '@chakra-ui/react';
 import * as C from './Block.styled';
 
 const propTypes = {
@@ -21,114 +22,147 @@ const defaultProps = {
 
 export const Center = ({
   children, renderTransparent, withMargins, withBottomMargin,
-}) => (
-  <C.Center
-    renderTransparent={renderTransparent}
-    withMargins={withMargins}
-    withBottomMargin={withBottomMargin}
-  >
-    {children}
-  </C.Center>
-);
+}) => {
+  const { breakpoints } = useTheme();
+  return (
+    <C.Center
+      breakpoints={breakpoints}
+      renderTransparent={renderTransparent}
+      withMargins={withMargins}
+      withBottomMargin={withBottomMargin}
+    >
+      {children}
+    </C.Center>
+  );
+};
 Center.propTypes = propTypes;
 Center.defaultProps = defaultProps;
 
 export const Left = ({
   children, renderTransparent, withMargins, withBottomMargin,
-}) => (
-  <C.Left
-    renderTransparent={renderTransparent}
-    withMargins={withMargins}
-    withBottomMargin={withBottomMargin}
-  >
-    {children}
-  </C.Left>
-);
+}) => {
+  const { breakpoints } = useTheme();
+  return (
+    <C.Left
+      breakpoints={breakpoints}
+      renderTransparent={renderTransparent}
+      withMargins={withMargins}
+      withBottomMargin={withBottomMargin}
+    >
+      {children}
+    </C.Left>
+  );
+};
 Left.propTypes = propTypes;
 Left.defaultProps = defaultProps;
 
 export const Right = ({
   children, renderTransparent, withMargins, withBottomMargin,
-}) => (
-  <C.Right
-    renderTransparent={renderTransparent}
-    withMargins={withMargins}
-    withBottomMargin={withBottomMargin}
-  >
-    {children}
-  </C.Right>
-);
+}) => {
+  const { breakpoints } = useTheme();
+  return (
+    <C.Right
+      breakpoints={breakpoints}
+      renderTransparent={renderTransparent}
+      withMargins={withMargins}
+      withBottomMargin={withBottomMargin}
+    >
+      {children}
+    </C.Right>
+  );
+};
 Right.propTypes = propTypes;
 Right.defaultProps = defaultProps;
 
 export const Bordered = ({
   children, renderTransparent, withMargins, withBottomMargin,
-}) => (
-  <C.Bordered
-    renderTransparent={renderTransparent}
-    withMargins={withMargins}
-    withBottomMargin={withBottomMargin}
-  >
-    {children}
-  </C.Bordered>
-);
+}) => {
+  const { colors, breakpoints } = useTheme();
+  return (
+    <C.Bordered
+      breakpoints={breakpoints}
+      colors={colors}
+      renderTransparent={renderTransparent}
+      withMargins={withMargins}
+      withBottomMargin={withBottomMargin}
+    >
+      {children}
+    </C.Bordered>
+  );
+};
 Bordered.propTypes = propTypes;
 Bordered.defaultProps = defaultProps;
 
 export const Plain = ({
   children, renderTransparent, withMargins, withBottomMargin,
-}) => (
-  <C.Plain
-    renderTransparent={renderTransparent}
-    withMargins={withMargins}
-    withBottomMargin={withBottomMargin}
-  >
-    {children}
-  </C.Plain>
-);
+}) => {
+  const { breakpoints } = useTheme();
+  return (
+    <C.Plain
+      breakpoints={breakpoints}
+      renderTransparent={renderTransparent}
+      withMargins={withMargins}
+      withBottomMargin={withBottomMargin}
+    >
+      {children}
+    </C.Plain>
+  );
+};
 Plain.propTypes = propTypes;
 Plain.defaultProps = defaultProps;
 
 export const SpaceBetween = ({
   children, renderTransparent, withMargins, withBottomMargin,
-}) => (
-  <C.SpaceBetween
-    renderTransparent={renderTransparent}
-    withMargins={withMargins}
-    withBottomMargin={withBottomMargin}
-  >
-    {children}
-  </C.SpaceBetween>
-);
+}) => {
+  const { breakpoints } = useTheme();
+  return (
+    <C.SpaceBetween
+      breakpoints={breakpoints}
+      renderTransparent={renderTransparent}
+      withMargins={withMargins}
+      withBottomMargin={withBottomMargin}
+    >
+      {children}
+    </C.SpaceBetween>
+  );
+};
 SpaceBetween.propTypes = propTypes;
 SpaceBetween.defaultProps = defaultProps;
 
 export const Stretch = ({
   children, renderTransparent, withMargins, withBottomMargin,
-}) => (
-  <C.Stretch
-    renderTransparent={renderTransparent}
-    withMargins={withMargins}
-    withBottomMargin={withBottomMargin}
-  >
-    {children}
-  </C.Stretch>
-);
+}) => {
+  const { breakpoints } = useTheme();
+  return (
+    <C.Stretch
+      breakpoints={breakpoints}
+      renderTransparent={renderTransparent}
+      withMargins={withMargins}
+      withBottomMargin={withBottomMargin}
+    >
+      {children}
+    </C.Stretch>
+  );
+};
 Stretch.propTypes = propTypes;
 Stretch.defaultProps = defaultProps;
 
 export const Wrap = ({
   children, renderTransparent, withMargins, withBottomMargin, wrapReverse,
-}) => (
-  <C.Wrap
-    wrapReverse={wrapReverse}
-    renderTransparent={renderTransparent}
-    withMargins={withMargins}
-    withBottomMargin={withBottomMargin}
-  >
-    {children}
-  </C.Wrap>
-);
+}) => {
+  const { breakpoints } = useTheme();
+  return (
+    <C.Wrap
+      breakpoints={breakpoints}
+      wrapReverse={wrapReverse}
+      renderTransparent={renderTransparent}
+      withMargins={withMargins}
+      withBottomMargin={withBottomMargin}
+    >
+      {children}
+    </C.Wrap>
+  );
+};
 Wrap.propTypes = { ...propTypes, wrapReverse: PropTypes.bool };
 Wrap.defaultProps = { ...defaultProps, wrapReverse: false };
 
@@ -140,18 +174,22 @@ export const WrapGrid = ({
   columnMinWidth,
   gridGap,
   stretchColumns,
-}) => (
-  <C.WrapGrid
-    renderTransparent={renderTransparent}
-    withMargins={withMargins}
-    withBottomMargin={withBottomMargin}
-    columnMinWidth={columnMinWidth}
-    gridGap={gridGap}
-    stretchColumns={stretchColumns}
-  >
-    {children}
-  </C.WrapGrid>
-);
+}) => {
+  const { breakpoints } = useTheme();
+  return (
+    <C.WrapGrid
+      breakpoints={breakpoints}
+      renderTransparent={renderTransparent}
+      withMargins={withMargins}
+      withBottomMargin={withBottomMargin}
+      columnMinWidth={columnMinWidth}
+      gridGap={gridGap}
+      stretchColumns={stretchColumns}
+    >
+      {children}
+    </C.WrapGrid>
+  );
+};
 WrapGrid.propTypes = {
   ...propTypes,
   columnMinWidth: PropTypes.number,
