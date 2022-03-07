@@ -8,11 +8,8 @@ export const ErrorState = styled(BaseBlock)`
     padding: 1rem;
     border: 1px solid;
     border-radius: 5px;
-    background: ${({ colors }) => colors?.ruby?.['400']};
-    border-color: ${({ colors }) => {
-    console.log(colors?.ruby?.['300']);
-    return colors?.ruby?.['300'];
-  }};
+    background: ${({ colors }) => colors?.ruby?.['200']};
+    border-color: ${({ colors }) => colors?.ruby?.['400']};
 
     @media screen and (min-width: ${({ breakpoints }) => breakpoints?.md}) {
         padding: 1rem;
@@ -27,11 +24,11 @@ export const ErrorState = styled(BaseBlock)`
 `;
 
 export const WarningState = styled(ErrorState)`
-    background: ${({ colors }) => colors?.gold?.['400']};
-    border-color: ${({ colors }) => colors?.gold?.['100']};
+    background: ${({ colors }) => colors?.gold?.['200']};
+    border-color: ${({ colors }) => colors?.gold?.['400']};
 `;
 
 export const InfoState = styled(ErrorState)`
     background: ${({ colors }) => colors?.blue?.['50']};
-    border-color: ${({ colors }) => colors?.blue?.['800']};
+    border-color: ${({ colors }) => colors?.blue?.['100']};
 `;
