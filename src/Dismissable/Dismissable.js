@@ -1,4 +1,3 @@
-/* eslint-disable */
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import MdiIcon from '@mdi/react';
@@ -60,7 +59,7 @@ export const DismissablePrimary = ({
   return (
     <Collapse in={!fadeOut} animateOpacity>
 
-      <C.ContainerPrimary withBottomMargin={withBottomMargin} colors={ colors}>
+      <C.ContainerPrimary withBottomMargin={withBottomMargin} colors={colors}>
         <C.Header>
           <h3>{title}</h3>
           <C.Dismiss onClick={() => handleDismiss()}>
@@ -108,7 +107,7 @@ export const DismissablePlain = ({
 
   return (
     <Collapse in={!fadeOut} animateOpacity>
-      <C.ContainerPlain withBottomMargin={withBottomMargin} colors={ colors}>
+      <C.ContainerPlain withBottomMargin={withBottomMargin} colors={colors}>
         <C.Header>
           <h3>{title}</h3>
           <C.Dismiss onClick={() => handleDismiss()}>
