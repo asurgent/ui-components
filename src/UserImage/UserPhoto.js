@@ -50,8 +50,7 @@ const UserPhoto = (props) => {
 
   useEffect(() => {
     setUrl(href);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [href]);
 
   const onLoad = () => {
     setImageExists(true);
