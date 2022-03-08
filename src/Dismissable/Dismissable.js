@@ -11,10 +11,6 @@ const propTypes = {
   */
   id: PropTypes.string.isRequired,
   title: PropTypes.string.isRequired,
-  /**
-  * Fade out speed in milliseconds
-  */
-  fadeOutSpeed: PropTypes.number,
   children: PropTypes.oneOfType([
     PropTypes.arrayOf(PropTypes.element),
     PropTypes.element,
@@ -26,13 +22,12 @@ const propTypes = {
 };
 
 const defaultProps = {
-  fadeOutSpeed: 0,
   children: null,
   withBottomMargin: false,
 };
 
 export const DismissablePrimary = ({
-  id, title, fadeOutSpeed, withBottomMargin, children,
+  id, title, withBottomMargin, children,
 }) => {
   const { colors } = useTheme();
 
@@ -46,10 +41,8 @@ export const DismissablePrimary = ({
 
   const handleDismiss = () => {
     setFadeOut(true);
-    setTimeout(() => {
-      setDismissed(true);
-      window.localStorage.setItem(id, true);
-    }, fadeOutSpeed);
+    setDismissed(true);
+    window.localStorage.setItem(id, true);
   };
 
   if (isDismissed) {
@@ -80,7 +73,7 @@ DismissablePrimary.propTypes = propTypes;
 DismissablePrimary.defaultProps = defaultProps;
 
 export const DismissablePlain = ({
-  id, title, fadeOutSpeed, withBottomMargin, children,
+  id, title, withBottomMargin, children,
 }) => {
   const { colors } = useTheme();
 
@@ -94,13 +87,10 @@ export const DismissablePlain = ({
 
   const handleDismiss = () => {
     setFadeOut(true);
-    setTimeout(() => {
-      setDismissed(true);
-      window.localStorage.setItem(id, true);
-    }, fadeOutSpeed);
+    setDismissed(true);
+    window.localStorage.setItem(id, true);
   };
 
-  console.log('isDismissed', isDismissed);
   if (isDismissed) {
     return null;
   }
