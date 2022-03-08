@@ -141,8 +141,6 @@ const Button = ({
 
   const extraStyling = variant === 'block' ? { ...blockStyle, ...style } : { ...style };
 
-  console.log(extraStyling);
-
   return (
     <ChakraBtn
       leftIcon={leftIcon && <MdiIcon size={0.7} path={leftIcon} />}

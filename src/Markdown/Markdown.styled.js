@@ -35,7 +35,7 @@ export const Markdown = styled.div`
             color: ${() => theme.gray800};
             border: 1px solid ${() => theme.gray300};
             background-color: white;
-            filter: ${() => `drop-shadow(1px 1px 1px ${theme.rgba(theme.black, 0.2)})`};
+            filter: drop-shadow(1px 1px 1px rgba('#000', 0.2);
             border-radius: 3px;
             cursor: pointer;
         }
