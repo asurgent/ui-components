@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useMemo } from 'react';
 import PropTypes from 'prop-types';
 import MdiIcon from '@mdi/react';
 import { mdiClose } from '@mdi/js';
-import { useTheme, Collapse } from '@chakra-ui/react';
+import { useTheme, Collapse, useDisclosure } from '@chakra-ui/react';
 import * as C from './Dismissable.styled';
 
 const propTypes = {
@@ -30,27 +30,21 @@ export const DismissablePrimary = ({
   id, title, withBottomMargin, children,
 }) => {
   const { colors } = useTheme();
+  const { isOpen, onToggle } = useDisclosure();
 
-  const [isDismissed, setDismissed] = useState(true);
-  const [fadeOut, setFadeOut] = useState(false);
-
-  useEffect(() => {
-    const dismissedEarlier = JSON.parse(window.localStorage.getItem(id));
-    setDismissed(dismissedEarlier || false);
-  }, [id]);
+  const dismissedEarlier = useMemo(() => JSON.parse(window.localStorage.getItem(id)), [id]);
 
   const handleDismiss = () => {
-    setFadeOut(true);
-    setDismissed(true);
+    onToggle(!isOpen);
     window.localStorage.setItem(id, true);
   };
 
-  if (isDismissed) {
+  if (dismissedEarlier) {
     return null;
   }
 
   return (
-    <Collapse in={!fadeOut} animateOpacity>
+    <Collapse in={!isOpen} animateOpacity>
 
       <C.ContainerPrimary withBottomMargin={withBottomMargin} colors={colors}>
         <C.Header>
@@ -76,27 +70,21 @@ export const DismissablePlain = ({
   id, title, withBottomMargin, children,
 }) => {
   const { colors } = useTheme();
+  const { isOpen, onToggle } = useDisclosure();
 
-  const [isDismissed, setDismissed] = useState(true);
-  const [fadeOut, setFadeOut] = useState(false);
-
-  useEffect(() => {
-    const dismissedEarlier = JSON.parse(window.localStorage.getItem(id));
-    setDismissed(dismissedEarlier || false);
-  }, [id]);
+  const dismissedEarlier = useMemo(() => JSON.parse(window.localStorage.getItem(id)), [id]);
 
   const handleDismiss = () => {
-    setFadeOut(true);
-    setDismissed(true);
+    onToggle(!isOpen);
     window.localStorage.setItem(id, true);
   };
 
-  if (isDismissed) {
+  if (dismissedEarlier) {
     return null;
   }
 
   return (
-    <Collapse in={!fadeOut} animateOpacity>
+    <Collapse in={!isOpen} animateOpacity>
       <C.ContainerPlain withBottomMargin={withBottomMargin} colors={colors}>
         <C.Header>
           <h3>{title}</h3>
