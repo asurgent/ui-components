@@ -5,7 +5,6 @@ export const EntityName = styled.div`
   align-items: center;
   svg {
     margin-right: 0.625rem;
-    margin-top: '4px';
     color: black;
     opacity: ${({ hasCloudops }) => (hasCloudops ? 1 : 0.15)};
   } 
@@ -30,5 +29,5 @@ export const Content = styled.div`
   }
 `;
 export const Gray = styled.span`
-  color: ${({ theme }) => theme.gray600};
+  color: ${({ colors }) => colors?.gray?.['600']};
 `;

@@ -45,53 +45,56 @@ const Entity = ({
   resourceGroup,
   displayName,
   hasCloudops,
-}) => (
-  <Flex flexDir="column" p={2}>
-    <C.Header>
-      <C.EntityName hasCloudops={hasCloudops}>
-        <MdiIcon
-          path={hasCloudops ? mdiEye : mdiEyeOff}
-          size={0.625}
-        />
-        <Text fontWeight="bold">{name}</Text>
-      </C.EntityName>
-      <Text fontSize="sm">{`ID ${id}`}</Text>
-    </C.Header>
+}) => {
+  const { colors } = useTheme();
+  return (
+    <Flex flexDir="column" p={2}>
+      <C.Header>
+        <C.EntityName hasCloudops={hasCloudops}>
+          <MdiIcon
+            path={hasCloudops ? mdiEye : mdiEyeOff}
+            size={0.625}
+          />
+          <Text fontWeight="bold">{name}</Text>
+        </C.EntityName>
+        <Text fontSize="sm">{`ID ${id}`}</Text>
+      </C.Header>
 
-    <Divider mb={1} />
+      <Divider mb={1} />
 
-    <C.Content>
-      <Text fontWeight="bold">{displayName}</Text>
-      <Text fontSize="sm">
-        <C.Gray>{`${t('entityType', 'asurgentui')} `}</C.Gray>
-        {type || 'N/A'}
-      </Text>
+      <C.Content>
+        <Text fontWeight="bold">{displayName}</Text>
+        <Text fontSize="sm">
+          <C.Gray colors={colors}>{`${t('entityType', 'ui')} `}</C.Gray>
+          {type || 'N/A'}
+        </Text>
 
-      <Text fontSize="sm">
-        <C.Gray>{`${t('resourceGroup', 'asurgentui')} `}</C.Gray>
-        {resourceGroup || 'N/A'}
-      </Text>
+        <Text fontSize="sm">
+          <C.Gray colors={colors}>{`${t('resourceGroup', 'ui')} `}</C.Gray>
+          {resourceGroup || 'N/A'}
+        </Text>
 
-      <Text fontSize="sm">
-        <C.Gray>{`${t('region', 'asurgentui')} `}</C.Gray>
-        {region || 'N/A'}
-      </Text>
+        <Text fontSize="sm">
+          <C.Gray colors={colors}>{`${t('region', 'ui')} `}</C.Gray>
+          {region || 'N/A'}
+        </Text>
 
-      {tags?.length > 0 && (
+        {tags?.length > 0 && (
         <>
           <Divider mt={1} mb={1} />
           <Text fontSize="sm">
-            <C.Gray>{`${t('tags', 'asurgentui')} `}</C.Gray>
+            <C.Gray colors={colors}>{`${t('tags', 'ui')} `}</C.Gray>
           </Text>
           <Wrap spacing={2} mb={2}>
             {handleTags({ items: tags, maxLength: 2 })?.map((tag) => <Tag key={tag} bg="#f5edd8">{tag}</Tag>)}
           </Wrap>
         </>
-      )}
+        )}
 
-    </C.Content>
-  </Flex>
-);
+      </C.Content>
+    </Flex>
+  );
+};
 
 Entity.propTypes = propTypes;
 Entity.defaultProps = defaultProps;
