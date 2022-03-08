@@ -6282,9 +6282,9 @@
     "luxon" "^1.26.0"
 
 "cronstrue@^1.110.0":
-  "integrity" "sha512-XeRPOHNnkitGDqiLj3V6XJgn/UbrRSaWdVrDjV/IBt2cT+SRPeURiTt6Fbm16liCp78+XFklwuwWpPzPBg08NQ=="
-  "resolved" "https://registry.npmjs.org/cronstrue/-/cronstrue-1.117.0.tgz"
-  "version" "1.117.0"
+  "integrity" "sha512-qkC5mVbVGuuyBVXmam5anaRtbLcgfBUKajoyZqCdf/XBdgF43PsLSEm8eEi2dsI3YbqDPbLSH2mWNzM1dVqHgQ=="
+  "resolved" "https://registry.npmjs.org/cronstrue/-/cronstrue-1.125.0.tgz"
+  "version" "1.125.0"
 
 "cross-spawn@^6.0.0":
   "integrity" "sha512-eTVLrBSt7fjbDygz805pMnstIs2VTBNkRm0qxZd+M7A5XDdxVRWO5MxGBXZhjY4cqLYLdtrGqRf8mBPmzwSpWQ=="
