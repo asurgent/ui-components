@@ -6,14 +6,14 @@ import findTranslations from './findTranslations';
  * Find and build all our translations
  */
 const context = require.context('../../', true, /\.translation.js$/);
-const resources = findTranslations(context, 'asurgentui');
+const resources = findTranslations(context, 'ui');
 
 /**
  * Run after i18n has been initated
  */
 const addComponentTranslations = () => {
-  i18next.addResourceBundle('sv', 'asurgentui', resources.sv.asurgentui);
-  i18next.addResourceBundle('en', 'asurgentui', resources.en.asurgentui);
+  i18next.addResourceBundle('sv', 'ui', resources.sv.ui);
+  i18next.addResourceBundle('en', 'ui', resources.en.ui);
 };
 
 export {

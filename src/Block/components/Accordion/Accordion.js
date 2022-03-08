@@ -65,7 +65,7 @@ const Accordion = ({
         colors={colors}
         breakpoints={breakpoints}
       >
-        <Tooltip hasArrow label={btnTooltip || t('details', 'asurgentui')}>
+        <Tooltip hasArrow label={btnTooltip || t('details', 'ui')}>
           <MdiIcon path={mdiChevronDown} size={0.875} />
         </Tooltip>
       </C.Arrow>
