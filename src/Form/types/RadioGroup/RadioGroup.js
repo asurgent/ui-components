@@ -54,7 +54,7 @@ const RadioGroup = forwardRef((props, ref) => {
         {options.map((opt) => (
           <C.Label key={opt.key || opt.label || opt.value} colors={colors}>
             <C.RadioInput
-              color={colors}
+              colors={colors}
               type="radio"
               name={name}
               value={opt.value}

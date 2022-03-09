@@ -7,7 +7,7 @@ import {
 } from '@chakra-ui/react';
 import * as U from './DropdownMenu.styled';
 import * as UserImage from '../../UserImage';
-import * as Form from '../../Form.v2';
+import * as Form from '../../Form';
 import Navigation from '../Navigation';
 import translation from './DropdownMenu.translation';
 
@@ -54,7 +54,7 @@ const DropdownMenu = ({
   const langaugeForm = Form.useFormBuilder({
     selectLanguage: {
       type: 'select',
-      label: t('languageSelector', 'asurgentui'),
+      label: t('languageSelector', 'ui'),
       value: selectedLanguage,
       options: languages,
       noLabel: true,
@@ -96,7 +96,7 @@ const DropdownMenu = ({
               <Button variant="ghost" onClick={onLogout}>
                 <U.CreateItem colors={colors} breakpoints={breakpoints}>
                   <MdiIcon size={0.875} path={mdiExitToApp} className="exit-icon" />
-                  <U.CreateTitle>{t('logout', 'asurgentui')}</U.CreateTitle>
+                  <U.CreateTitle>{t('logout', 'ui')}</U.CreateTitle>
                 </U.CreateItem>
               </Button>
             </U.DesktopMenuFooter>
@@ -140,7 +140,7 @@ const DropdownMenu = ({
                   <Button variant="ghost" onClick={onLogout}>
                     <U.CreateItem colors={colors} breakpoints={breakpoints}>
                       <MdiIcon size={0.875} path={mdiExitToApp} className="exit-icon" />
-                      <U.CreateTitle>{t('logout', 'asurgentui')}</U.CreateTitle>
+                      <U.CreateTitle>{t('logout', 'ui')}</U.CreateTitle>
                     </U.CreateItem>
                   </Button>
                 </div>
@@ -165,14 +165,14 @@ const DropdownMenu = ({
                 active={mobileMenuTab === MENU_TAB}
                 onClick={() => setMobileMenuTab(MENU_TAB)}
               >
-                {t('menu', 'asurgentui')}
+                {t('menu', 'ui')}
               </U.TabButton>
               <U.TabButton
                 colors={colors}
                 active={mobileMenuTab === SETTINGS_TAB}
                 onClick={() => setMobileMenuTab(SETTINGS_TAB)}
               >
-                {t('settings', 'asurgentui')}
+                {t('settings', 'ui')}
               </U.TabButton>
             </U.Tabs>
           </U.MobileMenu>

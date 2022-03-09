@@ -42,7 +42,7 @@ const CreateList = ({ createList }) => {
         onClick={() => setCreateOpen(true)}
         rightIcon={createOpen ? mdiChevronLeft : mdiChevronDown}
       >
-        { t('create', 'asurgentui') }
+        { t('create', 'ui') }
       </Button>
       <DropdownCreate
         onClose={() => setCreateOpen(false)}

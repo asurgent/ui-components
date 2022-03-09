@@ -10,8 +10,8 @@
     ]
   },
   "scripts": {
-    "start": "start-storybook -p 6006 -s public",
-    "build-storybook": "build-storybook -s public",
+    "start": "start-storybook -p 6006",
+    "build-storybook": "build-storybook",
     "build": "rm -rf dist && mkdir dist &&  babel ./src -d dist --ignore ./src/stories --copy-files --no-copy-ignored",
     "copy": "npm run build && rsync -av ./dist/ ./../cloudops-portal/node_modules/@asurgent/ui-components/dist/",
     "version:patch": "npm run build && npm version patch && npm publish && git push && git push --tags",
@@ -61,6 +61,7 @@
     "@asurgent/eslint-config-asurgent": "^1.2.1",
     "@babel/cli": "^7.14.3",
     "@babel/preset-react": "^7.13.13",
+    "@storybook/addon-essentials": "^6.4.19",
     "@storybook/addon-controls": "^6.4.19",
     "@storybook/addons": "^6.2.9",
     "@storybook/preset-create-react-app": "^3.1.7",

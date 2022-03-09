@@ -111,14 +111,14 @@ const Multiple = forwardRef((props, ref) => {
             justifyContent: 'space-between',
           }}
           >
-            <h4>{`${t('entry', 'asurgentui')} ${index + 1}`}</h4>
+            <h4>{`${t('entry', 'ui')} ${index + 1}`}</h4>
             <Button
               variant="ghost"
               rightIcon={<MdiIcon path={mdiTrashCan} size={0.75} />}
               onClick={() => handleRemove({ index })}
               style={{ color: '#EF6461' }}
             >
-              {t('remove', 'asurgentui')}
+              {t('remove', 'ui')}
             </Button>
           </div>
 
@@ -158,8 +158,8 @@ const Multiple = forwardRef((props, ref) => {
           style={{ color: '#133A5D' }}
         >
           {value.length === 0
-            ? t('addNew', 'asurgentui')
-            : t('addAnother', 'asurgentui')}
+            ? t('addNew', 'ui')
+            : t('addAnother', 'ui')}
         </Button>
       </Block.Center>
 

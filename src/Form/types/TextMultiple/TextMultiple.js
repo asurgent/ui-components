@@ -95,7 +95,7 @@ const TextMultiple = forwardRef((props, ref) => {
               icon={<MdiIcon path={mdiTrashCan} size={0.75} />}
               onClick={() => handleRemove({ index })}
             >
-              {t('remove', 'asurgentui')}
+              {t('remove', 'ui')}
             </IconButton>
           </C.Entry>
         ))}
@@ -112,8 +112,8 @@ const TextMultiple = forwardRef((props, ref) => {
             rightIcon={<MdiIcon path={mdiPlus} size={0.75} />}
           >
             {value.length === 0
-              ? t('addNew', 'asurgentui')
-              : t('addAnother', 'asurgentui')}
+              ? t('addNew', 'ui')
+              : t('addAnother', 'ui')}
           </Button>
         </Block.Center>
       </C.Container>

@@ -9,7 +9,7 @@ import { mdiMenuDown } from '@mdi/js';
 import {
   Tag, Wrap, useTheme, Collapse,
 } from '@chakra-ui/react';
-import * as VirtualRender from '../../../VirtualRender';
+import { VirtualRender } from '../../../VirtualRender';
 import translation from './FilterSelect.translation';
 import * as C from './FilterSelect.styled';
 import useFilterSelectHook from './useFilterSelectHook';
@@ -64,7 +64,7 @@ const FilterInput = forwardRef((props, ref) => {
   } = props;
 
   const { colors, breakpoints } = useTheme();
-  const placeholdeOutput = placeholder || t('selectPlaceholder', 'asurgentui');
+  const placeholdeOutput = placeholder || t('selectPlaceholder', 'ui');
   const searchInput = createRef();
   const { multiSelect } = inputProps;
   const filterSelectHook = useFilterSelectHook(
@@ -124,7 +124,7 @@ const FilterInput = forwardRef((props, ref) => {
               colors={colors}
               forwardRef={searchInput}
               type="text"
-              placeholder={inputProps.searchPlaceholder || t('searchPlaceHolder', 'asurgentui')}
+              placeholder={inputProps.searchPlaceholder || t('searchPlaceHolder', 'ui')}
               value={filterSelectHook.searchValue}
               onChange={(ev) => {
                 const { target } = ev;
@@ -138,7 +138,7 @@ const FilterInput = forwardRef((props, ref) => {
           <C.ListWrapper>
             {
                   filterSelectHook.hasOptions() && (
-                    <VirtualRender.List
+                    <VirtualRender
                       rowHeight={48}
                       items={filterSelectHook.getOptions()}
                       style={{ flex: 1 }}
@@ -150,7 +150,7 @@ const FilterInput = forwardRef((props, ref) => {
                           filterItem={item}
                         />
                       )}
-                    </VirtualRender.List>
+                    </VirtualRender>
                   )
               }
           </C.ListWrapper>
