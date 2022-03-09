@@ -1,298 +1,487 @@
-/* eslint-disable no-unused-vars */
-/* eslint-disable react/button-has-type */
+/* eslint-disable no-console */
 /* eslint-disable react/destructuring-assignment */
-import React from 'react';
-import {
-  Box, Button, Flex, Heading, Text,
-} from '@chakra-ui/react';
-import {
-  FormProvider,
-  Field,
-  TextInput,
-  TextAreaInput,
-  NumberInput,
-  SwitchInput,
-  EmailInput,
-  RadioGroupInput,
-  DateInput,
-  RepeatGroup,
-  RepeatInput,
-  RepeatAddRow,
-  RepeatHeader,
-  RepeatEmptyState,
-  FilterSelect,
-  FormStructProvider,
-} from '../Form';
-import mockAzureSearch from './mocks/mockAzureSearch';
+import React, { useEffect } from 'react';
+import moment from 'moment';
+import { Button } from '@chakra-ui/react';
+import * as Form from '../Form';
+import * as Block from '../Block';
 
-const FormStory = {
-  title: 'Components/Form',
-  component: Box,
-  argTypes: {},
+const formObj = {
+  label: {
+    type: 'label', label: 'Test', value: 'Im just a label',
+  },
+  search: {
+    type: 'text', label: 'Test', placeholder: 'Hello',
+  },
+  switch: {
+    type: 'switch',
+    label: 'Test',
+    placeholder: 'Hello',
+    wrapperStyle: { border: 'none' },
+    style: { background: '' },
+    description: 'If you select this option this process will be the general chain of actions taken when there is an alert on this Entity.',
+  },
+  datepicker: {
+    type: 'datepicker',
+    label: 'im a label',
+    name: 'datepicker',
+    maxDate: moment().add(2, 'days').startOf('day').toISOString(),
+    minDate: moment().subtract(2, 'days').startOf('day').toISOString(),
+  },
+  sortDirection: {
+    type: 'select', label: 'sort', options: [{ value: '1', label: 'one' }, { value: '2', label: 'two' }],
+  },
 };
 
-export default FormStory;
+const specs = [{
+  name: 'ticketStatus',
+  description: 'The status to update the ticket to',
+  type: 'text',
+  name_translation_key: 'property-validation-auto-action-976c9ae5-0575-4e72-8471-498df585f7b9-ticketStatus',
+  description_translation_key: 'property-validation-auto-action-976c9ae5-0575-4e72-8471-498df585f7b9-ticketStatus-description',
+}, {
+  name: 'ticketNote',
+  description: 'Note to add to the ticket',
+  type: 'textarea',
+  name_translation_key: 'property-validation-auto-action-976c9ae5-0575-4e72-8471-498df585f7b9-ticketNote',
+  description_translation_key: 'property-validation-auto-action-976c9ae5-0575-4e72-8471-498df585f7b9-ticketNote-description',
+}];
 
-const FormTemplate = () => (
-  <Box width="25rem" height="25rem" m={5} borderRadius="5px" border>
-    <FormProvider
-      validateOnChange
-      formatter={(values) => ({ ...values })}
-      validators={{
-        number: ({ value }) => {
-          console.log('value', value);
-          return ({ isInvalid: !value || value > 0, error: 'Cant be empty' });
+const ticketValues = {
+  ticketNote: 'Hello there',
+  ticketStatus: 'Pending',
+};
+
+const Story = {
+  title: 'Data/Form',
+  component: Form,
+  argTypes: {},
+};
+export default Story;
+
+const SimpleTemplate = (args) => {
+  const formData = Form.useFormBuilder(formObj);
+  return (
+    <Form.Primary
+      form={formData}
+      onChangeTimer={(values) => console.log('Changed', values)}
+      {...args}
+    />
+  );
+};
+export const Simple = SimpleTemplate.bind({});
+Simple.args = {};
+
+const DefaultTemplate = () => {
+  const formData = Form.useFormBuilder({
+    someText: {
+      type: 'text',
+      label: 'Some Text',
+      tooltip: 'hejhej',
+      value: 'text text',
+      validator: {
+        condition: (v) => v === 'asdf',
+        errorMessage: 'I did not validate',
+      },
+    },
+    someTextArea: {
+      type: 'textarea',
+      label: 'Some Text',
+      tooltip: 'hejhej',
+      value: 'text area text',
+      validator: {
+        condition: (v) => v === 'asdf',
+        errorMessage: 'I did not validate',
+      },
+    },
+    someTextMultiple: {
+      type: 'textmultiple',
+      label: 'Some Multiple Text',
+      tooltip: 'hejhej',
+      parseOutput: (r) => r.filter((entry) => entry !== ''),
+      placeholder: 'Add something cool',
+      value: ['first', 'second'],
+    },
+    someObjectMultiple: {
+      type: 'objectmultiple',
+      label: null,
+      tooltip: 'hejhej',
+      showContainerError: false,
+      validator: {
+        conditions: () => {
+          const validation = {
+            someName: { valid: (val) => val === 'hello', errorMessage: 'not "hello"' },
+            someNumber: { valid: (val) => typeof val === 'number', errorMessage: 'not a number' },
+          };
+          return validation;
         },
-      }}
-      // initialErrors={{ field: 'Your WRONG', repeat: [{ hello: 'BU' }] }}
-      initialValues={{ repeat: [{ hello: '1' }, { hello: '3' }], radioGroup: '1' }}
-      onFieldError={(a) => console.log('onError', a)}
-      onFieldValid={(a) => console.log('onValid', a)}
-      onChange={(a, _state) => console.log('onChange', a)}
-      onReset={(a) => console.log('onReset', a)}
-      onSubmit={(a) => new Promise((resolve) => {
-        setTimeout(() => {
-          console.log('onSubmit', a);
-          resolve(a);
-        }, 1000);
-      })}
-    >
-      {({ state }) => (
-        <>
-          <Flex flexDirection="column">
-            <Box mb={4}>
-              <Field
-                name="field"
-                validator={({ value }) => ({ isInvalid: !value, error: 'Cant be empty' })}
+      },
+      options: {
+        someName: { label: 'must be "hello" to add', type: 'string' },
+        someOtherName: { label: 'translatedMultiLabel2', type: 'string', render: () => true },
+        someNumber: { label: 'translatedMultiLabel3', type: 'number' },
+        someSelect: {
+          label: 'translatedMultiLabel3',
+          type: 'select',
+          placeholder: 'select',
+          options: [
+            { label: 'someLabel3', value: 'someValue3' },
+            { label: 'someLabel4', value: 'someValue4' },
+          ],
+        },
+      },
+      value: [{
+        someName: 'someName',
+        someNumber: 23,
+        someOtherName: 'someOtherName',
+        someSelect: 'someValue3',
+      }],
+    },
+    email: {
+      type: 'email',
+      label: 'Email',
+      tooltip: 'Select me',
+      validator: {
+        condition: (v) => v === 'asdf',
+        errorMessage: 'I did not validate',
+      },
+      value: 'my@email.com',
+    },
+    imABoolean: {
+      type: 'bool',
+      label: 'Im true or false',
+      tooltipPosition: 'left',
+      tooltip: 'Select me',
+      value: false,
+      disabled: () => false,
+    },
+    someNumber: {
+      type: 'number',
+      label: 'Some Number (max 100)',
+      tooltip: 'hejhej',
+      maxValue: 100,
+      value: 50,
+    },
+    someRadioGroup: {
+      type: 'radiogroup',
+      label: 'Some Radio Group',
+      options: [
+        { label: 'label1', value: 'value1', key: 'someKey' },
+        { label: 'label2', value: 'value2' },
+        { label: 'label3', value: 'value3' },
+        { label: 'label4', value: 'value4' },
+      ],
+      value: 'value2',
+      props: { vertical: true },
+    },
+    someRadioGroup2: {
+      type: 'radiogroup',
+      label: 'Some Radio Group',
+      options: [
+        { label: 'label3', value: 'value3' },
+        { label: 'label4', value: 'value4' },
+      ],
+      render: (s) => s.someRadioGroup && s.someRadioGroup === 'value2',
+      tooltip: 'tooltip',
+      value: 'value3',
+    },
+    someSelect: {
+      type: 'select',
+      label: 'Select with empty option',
+      placeholder: 'select me',
+      options: [
+        { value: '1', label: 'First option' },
+        { value: '2', label: 'Second option' },
+        { value: '3', label: 'Third option' },
+      ],
+      props: {},
+      tooltip: 'tooltip',
+      value: '2', // no value -> shows placeholder
+    },
+    someSelect2: {
+      type: 'select',
+      label: 'Select with default value',
+      options: [
+        { value: '1', label: 'First option', disabled: true },
+        { value: '2', label: 'Second option' },
+        { value: '3', label: 'Third option' },
+      ],
+      tooltip: 'tooltip',
+      // value: '3', // no value -> sets first option
+    },
+    someFilterSelectSingle: {
+      type: 'filterselect',
+      label: 'Some Filterselect (single)',
+      tooltip: 'tooltip',
+      props: {
+        searchPlaceholder: 'Search in me plz',
+      },
+      placeholder: 'Select me',
+      options: [
+        { value: '1', label: 'one' },
+        { value: '2', label: 'two' },
+        '3',
+        '4',
+      ],
+      value: '3',
+    },
+    someFilterSelectMulti: {
+      type: 'filterselect',
+      label: 'Some Filterselect (multi)',
+      tooltip: 'tooltip',
+      parseOutput: (r) => r.join(','),
+      props: {
+        multiSelect: true,
+        searchPlaceholder: 'Search in me plz',
+      },
+      options: [
+        { value: '1', label: 'one', disabled: true },
+        { value: '2', label: 'two' },
+        '3',
+        '4',
+      ],
+      value: ['3', '4'],
+    },
+    someDate: {
+      type: 'datepicker',
+      options: [],
+      render: (spec) => spec.someText && spec.someText.length < 10,
+      tooltip: 'tooltip',
+      label: 'Some date',
+      value: '2020-12-24',
+    },
+  });
+
+  return (
+    <div style={{ padding: '1.875rem' }}>
+      <Form.Primary
+        form={formData}
+        msTimer={15}
+        onSubmit={({ values, isDirty }) => {
+          console.log('isDirty', isDirty);
+          console.log('Submitted', values);
+        }}
+        onChange={({
+          values, isDirty, dirtyItems, name, validates,
+        }) => {
+          console.log('Changed', name || 'form');
+          console.log('Form values', values);
+          console.log('Form dirty', isDirty);
+          console.log('Dirty items', dirtyItems);
+          console.log('Validating fields', validates);
+        }}
+      >
+        {({
+          render,
+          onSubmitAction,
+          onResetAction,
+          isDirty,
+        }) => (
+          <>
+            {render}
+            <Block.SpaceBetween>
+              <Button onClick={() => {
+                formData.updateField('someSelect', {
+                  options: [{ value: '8', label: '8' }, { value: '9', label: '9' }],
+                });
+              }}
               >
-                {(field, { errors }) => (
-                  <>
-                    <input {...field} type="text" style={{ border: '1px solid black' }} />
-                    { errors[field.name]?.error && (
-                    <Box bg="red" p="5px">
-                      {errors[field.name].error}
-                    </Box>
-                    )}
-                  </>
-                )}
-              </Field>
-            </Box>
+                Update someSelect-options
+              </Button>
+              <Button disabled={!isDirty} onClick={onResetAction}>
+                Reset
+              </Button>
+              <Button disabled={!isDirty} onClick={onSubmitAction}>Submit</Button>
+            </Block.SpaceBetween>
+          </>
+        )}
+      </Form.Primary>
+    </div>
+  );
+};
 
-            <FilterSelect
-              single
-              label="Filter"
-              placeholder="Select Filter"
-              name="filter-field"
-              helperText="we are careful"
-              facet="key"
-              service={mockAzureSearch()}
-              configuration={(filter) => ({
-                title: filter.value,
-                value: filter.value,
-                subtitle: null,
-              })}
-            />
+export const Default = DefaultTemplate.bind({});
+Default.args = {
+  renderErrors: false,
+};
 
-            <TextInput
-              name="hellothere"
-              label="Text input"
-              helperText="we are careful"
-              validator={({ value }) => ({
-                isInvalid: (value || '').length === 0,
-                error: 'Cant be empty',
-              })}
-            />
+const AdvancedTemplate = () => {
+  const formData = Form.useFormBuilder(formObj);
 
-            <RepeatInput
-              name="repeat"
-              min={4}
-              max={6}
-            >
-              <RepeatHeader>
-                <Heading size="md" mb={1}>Group config</Heading>
-                <Text fontSize="small">
-                  This section you will add multipple configuration object that will bla bla bla bla
-                </Text>
-              </RepeatHeader>
-              <RepeatEmptyState>
-                <Heading size="sm" mb={1}>Well, well, well...</Heading>
-                <Text>
-                  You havent added any new repat rows yet,
-                  please klick the plus sign above to append a row.
-                  Please do or everything will explode, somewhere.
-                </Text>
-              </RepeatEmptyState>
-              <RepeatGroup>
-                <TextInput
-                  name="property-1"
-                  label="Configuration"
-                  validator={({ value }) => ({
-                    isInvalid: (value || '')
-                      .length === 0,
-                    error: 'Cant be empty',
-                  })}
-                />
-              </RepeatGroup>
-            </RepeatInput>
-
-            <TextInput
-              label="Text input"
-              helperText="we are careful"
-              name="field"
-            />
-
-            <TextAreaInput
-              label="Textarea input"
-              helperText="we are careful"
-              name="field"
-            />
-
-            <NumberInput
-              label="Number input"
-              helperText="we are careful"
-              name="number"
-            />
-
-            <SwitchInput
-              label="Switch input"
-              helperText="we are careful"
-              name="switch"
-            />
-
-            <EmailInput
-              label="Email input"
-              helperText="we are careful"
-              name="Email"
-            />
-
-            <DateInput
-              dateTime
-              label="Date input"
-              helperText="we are careful"
-              name="Date"
-            />
-
-            <RadioGroupInput
-              label="Radio input"
-              helperText="we are careful"
-              name="radioGroup"
-              options={[
-                { value: '1', label: 'Im number #1' },
-                { value: '2', label: 'Im number #2' },
-              ]}
-            />
-
-          </Flex>
-
-          <Flex justifyContent="space-between">
-            <Button type="submit" colorScheme="green" isLoading={state.isSubmitting}>
-              submit
-            </Button>
-            <Button type="reset" colorScheme="red">
-              reset
-            </Button>
-          </Flex>
+  return (
+    <Form.Primary
+      form={formData}
+      onSubmit={({ values }) => console.log('Submitted', values)}
+    >
+      {({ fields, onSubmitAction }) => (
+        <>
+          {
+              Object
+                .keys(fields)
+                .map((key) => (
+                  <div key={key}>
+                    <p>
+                      {`Im a paragagrah for: ${key}`}
+                    </p>
+                    {fields[key]}
+                  </div>
+                ))
+            }
+          <Block.SpaceBetween>
+            <Button>Cancel</Button>
+            <Button onClick={onSubmitAction}>Submit</Button>
+          </Block.SpaceBetween>
         </>
       )}
-    </FormProvider>
-  </Box>
-);
+    </Form.Primary>
+  );
+};
 
-export const Primary = FormTemplate.bind({});
-Primary.args = {};
+export const Advanced = AdvancedTemplate.bind({});
+Advanced.args = {};
 
-const StructFormTemplate = () => (
-  <Box width="25rem" height="25rem" m={5} borderRadius="5px" border>
-    <FormStructProvider
-      services={{ filterSelect: { service: mockAzureSearch(), facet: 'key' } }}
-      struct={[
-        {
-          type: 'text',
-          name: 'text',
-          label: 'text',
-          helperText: 'text',
-          tooltip: 'text',
-        },
-        {
-          name: 'textarea',
-          type: 'textarea',
-          label: 'textarea',
-          helperText: 'textarea',
-          tooltip: 'textarea',
-        }, {
-          name: 'number',
-          type: 'number',
-          label: 'number',
-          helperText: 'number',
-          tooltip: 'number',
-        }, {
-          name: 'switch',
-          type: 'switch',
-          label: 'switch',
-          helperText: 'switch',
-          tooltip: 'switch',
-        }, {
-          name: 'email',
-          type: 'email',
-          label: 'email',
-          helperText: 'email',
-          tooltip: 'email',
-        }, {
-          name: 'date',
-          type: 'date',
-          label: 'date',
-          helperText: 'date',
-          tooltip: 'date',
-        }, {
-          name: 'radiogroup',
-          type: 'radiogroup',
-          label: 'radiogroup',
-          helperText: 'radiogroup',
-          tooltip: 'radiogroup',
-          options: [1, 2, 3],
-        }, {
-          name: 'filterSelect',
-          type: 'filterSelect',
-          label: 'filterSelect',
-          helperText: 'filterSelect',
-          tooltip: 'filterSelect',
-          placeholder: 'Select Filter',
-        },
-      ]}
-      validateOnChange
-      formatter={(values) => ({ ...values })}
-      validators={{
-        number: ({ value }) => {
-          console.log('value', value);
-          return ({ isInvalid: !value || value > 0, error: 'Cant be empty' });
-        },
-      }}
-      // initialErrors={{ field: 'Your WRONG', repeat: [{ hello: 'BU' }] }}
-      // initialValues={{ repeat: [{ hello: '1' }, { hello: '3' }], radioGroup: '1' }}
-      onFieldError={(a) => console.log('onError', a)}
-      onFieldValid={(a) => console.log('onValid', a)}
-      onChange={(a, _state) => console.log('onChange', a)}
-      onReset={(a) => console.log('onReset', a)}
-      onSubmit={(a) => new Promise((resolve) => {
-        setTimeout(() => {
-          console.log('onSubmit', a);
-          resolve(a);
-        }, 1000);
-      })}
+const APITemplate = () => {
+  const formData = Form.useFormBuilder(specs, ticketValues);
+
+  return (
+    <Form.Primary
+      form={formData}
+      onSubmit={({ values }) => console.log('Submitted', values)}
     >
-      {({ state }) => (
-        <Flex justifyContent="space-between">
-          <Button type="submit" colorScheme="green" isLoading={state.isSubmitting}>
-            submit
-          </Button>
-          <Button type="reset" colorScheme="red">
-            reset
-          </Button>
-        </Flex>
+      {({ render, onSubmitAction }) => (
+        <>
+          {render}
+          <Block.SpaceBetween>
+            <Button>Cancel</Button>
+            <Button onClick={onSubmitAction}>Save</Button>
+          </Block.SpaceBetween>
+        </>
       )}
-    </FormStructProvider>
-  </Box>
-);
+    </Form.Primary>
+  );
+};
 
-export const Struct = StructFormTemplate.bind({});
-Struct.args = {};
+export const API = APITemplate.bind({});
+API.args = {};
+
+const UpdateTemplate = () => {
+  const formData = Form.useFormBuilder(formObj);
+
+  useEffect(() => {
+    formData.updateField('sortDirection', {
+      noLabel: true,
+      value: '2',
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  return (
+    <Form.Primary
+      form={formData}
+      onChangeTimer={({ values }) => console.log('Updated', values)}
+    />
+  );
+};
+
+export const Update = UpdateTemplate.bind({});
+Update.args = {};
+
+const DynamicMinMaxTemplate = () => {
+  const formData = Form.useFormBuilder({
+    threshold_comparison: {
+      type: 'select',
+      label: 'threshold comparison',
+      options: [
+        { value: '<', label: '<' },
+        { value: '>', label: '>' },
+        { value: '>=', label: '>=' },
+        { value: '<=', label: '<=' },
+        { value: '=', label: '=' },
+      ],
+    },
+    threshold: {
+      type: 'number',
+      label: 'threshold',
+      maxValue: 100,
+    },
+    critical_threshold: {
+      type: 'number',
+      label: 'critical',
+      maxValue: (values) => {
+        const { threshold, threshold_comparison: comp } = values;
+        switch (comp) {
+          case '<':
+            return threshold - 1;
+          case '<=':
+            return threshold;
+          case '=':
+            return threshold;
+          default:
+            return null;
+        }
+      },
+      minValue: (values) => {
+        const { threshold, threshold_comparison: comp } = values;
+        switch (comp) {
+          case '>':
+            return threshold + 1;
+          case '>=':
+            return threshold;
+          case '=':
+            return threshold;
+          default:
+            return 0;
+        }
+      },
+    },
+
+  });
+
+  useEffect(() => {
+    formData.updateFields([
+      { name: 'threshold_comparison', value: '<' },
+      { name: 'critical_threshold', value: 100 }, // Will be overridden to 10 on render
+      { name: 'threshold', value: 10 },
+    ]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  return (
+    <div style={{ minHeight: '120vh' }}>
+      <Form.Primary
+        form={formData}
+        msTimer={15}
+        onSubmit={({ values, isDirty }) => {
+          console.log('isDirty', isDirty);
+          console.log('Submitted', values);
+        }}
+        onChange={({
+          values, isDirty, dirtyItems, name,
+        }) => {
+          console.log('Changed', name || 'form');
+          console.log('Form values', values);
+          console.log('Form dirty', isDirty);
+          console.log('Dirty items', dirtyItems);
+        }}
+      >
+        {({
+          render, onSubmitAction, onResetAction, isDirty,
+        }) => (
+          <>
+            {render}
+            <Block.SpaceBetween>
+              <Button>Cancel</Button>
+              <Button disabled={!isDirty} onClick={onResetAction}>
+                Reset
+              </Button>
+              <Button onClick={onSubmitAction}>Submit</Button>
+            </Block.SpaceBetween>
+          </>
+        )}
+      </Form.Primary>
+    </div>
+  );
+};
+
+export const DynamicMinMax = DynamicMinMaxTemplate.bind({});
+DynamicMinMax.args = {};
