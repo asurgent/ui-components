@@ -28,22 +28,22 @@ export const Value = styled.div`
     padding-right: 1.25rem;
     overflow: hidden;
     text-overflow: ellipsis;
-    color: ${({ theme, asPlaceholder, disabled }) => ((asPlaceholder || disabled) ? theme.gray400 : theme.black)};
+    color: ${({ colors, asPlaceholder, disabled }) => ((asPlaceholder || disabled) ? colors?.gray?.['400'] : colors.black)};
     
     /* Tags */
     * {
-        color: ${({ theme, disabled }) => (disabled ? theme.gray400 : theme.black)};
+        color: ${({ colors, disabled }) => (disabled ? colors?.gray?.['400'] : colors.black)};
     }
 `;
 
 export const SearchWrapper = styled.div`
     padding: 0.5rem ;
-    background-color: ${({ theme }) => theme.gray50};
+    background-color: ${({ colors }) => colors?.gray?.['50']};
 
     form {
         padding-right: 3rem;
 
-        @media screen and (min-width: ${(prop) => `${prop.theme.breakPointMobile * 10}px`}) {
+        @media screen and (min-width: ${({ breakpoints }) => breakpoints.md}) {
             padding-right: 0;
         }
     }
@@ -54,13 +54,13 @@ export const Search = styled.input`
     display: flex;
     align-items: center;
     border: 0.0625rem solid!important;
-    border-color: ${({ theme }) => theme.gray200}!important;
+    border-color: ${({ colors }) => colors?.gray?.['200']}!important;
     border-radius: 5px;
     padding: 0.75rem;
     position: relative;
     box-sizing: border-box;
     min-height: 2.9375rem;
-    background: ${({ theme }) => theme.white};
+    background: ${({ colors }) => colors.white};
 `;
 
 export const Dropdown = styled.div`
@@ -69,8 +69,8 @@ export const Dropdown = styled.div`
     bottom: -1px;
     left: -1px;
     right: -1px;
-    background: ${({ theme }) => theme.white};
-    border: 1px solid ${({ theme }) => theme.gray200};
+    background: ${({ colors }) => colors.white};
+    border: 1px solid ${({ colors }) => colors?.gray?.['200']};
     display: flex;
     flex-direction: column;
     
@@ -80,7 +80,7 @@ export const Dropdown = styled.div`
         top: 1rem;
     }
 
-    @media screen and (min-width: ${(prop) => `${prop.theme.breakPointMobile * 10}px`}) {
+    @media screen and (min-width: ${({ breakpoints }) => breakpoints.md}) {
         position: absolute;
         width: auto;
         height: auto;
@@ -91,9 +91,9 @@ export const Dropdown = styled.div`
         left: 0;
         right: 0;
         border-radius: 5px;
-        background: ${({ theme }) => theme.white};
-        border: 1px solid ${({ theme }) => theme.gray200};
-        box-shadow: 0 6px 10px -5px ${({ theme }) => theme.rgba(theme.black, 0.2)};
+        background: ${({ colors }) => colors.white};
+        border: 1px solid ${({ colors }) => colors?.gray?.['200']};
+        box-shadow: 0 6px 10px -5px ${({ colors }) => colors?.gray?.['200']};
         display: flex;
         flex-direction: column;  
         

@@ -6,9 +6,10 @@ import React, {
 import PropTypes from 'prop-types';
 import MdiIcon from '@mdi/react';
 import { mdiMenuDown } from '@mdi/js';
-import { Tag, Wrap } from '@chakra-ui/react';
+import {
+  Tag, Wrap, useTheme, Collapse,
+} from '@chakra-ui/react';
 import * as VirtualRender from '../../../VirtualRender';
-import * as Transition from '../../../Transition';
 import translation from './FilterSelect.translation';
 import * as C from './FilterSelect.styled';
 import useFilterSelectHook from './useFilterSelectHook';
@@ -61,6 +62,8 @@ const FilterInput = forwardRef((props, ref) => {
     props: inputProps,
     disabled,
   } = props;
+
+  const { colors, breakpoints } = useTheme();
   const placeholdeOutput = placeholder || t('selectPlaceholder', 'asurgentui');
   const searchInput = createRef();
   const { multiSelect } = inputProps;
@@ -99,7 +102,11 @@ const FilterInput = forwardRef((props, ref) => {
     <C.SelectFilter>
       <C.Input type="text" name={name} ref={filterSelectHook.inputRef} disabled {...inputProps} />
       <C.Output onClick={() => !disabled() && filterSelectHook.setOpen(true)}>
-        <C.Value disabled={disabled()} asPlaceholder={filterSelectHook.showPlaceHolder()}>
+        <C.Value
+          colors={colors}
+          disabled={disabled()}
+          asPlaceholder={filterSelectHook.showPlaceHolder()}
+        >
           {filterSelectHook.showTags() && (
           <Wrap spacing={2}>
             {handleTags({ items: tags, maxLength: 3 }).map((tag) => <Tag key={tag} bg="#f5edd8">{tag}</Tag>)}
@@ -110,14 +117,11 @@ const FilterInput = forwardRef((props, ref) => {
         </C.Value>
         <MdiIcon path={mdiMenuDown} size={0.75} className="down-arrow" />
       </C.Output>
-      <Transition.FadeInFitted
-        withClickShield={() => filterSelectHook.setOpen(false)}
-        isVisible={filterSelectHook.isOpen}
-        timeout={80}
-      >
-        <C.Dropdown>
-          <C.SearchWrapper>
+      <Collapse in={filterSelectHook.isOpen} animateOpacity>
+        <C.Dropdown colors={colors} breakpoints={breakpoints}>
+          <C.SearchWrapper colors={colors} breakpoints={breakpoints}>
             <C.Search
+              colors={colors}
               forwardRef={searchInput}
               type="text"
               placeholder={inputProps.searchPlaceholder || t('searchPlaceHolder', 'asurgentui')}
@@ -151,7 +155,7 @@ const FilterInput = forwardRef((props, ref) => {
               }
           </C.ListWrapper>
         </C.Dropdown>
-      </Transition.FadeInFitted>
+      </Collapse>
     </C.SelectFilter>
   );
 });

@@ -17,7 +17,7 @@ export const DatePicker = styled(KeyboardDatePicker)`
 
     fieldset {   
         border: 0rem solid!important;
-        border-color: ${({ theme }) => `${theme.gray200}!important`};
+        border-color: ${({ colors }) => `${colors?.gray?.['200']}!important`};
         border-radius: 5px!important;
     }
 

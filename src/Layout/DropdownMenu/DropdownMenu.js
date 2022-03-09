@@ -7,7 +7,7 @@ import {
 } from '@chakra-ui/react';
 import * as U from './DropdownMenu.styled';
 import * as UserImage from '../../UserImage';
-import * as Form from '../../Form';
+import * as Form from '../../Form.v2';
 import Navigation from '../Navigation';
 import translation from './DropdownMenu.translation';
 

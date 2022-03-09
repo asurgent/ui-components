@@ -4,7 +4,7 @@ import React, {
 import PropTypes from 'prop-types';
 import { mdiTrashCan, mdiPlus } from '@mdi/js';
 import MdiIcon from '@mdi/react';
-import { IconButton, Button } from '@chakra-ui/react';
+import { IconButton, Button, useTheme } from '@chakra-ui/react';
 import * as C from './TextMultiple.styled';
 import { dispatchEvent } from '../../helpers';
 import * as Block from '../../../Block';
@@ -40,6 +40,7 @@ const TextMultiple = forwardRef((props, ref) => {
     parseOutput,
     validator,
   } = props;
+  const { colors } = useTheme();
 
   const [value, setValue] = useState(props.value || []);
 
@@ -81,7 +82,7 @@ const TextMultiple = forwardRef((props, ref) => {
         />
         {value.map((entry, index) => (
         /* eslint-disable-next-line react/no-array-index-key */
-          <C.Entry key={index}>
+          <C.Entry key={index} colors={colors}>
             <input
               type="text"
               placeholder={placeholder}

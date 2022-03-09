@@ -2,6 +2,7 @@ import React, {
   forwardRef, useState, createRef, useImperativeHandle, useEffect,
 } from 'react';
 import PropTypes from 'prop-types';
+import { useTheme } from '@chakra-ui/react';
 import * as C from '../ObjectInput.styled';
 import InputWrapper from '../InputWrapper';
 import {
@@ -39,6 +40,7 @@ const Single = forwardRef((props, ref) => {
   const {
     options, name, parseOutput, validator, error,
   } = props;
+  const { colors } = useTheme();
 
   const [value, setValue] = useState(props.value || {});
 
@@ -72,28 +74,28 @@ const Single = forwardRef((props, ref) => {
       />
 
       {Object.keys(value).length > 0 && (
-      <C.Entry>
-        {Object.keys(value).map((key, index) => {
-          const option = options[key];
-          const entryValidator = validator?.conditions()[key];
-          return (
-            <InputWrapper
+        <C.Entry colors={colors}>
+          {Object.keys(value).map((key, index) => {
+            const option = options[key];
+            const entryValidator = validator?.conditions()[key];
+            return (
+              <InputWrapper
               /* eslint-disable-next-line react/no-array-index-key */
-              key={index}
-              name={key}
-              label={option.label}
-              value={value[key]}
-              type={option.type}
-              onChange={handleChange}
-              disabled={option.disabled}
-              render={option.render}
-              validator={error ? entryValidator : null}
-              options={option.options}
-              placeholder={option.placeholder}
-            />
-          );
-        })}
-      </C.Entry>
+                key={index}
+                name={key}
+                label={option.label}
+                value={value[key]}
+                type={option.type}
+                onChange={handleChange}
+                disabled={option.disabled}
+                render={option.render}
+                validator={error ? entryValidator : null}
+                options={option.options}
+                placeholder={option.placeholder}
+              />
+            );
+          })}
+        </C.Entry>
       )}
     </C.Container>
   );

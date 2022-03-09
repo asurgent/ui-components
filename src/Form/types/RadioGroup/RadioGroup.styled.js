@@ -6,7 +6,7 @@ export const Label = styled.label`
     align-items: center;
     font-size: 0.875rem;
     letter-spacing: 0.0625rem;
-    color: ${({ theme }) => theme.gray700};
+    color: ${({ colors }) => colors?.gray?.['700']};
     text-transform: capitalize;
     white-space: nowrap;
     text-overflow: ellipsis;
@@ -68,18 +68,18 @@ export const RadioInput = styled.input`
     margin: 0; 
     /* change border color and draw the dot */
     &:checked + ${CheckMark} {
-    border: ${({ theme, disabled }) => `0.125rem solid ${disabled ? theme.gray400 : theme.blue900}`};
+    border: ${({ colors, disabled }) => `0.125rem solid ${disabled ? colors?.gray?.['400'] : colors?.blue?.['900']}`};
         &:after {
             display: block;
         }
     }
     ~ ${CheckMark} {
-        border-color: ${({ theme, disabled }) => (disabled ? theme.gray400 : theme.blue900)};
+        border-color: ${({ colors, disabled }) => (disabled ? colors?.gray?.['400'] : colors?.blue?.['900'])};
         &:after {
-            background: ${({ theme, disabled }) => (disabled ? theme.gray400 : theme.blue900)};
+            background: ${({ colors, disabled }) => (disabled ? colors?.gray?.['400'] : colors?.blue?.['900'])};
         }
     }
     ~ ${Text} {
-        color: ${({ theme, disabled }) => (disabled ? theme.gray400 : theme.black)};
+        color: ${({ colors, disabled }) => (disabled ? colors?.gray?.['400'] : colors.black)};
     }
 `;

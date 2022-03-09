@@ -6,6 +6,7 @@ import React, {
   useImperativeHandle,
 } from 'react';
 import PropTypes from 'prop-types';
+import { useTheme } from '@chakra-ui/react';
 import * as C from './RadioGroup.styled';
 
 const propTypes = {
@@ -32,6 +33,8 @@ const RadioGroup = forwardRef((props, ref) => {
     parseOutput,
     disabled,
   } = props;
+  const { colors } = useTheme();
+
   const [val, setVal] = useState(props.value || null);
   const input = createRef();
 
@@ -49,8 +52,9 @@ const RadioGroup = forwardRef((props, ref) => {
     <C.FieldSet onChange={({ target }) => setVal(target.value)}>
       <C.RadioWrapper vertical={props?.props?.vertical}>
         {options.map((opt) => (
-          <C.Label key={opt.key || opt.label || opt.value}>
+          <C.Label key={opt.key || opt.label || opt.value} colors={colors}>
             <C.RadioInput
+              color={colors}
               type="radio"
               name={name}
               value={opt.value}

@@ -16,7 +16,7 @@ export const InputContainer = styled(Input)`
 `;
 
 export const Entry = styled.div`
-  border-bottom: ${({ theme }) => `1px solid ${theme.gray200}`};
+  border-bottom: ${({ colors }) => `1px solid ${colors?.gray?.['200']}`};
   ${InputContainer} {
       margin-bottom: 1.5rem;
   }
@@ -41,7 +41,7 @@ export const Error = styled.div`
   margin-top: 0.25rem;
   font-size: 0.6875rem;
   letter-spacing: 0.0625rem;
-  color: ${({ theme }) => theme.ruby800};
+  color: ${({ colors }) => colors?.ruby?.['800']};
   position: absolute; 
   top: 100%;
 `;

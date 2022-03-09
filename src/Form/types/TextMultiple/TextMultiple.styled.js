@@ -7,7 +7,7 @@ export const HiddenInput = styled.input`
 export const Entry = styled.div`
     display: flex;
     justify-content: space-between;
-    border-bottom: ${({ theme }) => `1px solid ${theme.gray200}`};
+    border-bottom: ${({ colors }) => `1px solid ${colors?.gray?.['200']}`};
     align-items: center;
     padding-right: 0.75rem;
     min-height: 3rem;

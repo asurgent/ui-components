@@ -9,6 +9,7 @@ import { MuiPickersUtilsProvider } from '@material-ui/pickers';
 import moment from 'moment';
 import PropTypes from 'prop-types';
 import MomentUtils from '@date-io/moment';
+import { useTheme } from '@chakra-ui/react';
 import ThemeProvider from './DatePickerThemeProvider';
 import * as C from './DatePicker.styled';
 import { dispatchEvent } from '../../helpers';
@@ -27,6 +28,8 @@ const DatePicker = forwardRef((props, ref) => {
     minDateMessage,
     disabled,
   } = props;
+
+  const { colors } = useTheme();
 
   const input = createRef();
   const [value, setValue] = useState(getStartOfDay(props.value));
@@ -47,6 +50,7 @@ const DatePicker = forwardRef((props, ref) => {
     <ThemeProvider>
       <MuiPickersUtilsProvider utils={MomentUtils}>
         <C.DatePicker
+          colors={colors}
           format={format}
           fullWidth
           maxDate={maxDate}

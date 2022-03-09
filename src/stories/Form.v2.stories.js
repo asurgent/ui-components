@@ -22,7 +22,7 @@ import {
   RepeatEmptyState,
   FilterSelect,
   FormStructProvider,
-} from '../Form';
+} from '../Form.v2';
 import mockAzureSearch from './mocks/mockAzureSearch';
 
 const FormStory = {

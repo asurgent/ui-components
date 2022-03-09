@@ -8,7 +8,7 @@ export const SwitchWrapper = styled.div`
   height: ${({ size, borderSize }) => (size / 2) - borderSize}rem;
   border-radius: ${({ size }) => (size / 2)}rem;
   padding: ${({ borderSize }) => (borderSize)}rem;
-  background-color: ${({ value, theme }) => (value ? theme.blue900 : theme.blue100)};
+  background-color: ${({ value, colors }) => (value ? colors?.blue?.['900'] : colors?.blue?.['100'])};
   animation-duration: .25s;
   box-sizing: content-box;
   animation-name: ${({ value }) => (value ? 'toggleOn' : 'toggleOff')};
@@ -16,19 +16,19 @@ export const SwitchWrapper = styled.div`
 
   @keyframes toggleOn {
     from {
-      background-color: ${({ theme }) => theme.blue100};
+      background-color: ${({ colors }) => colors?.blue?.['100']};
     }
     to {
-      background-color: ${({ theme }) => theme.blue900};
+      background-color: ${({ colors }) => colors?.blue?.['900']};
     }
   }
 
   @keyframes toggleOff {
     from {
-      background-color: ${({ theme }) => theme.blue900};
+      background-color: ${({ colors }) => colors?.blue?.['900']};
     }
     to {
-      background-color: ${({ theme }) => theme.blue100};
+      background-color: ${({ colors }) => colors?.blue?.['100']};
     }
   }
 `;
@@ -37,7 +37,7 @@ export const Toggle = styled.div`
   position: absolute;
   height: ${({ borderSize }) => `calc(100% - ${borderSize * 2}rem)`};
   width: ${({ borderSize }) => `calc(50% - ${borderSize}rem)`};
-  background-color: ${({ theme }) => theme.white};
+  background-color: #fff;
   border-radius: 100%;
   transform: ${({ value }) => (value ? 'translateX(100%)' : 'translateX(0)')};
   transition: transform .25s;

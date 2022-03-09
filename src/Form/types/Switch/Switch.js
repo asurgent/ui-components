@@ -6,6 +6,7 @@ import React, {
   useImperativeHandle,
 } from 'react';
 import PropTypes from 'prop-types';
+import { useTheme } from '@chakra-ui/react';
 import * as C from './Switch.styled';
 import { dispatchEvent } from '../../helpers';
 
@@ -37,6 +38,7 @@ const Switch = forwardRef((props, ref) => {
     validator,
     disabled,
   } = props;
+  const { colors } = useTheme();
 
   const input = createRef();
   const [value, setValue] = useState(props.value);
@@ -64,6 +66,7 @@ const Switch = forwardRef((props, ref) => {
   return (
 
     <C.SwitchWrapper
+      colors={colors}
       onClick={onClick}
       value={value}
       size={defaultSize}
