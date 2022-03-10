@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React from 'react';
 import PropTypes from 'prop-types';
 import MdiIcon from '@mdi/react';
@@ -58,8 +59,10 @@ const dropdownDefaultProps = {};
 
 const DropdownCreate = ({
   createActionList,
+  onClose,
+  isOpen
 }) => {
-  const { isOpen, onToggle } = useDisclosure();
+
   const { colors, breakpoints } = useTheme();
   return (
     <>
@@ -77,7 +80,7 @@ const DropdownCreate = ({
                     description={action.description}
                     link={action.link}
                     onClick={action.onClick}
-                    onClose={() => onToggle(!isOpen)}
+                    onClose={onClose}
                   />
                 ))
             }
@@ -90,7 +93,7 @@ const DropdownCreate = ({
               <Button
                 variant="ghost"
                 className="close"
-                onClick={() => onToggle(!isOpen)}
+                onClick={onClose}
                 rightIcon={mdiClose}
               />
               <U.MobileContent>
@@ -104,7 +107,7 @@ const DropdownCreate = ({
                         description={action.description}
                         link={action.link}
                         onClick={action.onClick}
-                        onClose={() => onToggle(!isOpen)}
+                        onClose={onClose}
                       />
                     ))
               }

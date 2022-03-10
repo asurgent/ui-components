@@ -1,10 +1,9 @@
-/* eslint-disable */
 import React, { useState, useMemo } from 'react';
 import PropTypes from 'prop-types';
 import MdiIcon from '@mdi/react';
 import { mdiExitToApp, mdiClose } from '@mdi/js';
 import {
-  Button, IconButton, Collapse, useTheme
+  Button, IconButton, Collapse, useTheme, Modal, ModalContent,
 } from '@chakra-ui/react';
 import * as U from './DropdownMenu.styled';
 import * as UserImage from '../../UserImage';
@@ -20,6 +19,7 @@ const propTypes = {
   email: PropTypes.string.isRequired,
   customerName: PropTypes.string.isRequired,
   imageLink: PropTypes.string,
+  isOpen: PropTypes.bool.isRequired,
   navigationList: PropTypes.instanceOf(Array).isRequired,
   languages: PropTypes.instanceOf(Array).isRequired,
   selectedLanguage: PropTypes.string.isRequired,
@@ -69,8 +69,10 @@ const DropdownMenu = ({
     return [];
   }, [navigationList]);
 
+  console.log('isopen', isOpen);
+
   return (
-    <U.MenuWrapper breakpoints={breakpoints} style={{zIndex: 2}}>
+    <U.MenuWrapper breakpoints={breakpoints} style={{ zIndex: 2 }}>
       <U.Desktop breakpoints={breakpoints}>
         <Collapse in={isOpen} animateOpacity>
           <U.DesktopMenu colors={colors}>
@@ -106,79 +108,82 @@ const DropdownMenu = ({
       </U.Desktop>
 
       <U.Mobile breakpoints={breakpoints}>
-        <Collapse in={!isOpen} animateOpacity>
-          <U.MobileMenu colors={colors}>
-            <IconButton
-              className="close"
-              onClick={onClose}
-              icon={<MdiIcon path={mdiClose} size={0.75} />}
-            />
-            <div className="user">
-              <UserImage.Circle
-                size="3.75rem"
-                name={name}
-                email={email}
-                href={imageLink}
+        <Modal isOpen={isOpen} size="full">
+          <ModalContent>
+            <U.MobileMenu colors={colors}>
+              <IconButton
+                className="close"
+                onClick={onClose}
+                icon={<MdiIcon path={mdiClose} size={0.75} />}
               />
-              <div className="meta">
-                <b>{name}</b>
-                <small>{email}</small>
-                <small>{customerName}</small>
-              </div>
-            </div>
-
-            { mobileMenuTab === MENU_TAB && (
-            <>
-              <div className="menu">
-                {Array.isArray(navigationList) && (
-                <Navigation
-                  withLabel
-                  onNavigate={onNavigate}
-                  navigationList={navigationList}
+              <div className="user">
+                <UserImage.Circle
+                  size="3.75rem"
+                  name={name}
+                  email={email}
+                  href={imageLink}
                 />
-                )}
-                <div className="wrapper">
-                  <Button variant="ghost" onClick={onLogout}>
-                    <U.CreateItem colors={colors} breakpoints={breakpoints}>
-                      <MdiIcon size={0.875} path={mdiExitToApp} className="exit-icon" />
-                      <U.CreateTitle>{t('logout', 'ui')}</U.CreateTitle>
-                    </U.CreateItem>
-                  </Button>
+                <div className="meta">
+                  <b>{name}</b>
+                  <small>{email}</small>
+                  <small>{customerName}</small>
                 </div>
               </div>
-            </>
-            )}
 
-            { mobileMenuTab === SETTINGS_TAB && (
-            <div className="menu">
-              <Form.Primary
-                form={langaugeForm}
-                onChangeTimer={({ values }) => {
-                  onChangeLanguage(values.selectLanguage);
-                }}
-              />
-            </div>
-            )}
+              { mobileMenuTab === MENU_TAB && (
+                <>
+                  <div className="menu">
+                    {Array.isArray(navigationList) && (
+                    <Navigation
+                      withLabel
+                      onNavigate={onNavigate}
+                      navigationList={navigationList}
+                    />
+                    )}
+                    <div className="wrapper">
+                      <Button variant="unstyled" onClick={onLogout}>
+                        <U.CreateItem colors={colors} breakpoints={breakpoints}>
+                          <MdiIcon size={0.875} path={mdiExitToApp} className="exit-icon" />
+                          <U.CreateTitle>{t('logout', 'ui')}</U.CreateTitle>
+                        </U.CreateItem>
+                      </Button>
+                    </div>
+                  </div>
+                </>
+              )}
 
-            <U.Tabs>
-              <U.TabButton
-                colors={colors}
-                active={mobileMenuTab === MENU_TAB}
-                onClick={() => setMobileMenuTab(MENU_TAB)}
-              >
-                {t('menu', 'ui')}
-              </U.TabButton>
-              <U.TabButton
-                colors={colors}
-                active={mobileMenuTab === SETTINGS_TAB}
-                onClick={() => setMobileMenuTab(SETTINGS_TAB)}
-              >
-                {t('settings', 'ui')}
-              </U.TabButton>
-            </U.Tabs>
-          </U.MobileMenu>
-        </Collapse>
+              { mobileMenuTab === SETTINGS_TAB && (
+                <div className="menu">
+                  <Form.Primary
+                    form={langaugeForm}
+                    onChangeTimer={({ values }) => {
+                      onChangeLanguage(values.selectLanguage);
+                    }}
+                  />
+                </div>
+              )}
+
+              <U.Tabs>
+                <U.TabButton
+                  colors={colors}
+                  active={mobileMenuTab === MENU_TAB}
+                  onClick={() => setMobileMenuTab(MENU_TAB)}
+                >
+                  {t('menu', 'ui')}
+                </U.TabButton>
+                <U.TabButton
+                  colors={colors}
+                  active={mobileMenuTab === SETTINGS_TAB}
+                  onClick={() => setMobileMenuTab(SETTINGS_TAB)}
+                >
+                  {t('settings', 'ui')}
+                </U.TabButton>
+              </U.Tabs>
+            </U.MobileMenu>
+          </ModalContent>
+        </Modal>
       </U.Mobile>
+
     </U.MenuWrapper>
   );
 };

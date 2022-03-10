@@ -7,7 +7,7 @@ export const Wrapper = styled.div`
     align-items: stretch;
     width: 100%;
     border-bottom: 1px solid ${({ colors }) => colors?.gray?.['300']};
-   @media screen and (min-width: ${({ breakpoints }) => breakpoints.lg}) {
+    @media screen and (min-width: ${({ breakpoints }) => breakpoints.lg}) {
         border-bottom: none;
     }
 `;
@@ -29,9 +29,8 @@ export const NavigationItem = styled(NavLink)`
     }
 
     &:hover {
-        background: ${({ colors }) => colors?.gray?.['50']};
         @media screen and (min-width: ${({ breakpoints }) => breakpoints.lg}) {
-            background: inherit;
+            background: ${({ colors }) => colors?.gray?.['50']};
         }
     }
 
@@ -53,10 +52,13 @@ export const DropdownNavigationItem = styled(NavigationItem)`
     &:first-child {
         margin-top: 0.5rem;
     }
-    &:hover {
-        background: ${({ colors }) => colors?.gray?.['50']};
+    @media screen and (min-width: ${({ breakpoints }) => breakpoints.lg}) {
+        &:hover {
+            background: ${({ colors }) => colors?.gray?.['50']};
+        }
     }
-
+       
+  
    @media screen and (min-width: ${({ breakpoints }) => breakpoints.lg}) {
         justify-content: flex-start;
         color: ${({ colors }) => colors.black};

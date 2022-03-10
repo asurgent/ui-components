@@ -62,9 +62,13 @@ export const CreateItem = styled.div`
     padding: 0.75rem 1.5rem;
     width: 100%;
 
-    &:hover {
-        background: ${({ colors }) => colors?.gray?.['50']};
-    }
+     @media screen and (min-width: ${({ breakpoints }) => breakpoints.lg}) {
+        &:hover {
+            background: ${({ colors }) => colors?.gray?.['50']};
+        }
+     }
+  
+   
 
     .create-icon {
         grid-area: logo;
@@ -85,15 +89,11 @@ export const DesktopMenuFooter = styled.div`
 `;
 
 export const MobileMenu = styled.div`
-    position: fixed;
-    top: -1px;
-    bottom: -1px;
-    left: -1px;
-    right: -1px;
+    width: 100%;
+    height: 100%;
     background: ${({ colors }) => colors.white};
-    border: 1px solid ${({ colors }) => colors?.gray?.['300']};
-    display: flex;
-    flex-direction: column;
+    /* border: 1px solid ${({ colors }) => colors?.gray?.['300']}; */
+
 
     .close {
         position: absolute;
@@ -151,11 +151,15 @@ export const Tabs = styled.div`
     display: flex;
     flex-direction: row;
     justify-content: space-evenly;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
 `;
 
 export const Mobile = styled.div`
-    display: flex;
-    align-items: flex-start;
+    height: 100%;
+    width: 100%;
     position: relative;
 
      @media screen and (min-width: ${({ breakpoints }) => breakpoints.lg}) {

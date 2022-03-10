@@ -48,7 +48,7 @@ export const Desktop = styled.div`
     align-items: center;
     position: relative;
 
-    @media screen and (min-width: ${({ breakpoints }) => breakpoints.md}) {
+    @media screen and (min-width: ${({ breakpoints }) => breakpoints.lg}) {
         display: flex;
     }
 `;
