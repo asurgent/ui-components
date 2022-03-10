@@ -113,7 +113,7 @@ const Multiple = forwardRef((props, ref) => {
           >
             <h4>{`${t('entry', 'ui')} ${index + 1}`}</h4>
             <Button
-              variant="ghost"
+              variant="link"
               rightIcon={<MdiIcon path={mdiTrashCan} size={0.75} />}
               onClick={() => handleRemove({ index })}
               style={{ color: '#EF6461' }}
@@ -152,7 +152,7 @@ const Multiple = forwardRef((props, ref) => {
       }}
       >
         <Button
-          variant="ghost"
+          variant="unstyled"
           rightIcon={<MdiIcon path={mdiPlus} size={0.75} />}
           onClick={handleAdd}
           style={{ color: '#133A5D' }}

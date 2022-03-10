@@ -90,7 +90,7 @@ const TextMultiple = forwardRef((props, ref) => {
               onChange={({ target }) => handleChange({ target, index })}
             />
             <IconButton
-              variant="ghost"
+              variant="unstyled"
               style={{ color: '#EF6461' }}
               icon={<MdiIcon path={mdiTrashCan} size={0.75} />}
               onClick={() => handleRemove({ index })}
@@ -105,7 +105,7 @@ const TextMultiple = forwardRef((props, ref) => {
         }}
         >
           <Button
-            variant="ghost"
+            variant="unstyled"
             style={{ color: '#133A5D' }}
             disabled={!canAddNew}
             onClick={addNew}
