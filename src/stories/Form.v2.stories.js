@@ -26,7 +26,7 @@ import {
 import mockAzureSearch from './mocks/mockAzureSearch';
 
 const FormStory = {
-  title: 'Components/Form',
+  title: 'Data/Form.v2',
   component: Box,
   argTypes: {},
 };
