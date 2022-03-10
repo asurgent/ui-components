@@ -39,7 +39,7 @@ export const Top = styled.div`
     justify-content: flex-end;
     align-items: center;
     height: 3.75rem;
-    border-bottom: 1px solid ${({ colors }) => colors?.gray?.['300']};
+    border-bottom: 1px solid ${({ colors }) => colors?.gray?.['50']};
 
     @media screen and (min-width: ${({ breakpoints }) => breakpoints.lg}) {
         box-shadow: none;

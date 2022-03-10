@@ -1,5 +1,6 @@
 import React, { useState, useEffect, createContext } from 'react';
 import PropTypes from 'prop-types';
+import { useTheme } from '@chakra-ui/react';
 import { FormStyle, FormRow } from './Form.styled';
 import { withDelayTimer } from './helpers';
 
@@ -60,6 +61,8 @@ const Form = (props) => {
     className,
     style,
   } = props;
+
+  const { breakpoints } = useTheme();
 
   const [isDirty, setIsDirty] = useState(false);
   const [keyPressTimer] = useState(timer(onKeyUpTimer, msTimer));
@@ -147,6 +150,7 @@ const Form = (props) => {
 
   return (
     <FormStyle
+      breakpoints={breakpoints}
       onKeyUp={(event) => {
         const { name } = event.target;
         eventTrigger({ name, timerAction: keyPressTimer, action: onKeyUp });

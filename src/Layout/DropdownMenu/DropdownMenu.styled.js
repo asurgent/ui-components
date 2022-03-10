@@ -15,19 +15,19 @@ export const DesktopMenu = styled.div`
     padding: 0.5rem 0;
     border-radius: 5px;
     background: ${({ colors }) => colors.white};
-    border: 1px solid ${({ theme }) => theme.gray300};
+    border: 1px solid ${({ colors }) => colors?.gray?.['50']};
     box-shadow: 0 6px 10px -5px ${({ colors }) => colors?.gray?.['200']};
     top: 5px;
     right: -1px;
 
     .user-details {
       padding: 1rem;
-      border-bottom: 1px solid ${({ colors }) => colors?.gray?.['300']};
+      border-bottom: 1px solid ${({ colors }) => colors?.gray?.['50']};
     }
 
     form {
         padding: 1rem;
-        border-bottom: 1px solid ${({ colors }) => colors?.gray?.['300']};
+        border-bottom: 1px solid ${({ colors }) => colors?.gray?.['50']};
     }
 
     form > div {

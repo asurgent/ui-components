@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
+import { useTheme } from '@chakra-ui/react';
 import * as C from './Selector.styled';
 
 const propTypes = {
@@ -13,6 +14,8 @@ const defaultProps = {
 };
 
 const Selector = ({ entries, onSelect }) => {
+  const { colors } = useTheme();
+
   const [selected, setSelected] = useState(null);
 
   useEffect(() => {
@@ -24,6 +27,7 @@ const Selector = ({ entries, onSelect }) => {
     <C.Container>
       {entries?.map((ent, ind) => (
         <C.Year
+          colors={colors}
           key={ent.label || ind}
           selected={selected === ind}
           onClick={() => {
@@ -31,7 +35,7 @@ const Selector = ({ entries, onSelect }) => {
             onSelect(ent.value);
           }}
         >
-          <C.Label selected={selected === ind}>{ent.label}</C.Label>
+          <C.Label colors={colors} selected={selected === ind}>{ent.label}</C.Label>
         </C.Year>
       ))}
     </C.Container>

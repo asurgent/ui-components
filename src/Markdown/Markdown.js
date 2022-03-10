@@ -1,5 +1,6 @@
 import React, { useMemo, useRef, useEffect } from 'react';
 import PropTypes from 'prop-types';
+import { useTheme } from '@chakra-ui/react';
 import * as C from './Markdown.styled';
 import { makeDirtyHTML, sanitizeHtml, unescapeBackslashes } from './helpers';
 
@@ -24,6 +25,8 @@ const Markdown = ({
   className,
   ...props
 }) => {
+  const { colors } = useTheme();
+
   const body = useRef(null);
   const html = useMemo(() => {
     const unescapedHTML = unescapeBackslashes(markdown);
@@ -61,6 +64,7 @@ const Markdown = ({
   /* eslint-disable-next-line react/no-danger */
   return (
     <C.Markdown
+      colors={colors}
       ref={body}
       foldQuotes={foldQuotes}
       className={`markdown-body ${className}`}

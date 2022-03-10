@@ -58,20 +58,20 @@ const NumberInput = forwardRef((props, ref) => {
 
   const max = useMemo(() => {
     if (typeof maxValue === 'function') {
-      const values = form.valueState;
+      const values = form?.valueState;
       return maxValue(values, value);
     }
 
     return maxValue;
-  }, [maxValue, form.valueState, value]);
+  }, [maxValue, form?.valueState, value]);
 
   const min = useMemo(() => {
     if (typeof minValue === 'function') {
-      const values = form.valueState;
+      const values = form?.valueState;
       return minValue(values, value);
     }
     return minValue;
-  }, [minValue, form.valueState, value]);
+  }, [minValue, form?.valueState, value]);
 
   useEffect(() => {
     setValue(parseInt(props.value || 0, 10));

@@ -11,7 +11,7 @@ export const SmallImage = styled.div`
     display: flex;
     justify-content: center;
     align-items:center;
-    color: ${({ theme }) => theme.ruby800};
+    color: ${({ colors }) => colors?.ruby?.['800']};
     background: white;
     overflow: hidden;
 

@@ -5,7 +5,7 @@ const getRoles = (permissions) => Object.keys(permissions);
 
 export const hasPermission = (permissions, withRoles, withFeature) => {
   const features = getFeatures(permissions);
-  console.log(features);
+
   const roles = getRoles(permissions);
 
   const hasRoles = Array.isArray(withRoles) && withRoles.length > 0;

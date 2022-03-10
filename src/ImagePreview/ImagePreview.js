@@ -8,10 +8,12 @@ import {
   ModalContent,
   ModalCloseButton,
   useDisclosure,
+  useTheme,
 } from '@chakra-ui/react';
 import * as C from './ImagePreview.styled';
 
 const ImagePreview = ({ imgLink, smallIconSize }) => {
+  const { colors } = useTheme();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [imgValid, setImgValid] = useState(true);
 
@@ -19,7 +21,7 @@ const ImagePreview = ({ imgLink, smallIconSize }) => {
 
   return (
     <>
-      <C.SmallImage smallIconSize={smallIconSize}>
+      <C.SmallImage smallIconSize={smallIconSize} colors={colors}>
         {imgValid
           ? <img role="presentation" onClick={onOpen} onError={handleError} src={imgLink} alt="small_img" />
           : <MdiIcon path={mdiImageBrokenVariant} />}

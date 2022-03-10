@@ -26,7 +26,7 @@ const ErrorMessage = ({
   title, children, ...props
 }) => {
   const { colors, breakpoints } = useTheme();
-  console.log(colors, breakpoints);
+
   return (
     <ErrorState breakpoints={breakpoints} colors={colors} {...props}>
       {title && <b className="title">{title}</b>}

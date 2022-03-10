@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import i18next from 'i18next';
 import { mdiHelpCircleOutline } from '@mdi/js';
-import { Tooltip, Text } from '@chakra-ui/react';
+import { Tooltip, Text, useTheme } from '@chakra-ui/react';
 import * as C from './InputWrapper.styled';
 
 const propTyps = {
@@ -58,6 +58,8 @@ const InputWrapper = (props) => {
     description,
   } = props;
 
+  const { colors, breakpoints } = useTheme();
+
   return (
     <C.Main type={type} className={className} style={style}>
       { noLabel === false && (
@@ -65,13 +67,15 @@ const InputWrapper = (props) => {
           <Text textTransform="capitalize" fontWeight="bold" fontSize="sm">{label}</Text>
           { tooltip && (
             <Tooltip hasArrow label={tooltip}>
-              <C.TooltipIcon path={mdiHelpCircleOutline} size={1} />
+              <C.TooltipIcon colors={colors} path={mdiHelpCircleOutline} size={1} />
             </Tooltip>
           )}
         </C.Header>
       )}
       { description && <Text>{description}</Text> }
       <C.Wrapper
+        breakpoints={breakpoints}
+        colors={colors}
         style={wrapperStyle}
         disabled={disabled()}
         hasError={showContainerError && Boolean(error)}

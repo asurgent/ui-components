@@ -1,9 +1,10 @@
+/* eslint-disable */
 import React, { useState, useMemo } from 'react';
 import PropTypes from 'prop-types';
 import MdiIcon from '@mdi/react';
 import { mdiExitToApp, mdiClose } from '@mdi/js';
 import {
-  Button, IconButton, Collapse, useTheme, useDisclosure,
+  Button, IconButton, Collapse, useTheme
 } from '@chakra-ui/react';
 import * as U from './DropdownMenu.styled';
 import * as UserImage from '../../UserImage';
@@ -34,6 +35,7 @@ const defaultProps = {
 };
 
 const DropdownMenu = ({
+  isOpen,
   name,
   email,
   imageLink,
@@ -48,7 +50,6 @@ const DropdownMenu = ({
 }) => {
   const { t } = translation;
   const [mobileMenuTab, setMobileMenuTab] = useState(MENU_TAB);
-  const { isOpen } = useDisclosure();
   const { breakpoints, colors } = useTheme();
 
   const langaugeForm = Form.useFormBuilder({
@@ -69,9 +70,9 @@ const DropdownMenu = ({
   }, [navigationList]);
 
   return (
-    <U.MenuWrapper breakpoints={breakpoints}>
+    <U.MenuWrapper breakpoints={breakpoints} style={{zIndex: 2}}>
       <U.Desktop breakpoints={breakpoints}>
-        <Collapse in={!isOpen} animateOpacity>
+        <Collapse in={isOpen} animateOpacity>
           <U.DesktopMenu colors={colors}>
             <div className="user-details">
               <b>{name}</b>

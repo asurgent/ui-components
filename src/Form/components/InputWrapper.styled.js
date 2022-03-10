@@ -12,26 +12,26 @@ export const Main = styled.div`
 export const Wrapper = styled.div`
   margin: 0;
   display: flex;
-  @media screen and (min-width: ${(prop) => `${prop.theme.breakPointDesktop * 10}px`}) {
+  @media screen and (min-width: ${({ breakpoints }) => breakpoints.lg}) {
     max-width: 700px;
   }
   align-items: center;
   border: 0.0625rem solid;
-  border-color: ${({ theme, hasError }) => {
+  border-color: ${({ colors, hasError }) => {
     if (hasError) {
-      return theme.ruby800;
+      return colors?.ruby?.['800'];
     }
-    return theme.gray300;
+    return colors?.gray?.['100'];
   }};
   border-radius: ${(props) => (props.status === 'error' ? '3px 3px 0px 0px' : '3px')};
   position: relative;
   box-sizing: border-box;
   min-height: 2.9375rem;
-  background: ${({ theme, hasError }) => {
+  background: ${({ colors, hasError }) => {
     if (hasError) {
-      return theme.ruby100;
+      return colors?.ruby?.['100'];
     }
-    return theme.white;
+    return colors?.white;
   }};
   
   input,textarea,select {
@@ -50,7 +50,7 @@ export const Wrapper = styled.div`
   }};
     
     &:disabled {
-        color: ${({ theme }) => theme.gray400};
+        color: ${({ colors }) => colors?.gray?.['400']};
     }
 
     &::placeholder {
@@ -76,11 +76,7 @@ export const Wrapper = styled.div`
     position:absolute;
     right: 0.5rem;
   }
-  
-  .transparentBackground {
-    background: transparent!important;
-    border-color: ${({ theme }) => theme.gray200}!important;
-  }  
+
 `;
 
 export const Error = styled.div`
@@ -103,6 +99,6 @@ export const Header = styled.div`
 `;
 
 export const TooltipIcon = styled(MdiIcon)`
-  color: ${({ theme }) => theme.gray700};
+  color: ${({ colors }) => colors?.gray?.['700']};
   cursor: pointer;
 `;

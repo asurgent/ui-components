@@ -34,8 +34,6 @@ const UserDropdown = ({
   const { colors, breakpoints } = useTheme();
   const [open, setOpen] = useState(false);
 
-  console.log(breakpoints);
-
   return (
     <U.Wrapper>
       <U.Desktop breakpoints={breakpoints}>

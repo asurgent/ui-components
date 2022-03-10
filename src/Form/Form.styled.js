@@ -18,6 +18,9 @@ export const FormStyle = styled.form`
         box-shadow:0 0 0 1000px white inset;
         -webkit-box-shadow:0 0 0 1000px white inset;
     }
+    @media screen and (min-width: ${({ breakpoints }) => breakpoints.lg}) {
+        max-width: 700px;
+    }
 `;
 
 export const FormRow = styled.div`
