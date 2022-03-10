@@ -112,6 +112,7 @@ const DropdownMenu = ({
           <ModalContent>
             <U.MobileMenu colors={colors}>
               <IconButton
+                variant="unstyled"
                 className="close"
                 onClick={onClose}
                 icon={<MdiIcon path={mdiClose} size={0.75} />}

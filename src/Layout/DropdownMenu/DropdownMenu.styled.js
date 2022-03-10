@@ -92,8 +92,6 @@ export const MobileMenu = styled.div`
     width: 100%;
     height: 100%;
     background: ${({ colors }) => colors.white};
-    /* border: 1px solid ${({ colors }) => colors?.gray?.['300']}; */
-
 
     .close {
         position: absolute;
@@ -106,7 +104,7 @@ export const MobileMenu = styled.div`
         display: grid;
         grid-template-columns: min-content auto;
         grid-column-gap: 1rem;
-        border-bottom: 1px solid ${({ colors }) => colors?.gray?.['300']};
+        border-bottom: 1px solid ${({ colors }) => colors?.gray?.['50']};
 
         b {
             display: inline-block;
