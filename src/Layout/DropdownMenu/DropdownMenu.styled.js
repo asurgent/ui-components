@@ -159,18 +159,11 @@ export const Mobile = styled.div`
     height: 100%;
     width: 100%;
     position: relative;
-
-     @media screen and (min-width: ${({ breakpoints }) => breakpoints.lg}) {
-        display: none;
-    }
 `;
 
 export const Desktop = styled.div`
-    display: none;
+    display: flex;
     align-items: center;
     position: relative;
 
-    @media screen and (min-width: ${({ breakpoints }) => breakpoints.lg}) {
-        display: flex;
-    }
 `;

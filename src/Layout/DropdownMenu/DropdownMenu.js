@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import MdiIcon from '@mdi/react';
 import { mdiExitToApp, mdiClose } from '@mdi/js';
 import {
-  Button, IconButton, Collapse, useTheme, Modal, ModalContent,
+  Button, IconButton, Collapse, useTheme, Modal, ModalContent, useMediaQuery,
 } from '@chakra-ui/react';
 import * as U from './DropdownMenu.styled';
 import * as UserImage from '../../UserImage';
@@ -51,6 +51,7 @@ const DropdownMenu = ({
   const { t } = translation;
   const [mobileMenuTab, setMobileMenuTab] = useState(MENU_TAB);
   const { breakpoints, colors } = useTheme();
+  const [isMobile] = useMediaQuery(`(max-width: ${breakpoints?.lg})`);
 
   const langaugeForm = Form.useFormBuilder({
     selectLanguage: {
@@ -69,69 +70,35 @@ const DropdownMenu = ({
     return [];
   }, [navigationList]);
 
-  console.log('isopen', isOpen);
-
   return (
     <U.MenuWrapper breakpoints={breakpoints} style={{ zIndex: 2 }}>
-      <U.Desktop breakpoints={breakpoints}>
-        <Collapse in={isOpen} animateOpacity>
-          <U.DesktopMenu colors={colors}>
-            <div className="user-details">
-              <b>{name}</b>
-              <small>{email}</small>
-              <small>{customerName}</small>
-            </div>
-            <Form.Primary
-              form={langaugeForm}
-              onChangeTimer={({ values }) => {
-                onChangeLanguage(values.selectLanguage);
-              }}
-            />
 
-            {Array.isArray(dropdownNavList) && (
-              <Navigation
-                withLabel
-                onNavigate={onNavigate}
-                navigationList={dropdownNavList}
-              />
-            )}
-            <U.DesktopMenuFooter>
-              <Button variant="ghost" onClick={onLogout}>
-                <U.CreateItem colors={colors} breakpoints={breakpoints}>
-                  <MdiIcon size={0.875} path={mdiExitToApp} className="exit-icon" />
-                  <U.CreateTitle>{t('logout', 'ui')}</U.CreateTitle>
-                </U.CreateItem>
-              </Button>
-            </U.DesktopMenuFooter>
-          </U.DesktopMenu>
-        </Collapse>
-      </U.Desktop>
-
-      <U.Mobile breakpoints={breakpoints}>
-        <Modal isOpen={isOpen} size="full">
-          <ModalContent>
-            <U.MobileMenu colors={colors}>
-              <IconButton
-                variant="unstyled"
-                className="close"
-                onClick={onClose}
-                icon={<MdiIcon path={mdiClose} size={0.75} />}
-              />
-              <div className="user">
-                <UserImage.Circle
-                  size="3.75rem"
-                  name={name}
-                  email={email}
-                  href={imageLink}
+      {isMobile ? (
+        <U.Mobile breakpoints={breakpoints}>
+          <Modal isOpen={isOpen} size="full">
+            <ModalContent>
+              <U.MobileMenu colors={colors} breakpoints={breakpoints}>
+                <IconButton
+                  variant="unstyled"
+                  className="close"
+                  onClick={onClose}
+                  icon={<MdiIcon path={mdiClose} size={0.75} />}
                 />
-                <div className="meta">
-                  <b>{name}</b>
-                  <small>{email}</small>
-                  <small>{customerName}</small>
+                <div className="user">
+                  <UserImage.Circle
+                    size="3.75rem"
+                    name={name}
+                    email={email}
+                    href={imageLink}
+                  />
+                  <div className="meta">
+                    <b>{name}</b>
+                    <small>{email}</small>
+                    <small>{customerName}</small>
+                  </div>
                 </div>
-              </div>
 
-              { mobileMenuTab === MENU_TAB && (
+                { mobileMenuTab === MENU_TAB && (
                 <>
                   <div className="menu">
                     {Array.isArray(navigationList) && (
@@ -151,9 +118,9 @@ const DropdownMenu = ({
                     </div>
                   </div>
                 </>
-              )}
+                )}
 
-              { mobileMenuTab === SETTINGS_TAB && (
+                { mobileMenuTab === SETTINGS_TAB && (
                 <div className="menu">
                   <Form.Primary
                     form={langaugeForm}
@@ -162,28 +129,63 @@ const DropdownMenu = ({
                     }}
                   />
                 </div>
-              )}
+                )}
 
-              <U.Tabs>
-                <U.TabButton
-                  colors={colors}
-                  active={mobileMenuTab === MENU_TAB}
-                  onClick={() => setMobileMenuTab(MENU_TAB)}
-                >
-                  {t('menu', 'ui')}
-                </U.TabButton>
-                <U.TabButton
-                  colors={colors}
-                  active={mobileMenuTab === SETTINGS_TAB}
-                  onClick={() => setMobileMenuTab(SETTINGS_TAB)}
-                >
-                  {t('settings', 'ui')}
-                </U.TabButton>
-              </U.Tabs>
-            </U.MobileMenu>
-          </ModalContent>
-        </Modal>
-      </U.Mobile>
+                <U.Tabs>
+                  <U.TabButton
+                    colors={colors}
+                    active={mobileMenuTab === MENU_TAB}
+                    onClick={() => setMobileMenuTab(MENU_TAB)}
+                  >
+                    {t('menu', 'ui')}
+                  </U.TabButton>
+                  <U.TabButton
+                    colors={colors}
+                    active={mobileMenuTab === SETTINGS_TAB}
+                    onClick={() => setMobileMenuTab(SETTINGS_TAB)}
+                  >
+                    {t('settings', 'ui')}
+                  </U.TabButton>
+                </U.Tabs>
+              </U.MobileMenu>
+            </ModalContent>
+          </Modal>
+        </U.Mobile>
+      ) : (
+        <U.Desktop breakpoints={breakpoints}>
+          <Collapse in={isOpen} animateOpacity>
+            <U.DesktopMenu colors={colors}>
+              <div className="user-details">
+                <b>{name}</b>
+                <small>{email}</small>
+                <small>{customerName}</small>
+              </div>
+              <Form.Primary
+                form={langaugeForm}
+                onChangeTimer={({ values }) => {
+                  onChangeLanguage(values.selectLanguage);
+                }}
+              />
+
+              {Array.isArray(dropdownNavList) && (
+                <Navigation
+                  withLabel
+                  onNavigate={onNavigate}
+                  navigationList={dropdownNavList}
+                />
+              )}
+              <U.DesktopMenuFooter>
+                <Button variant="unstyled" onClick={onLogout} width="100%" textAlign="left">
+                  <U.CreateItem colors={colors} breakpoints={breakpoints}>
+                    <MdiIcon size={0.875} path={mdiExitToApp} className="exit-icon" />
+                    <U.CreateTitle>{t('logout', 'ui')}</U.CreateTitle>
+                  </U.CreateItem>
+                </Button>
+              </U.DesktopMenuFooter>
+            </U.DesktopMenu>
+          </Collapse>
+        </U.Desktop>
+      )}
 
     </U.MenuWrapper>
   );
