@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React, { useState, useMemo } from 'react';
 import PropTypes from 'prop-types';
 import { mdiChevronDown, mdiChevronLeft } from '@mdi/js';
@@ -81,14 +82,7 @@ const Layout = ({ provider, children }) => {
   return (
     <C.Main colors={colors} breakpoints={breakpoints}>
       <C.Left colors={colors}>
-        <Navigation
-          theme={(theme) => ({
-            activeBackground: theme.blue800,
-            activeLinkColor: theme.white,
-            linkColor: theme.white,
-          })}
-          navigationList={sideNavList}
-        />
+        <Navigation navigationList={sideNavList}/>
       </C.Left>
 
       <C.Content>

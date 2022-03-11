@@ -30,7 +30,7 @@ export const NavigationItem = styled(NavLink)`
 
     &:hover {
         @media screen and (min-width: ${({ breakpoints }) => breakpoints.lg}) {
-            background: ${({ colors }) => colors?.gray?.['50']};
+            background: ${({ colors }) => colors?.blue?.['800']};
         }
     }
 
@@ -38,7 +38,7 @@ export const NavigationItem = styled(NavLink)`
         background: ${({ colors }) => colors?.gray?.['100']};
         font-weight: 700;
         @media screen and (min-width: ${({ breakpoints }) => breakpoints.lg}) {
-            background: #20557c;
+           background: ${({ colors }) => colors?.blue?.['700']};
         }
     }
 

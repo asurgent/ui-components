@@ -11,5 +11,5 @@ export const ChartGroup = styled.g`
 export const Backdrop = styled.rect`
     height: ${({ dimensions }) => `${dimensions.boundedHeight}px`};
     width: ${({ dimensions }) => `${dimensions.boundedWidth}px`};
-    fill: ${({ theme }) => theme.white};
+    fill: #fff;
 `;

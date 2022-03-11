@@ -63,7 +63,7 @@ const InputWrapper = (props) => {
   return (
     <C.Main type={type} className={className} style={style}>
       { noLabel === false && (
-        <C.Header>
+        <C.Header breakpoints={breakpoints}>
           <Text textTransform="capitalize" fontWeight="bold" fontSize="sm">{label}</Text>
           { tooltip && (
             <Tooltip hasArrow label={tooltip}>
