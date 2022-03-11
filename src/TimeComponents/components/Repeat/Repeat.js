@@ -27,9 +27,9 @@ const Repeat = ({
   if (hasExpired) {
     return (
       <C.Container colors={colors} hasExpired data-testid="expired">
-        <C.TextSmall style={{ marginBottom: '0.6875rem' }}>{t('status', 'asurgentui')}</C.TextSmall>
-        <C.TextNormal data-testid="short-label">{t('naIcon', 'asurgentui')}</C.TextNormal>
-        <C.TextSmall style={{ marginTop: '0.6875rem' }} data-testid="long-label">{t('expired', 'asurgentui')}</C.TextSmall>
+        <C.TextSmall style={{ marginBottom: '0.6875rem' }}>{t('status', 'ui')}</C.TextSmall>
+        <C.TextNormal data-testid="short-label">{t('naIcon', 'ui')}</C.TextNormal>
+        <C.TextSmall style={{ marginTop: '0.6875rem' }} data-testid="long-label">{t('expired', 'ui')}</C.TextSmall>
       </C.Container>
     );
   }
@@ -37,7 +37,7 @@ const Repeat = ({
   if (isOngoing) {
     return (
       <C.Container colors={colors} data-testid="progress">
-        <C.TextSmall style={{ marginBottom: '0.3125rem' }}>{t('status', 'asurgentui')}</C.TextSmall>
+        <C.TextSmall style={{ marginBottom: '0.3125rem' }}>{t('status', 'ui')}</C.TextSmall>
         <Progress.Ring
           radius={20}
           stroke={2}
@@ -46,7 +46,7 @@ const Repeat = ({
           useAnimation={useAnimation}
           showPercentage={showPercentage}
         />
-        <C.TextSmall withBottomMargin>{t('ongoing', 'asurgentui')}</C.TextSmall>
+        <C.TextSmall withBottomMargin>{t('ongoing', 'ui')}</C.TextSmall>
       </C.Container>
     );
   }
@@ -54,19 +54,19 @@ const Repeat = ({
   if (cronCategory) {
     return (
       <C.Container colors={colors} data-testid="repeats">
-        <C.TextSmall withBottomMargin>{t('repeats', 'asurgentui')}</C.TextSmall>
+        <C.TextSmall withBottomMargin>{t('repeats', 'ui')}</C.TextSmall>
         <Icons.Dots color={hasExpired ? colors?.gray?.['600'] : colors?.blue?.['900']} />
-        <C.TextNormal data-testid={cronCategory}>{t(`${cronCategory}Short`, 'asurgentui')}</C.TextNormal>
-        <C.TextSmall>{t(`${cronCategory}Long`, 'asurgentui')}</C.TextSmall>
+        <C.TextNormal data-testid={cronCategory}>{t(`${cronCategory}Short`, 'ui')}</C.TextNormal>
+        <C.TextSmall>{t(`${cronCategory}Long`, 'ui')}</C.TextSmall>
       </C.Container>
     );
   }
   return (
     <C.Container colors={colors} data-testid="occursOnce">
-      <C.TextSmall withBottomMargin>{t('occurs', 'asurgentui')}</C.TextSmall>
+      <C.TextSmall withBottomMargin>{t('occurs', 'ui')}</C.TextSmall>
       <Icons.Dots color={hasExpired ? colors?.gray?.['600'] : colors?.blue?.['900']} />
       <C.TextNormal>1</C.TextNormal>
-      <C.TextSmall>{t('time', 'asurgentui')}</C.TextSmall>
+      <C.TextSmall>{t('time', 'ui')}</C.TextSmall>
     </C.Container>
   );
 };

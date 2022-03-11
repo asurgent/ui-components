@@ -19,15 +19,15 @@ const Datespan = ({ serviceWindow }) => {
         <C.StartDate hasExpired={hasExpired} colors={colors}>
           <C.TextNormal>{moment(start).format('D')}</C.TextNormal>
           <C.TextSmall>
-            {`${t(`month${moment(start).month()}`, 'asurgentui')} ${moment(start).format('YYYY')}`}
+            {`${t(`month${moment(start).month()}`, 'ui')} ${moment(start).format('YYYY')}`}
           </C.TextSmall>
         </C.StartDate>
 
         <C.Time colors={colors}>
-          <Tooltip hasArrow label={`${t('utcTime', 'asurgentui')} ${moment.utc(start).format('HH:mm')}`}>
+          <Tooltip hasArrow label={`${t('utcTime', 'ui')} ${moment.utc(start).format('HH:mm')}`}>
             <C.FlexCol>
               <C.TextSmall>
-                {`${t(`day${moment(start).day()}`, 'asurgentui')} ${moment(start).format('HH:mm')}`}
+                {`${t(`day${moment(start).day()}`, 'ui')} ${moment(start).format('HH:mm')}`}
               </C.TextSmall>
               <MdiIcon size={0.5} path={mdiInformationOutline} color={colors?.blue?.['900']} />
             </C.FlexCol>
@@ -40,15 +40,15 @@ const Datespan = ({ serviceWindow }) => {
         <C.EndDate hasExpired={hasExpired} colors={colors}>
           <C.TextNormal>{moment(end).format('D')}</C.TextNormal>
           <C.TextSmall>
-            {`${t(`month${moment(end).month()}`, 'asurgentui')} ${moment(end).format('YYYY')}`}
+            {`${t(`month${moment(end).month()}`, 'ui')} ${moment(end).format('YYYY')}`}
           </C.TextSmall>
         </C.EndDate>
 
         <C.Time colors={colors}>
-          <Tooltip hasArrow label={`${t('utcTime', 'asurgentui')} ${moment.utc(end).format('HH:mm')}`}>
+          <Tooltip hasArrow label={`${t('utcTime', 'ui')} ${moment.utc(end).format('HH:mm')}`}>
             <C.FlexCol>
               <C.TextSmall>
-                {`${t(`day${moment(end).day()}`, 'asurgentui')} ${moment(end).format('HH:mm')}`}
+                {`${t(`day${moment(end).day()}`, 'ui')} ${moment(end).format('HH:mm')}`}
               </C.TextSmall>
               <MdiIcon size={0.5} path={mdiInformationOutline} color={colors?.blue?.['900']} />
             </C.FlexCol>

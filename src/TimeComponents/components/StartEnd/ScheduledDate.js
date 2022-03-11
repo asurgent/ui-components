@@ -13,7 +13,7 @@ const ScheduledDate = ({ timestamp, hasExpired }) => {
     <C.DateAndTime colors={colors} active={!hasExpired}>
       <C.TextNormal>{moment(timestamp).format('D')}</C.TextNormal>
       <C.TextSmall>
-        {`${t(`month${moment(timestamp).month()}`, 'asurgentui')} ${moment(timestamp).format('YYYY')}`}
+        {`${t(`month${moment(timestamp).month()}`, 'ui')} ${moment(timestamp).format('YYYY')}`}
       </C.TextSmall>
     </C.DateAndTime>
   );

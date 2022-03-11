@@ -17,10 +17,10 @@ const propTypes = {
 const OngoingDateTime = ({ timestamp, hasExpired }) => {
   const { colors } = useTheme();
   return (
-    <Tooltip hasArrow label={`${t('utcTime', 'asurgentui')} ${moment.utc(timestamp).format('HH:mm')}`}>
+    <Tooltip hasArrow label={`${t('utcTime', 'ui')} ${moment.utc(timestamp).format('HH:mm')}`}>
       <C.Container colors={colors} marginRight>
 
-        <C.TextSmall withBottomMargin>{t('started', 'asurgentui')}</C.TextSmall>
+        <C.TextSmall withBottomMargin>{t('started', 'ui')}</C.TextSmall>
         <MdiIcon style={{ display: 'initial' }} size={0.875} path={hasExpired ? mdiStop : mdiPlay} color={colors?.blue?.['900']} />
 
         <C.FlexCol>

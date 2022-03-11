@@ -17,10 +17,10 @@ const ScheduledTime = ({ timestamp }) => {
   const { colors } = useTheme();
   return (
     <C.Time colors={colors}>
-      <Tooltip hasArrow label={`${t('utcTime', 'asurgentui')} ${moment.utc(timestamp).format('HH:mm')}`}>
+      <Tooltip hasArrow label={`${t('utcTime', 'ui')} ${moment.utc(timestamp).format('HH:mm')}`}>
         <C.FlexCol>
           <C.TextSmall>
-            {`${t(`day${moment(timestamp).day()}`, 'asurgentui')} ${moment(timestamp).format('HH:mm')}`}
+            {`${t(`day${moment(timestamp).day()}`, 'ui')} ${moment(timestamp).format('HH:mm')}`}
           </C.TextSmall>
           <MdiIcon size={0.5} path={mdiInformationOutline} color={colors?.blue?.['900']} />
         </C.FlexCol>

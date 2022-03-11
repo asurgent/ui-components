@@ -27,13 +27,13 @@ const Duration = ({ serviceWindow, duration }) => {
 
   const text = useMemo(() => {
     if (isOnGoing) {
-      return t('remaining', 'asurgentui');
+      return t('remaining', 'ui');
     }
-    return hasExpired ? t('lasted', 'asurgentui') : t('duration', 'asurgentui');
+    return hasExpired ? t('lasted', 'ui') : t('duration', 'ui');
   }, [hasExpired, isOnGoing]);
 
   return (
-    <Tooltip hasArrow label={`${duration} ${t('seconds', 'asurgentui')}`}>
+    <Tooltip hasArrow label={`${duration} ${t('seconds', 'ui')}`}>
       <C.Container colors={colors} hasExpired={hasExpired} marginRight marginLeft>
         <C.TextSmall withBottomMargin>{text}</C.TextSmall>
         <Icons.Duration active={!hasExpired} color={colors?.blue?.['900']} />
