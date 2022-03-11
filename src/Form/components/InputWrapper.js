@@ -85,7 +85,7 @@ const InputWrapper = (props) => {
         {children}
       </C.Wrapper>
       {showContainerError && error && (
-        <C.Error>
+        <C.Error colors={colors}>
           {
             i18next.exists(`${error.translationKey}`)
               ? i18next.t(error.translationKey)

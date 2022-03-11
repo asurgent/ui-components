@@ -1,5 +1,6 @@
 import React, { useMemo } from 'react';
 import PropTypes from 'prop-types';
+import { useTheme } from '@chakra-ui/react';
 import * as C from './ObjectInput.styled';
 
 const propTypes = {
@@ -43,6 +44,8 @@ const InputWrapper = (props) => {
     placeholder,
   } = props;
 
+  const { colors } = useTheme();
+
   const error = useMemo(() => {
     if (validator && validator.valid(value) === false) {
       return validator.errorMessage;
@@ -75,7 +78,7 @@ const InputWrapper = (props) => {
               disabled={disabled()}
             />
           )}
-          {error && <C.Error>{error}</C.Error>}
+          {error && <C.Error colors={colors}>{error}</C.Error>}
         </C.InputContainer>
       </>
     );
