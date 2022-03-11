@@ -55,7 +55,7 @@ const mousemove = ({
   });
 
   tooltip
-    .html(`${valueText} ${t('on', 'asurgentui')} ${moment(date).format('YYYY-MM-DD')}`)
+    .html(`${valueText} ${t('on', 'ui')} ${moment(date).format('YYYY-MM-DD')}`)
     .style('left', `${x - (width / 2)}px`)
     .style('top', `${y - (height + cellSize)}px`);
 };

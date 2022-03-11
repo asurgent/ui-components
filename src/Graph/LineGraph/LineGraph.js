@@ -82,7 +82,7 @@ const LineGraph = ({
     <C.Wrapper>
       {(!data || data.length === 0) && (
         <C.NoData>
-          {t('noData', 'asurgentui')}
+          {t('noData', 'ui')}
         </C.NoData>
       )}
       {data && data.length > 0 && (

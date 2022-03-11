@@ -30,10 +30,10 @@ export const getValueText = ({
   val1, val2, primaryLabel, secondaryLabel,
 }) => {
   if (nullOrUndefined(val1) && nullOrUndefined(val2)) {
-    return t('noData', 'asurgentui');
+    return t('noData', 'ui');
   }
   if (!nullOrUndefined(val1) && !nullOrUndefined(val2)) {
-    return `${val1} ${primaryLabel} ${t('of', 'asurgentui')} ${val1 + val2}`;
+    return `${val1} ${primaryLabel} ${t('of', 'ui')} ${val1 + val2}`;
   }
   if (!nullOrUndefined(val1)) {
     return `${val1} ${primaryLabel}`;
@@ -50,7 +50,7 @@ export const addMonthText = ({
     .selectAll('text')
     .data(firstDaysOfMonths)
     .join('text')
-    .text((d) => t(`month${moment(d.date).month()}`, 'asurgentui'))
+    .text((d) => t(`month${moment(d.date).month()}`, 'ui'))
     .attr('text-anchor', 'middle')
     .attr('dominant-baseline', 'hanging')
     .attr('x', ({ date }) => {
@@ -72,5 +72,5 @@ export const addWeekdays = ({
       const day = d.getUTCDay();
       return day * squareOffset + (squareOffset / 2);
     })
-    .text((d) => t(`day${new Date(d).getUTCDay()}`, 'asurgentui'));
+    .text((d) => t(`day${new Date(d).getUTCDay()}`, 'ui'));
 };

@@ -59,8 +59,8 @@ const Legend = ({
 
   return (
     <C.Legend ref={legendRef}>
-      <C.Text x={widthOfSquares - 50} y={3 + (cellSize / 2)}>{t('less', 'asurgentui')}</C.Text>
-      <C.Text x={0} y={3 + (cellSize / 2)}>{t('more', 'asurgentui')}</C.Text>
+      <C.Text x={widthOfSquares - 50} y={3 + (cellSize / 2)}>{t('less', 'ui')}</C.Text>
+      <C.Text x={0} y={3 + (cellSize / 2)}>{t('more', 'ui')}</C.Text>
     </C.Legend>
   );
 };
