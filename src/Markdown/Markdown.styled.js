@@ -1,6 +1,5 @@
 import styled from 'styled-components';
 import githubMarkdownCss from 'github-markdown-css';
-import theme from '../lib/style/theme';
 
 export const Markdown = styled.div`
     min-width: 100%;
@@ -32,10 +31,9 @@ export const Markdown = styled.div`
             padding: 0.25rem;
             right: 0.875rem;
             top: 0;
-            color: ${() => theme.gray800};
-            border: 1px solid ${() => theme.gray300};
+            color: ${({ colors }) => colors?.gray?.['800']};
+            border: 1px solid ${({ colors }) => colors?.gray?.['300']};
             background-color: white;
-            filter: drop-shadow(1px 1px 1px rgba('#000', 0.2);
             border-radius: 3px;
             cursor: pointer;
         }

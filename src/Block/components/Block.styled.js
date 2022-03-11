@@ -58,7 +58,7 @@ export const Bordered = styled(BaseBlock)`
         padding: ${({ withPadding }) => (withPadding ? '2rem' : 0)};
     }
     border-radius: 5px;
-    background: ${({ theme }) => theme.white};
+    background: ${({ colors }) => colors.white};
     filter: ${({ noShadow }) => (noShadow ? 'none' : 'drop-shadow(0 1px 6px rgba(#000, 0.2))')};
     border: ${({ colors, noShadow }) => (noShadow ? `1px solid ${colors?.gray?.['300']}` : 'none')};
 `;

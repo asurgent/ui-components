@@ -71,25 +71,8 @@ export const Title = styled.h6`
 `;
 
 export const Output = styled.div`
-    border-left: 1px solid ${({ theme }) => theme.gray300};
+    border-left: 1px solid ${({ colors }) => colors?.gray?.['300']};
     border-width: ${({ withBorder }) => (withBorder ? 1 : 0)};
     margin-left: ${({ withBorder }) => (withBorder ? '1rem' : '')};
     padding-left: ${({ withBorder }) => (withBorder ? '1rem' : '')};
-`;
-
-export const Day = styled.div`
-    width: 100%;
-    height: 2.5rem;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border: 1px solid ${({ selected, theme }) => (selected ? theme.blue700 : theme.gray800)};
-    background:${({ selected, theme }) => (selected ? theme.blue400 : 'transparent')};
-    color :${({ selected, theme }) => (selected ? theme.white : theme.gray800)};
-    font-size: 0.875rem;
-    cursor: pointer;
-
-    &:hover {
-        border-width: 2px;
-    }
 `;
