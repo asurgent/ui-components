@@ -14,14 +14,14 @@ export const Active = styled(Base)`
 export const FilterItem = styled.div`
     display: flex;
     flex-direction: row;
-    border-bottom: 1px solid ${({ theme }) => theme.gray200};    
+    border-bottom: 1px solid ${({ colors }) => colors?.gray?.['200']};    
     opacity: ${({ matched, disabled }) => ((matched || !disabled) ? 1 : 0.5)};
     text-decoration: ${({ disabled }) => ((disabled) && 'line-through')};
      
     cursor: pointer;
 
     &:hover {
-        background: ${({ theme }) => theme.gray50};
+        background: ${({ colors }) => colors?.gray?.['50']};
     }
     pointer-events: ${({ disabled }) => (disabled ? 'none' : 'all')};
 `;
@@ -63,9 +63,4 @@ export const Label = styled.div`
     text-overflow: ellipsis;
     white-space: nowrap;
     overflow: hidden;
-`;
-
-export const SecondaryLabel = styled(Label)`
-    color: ${({ theme }) => theme.gray400};
-    font-size: 0.625rem;
 `;

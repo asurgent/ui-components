@@ -92,7 +92,7 @@ export const Error = styled.div`
 export const Header = styled.div`
   margin-bottom: 0.5rem;
   display: flex;
-  @media screen and (min-width: ${(prop) => `${prop.theme.breakPointDesktop * 10}px`}) {
+  @media screen and (min-width: ${({ breakpoints }) => breakpoints.lg}) {
     max-width: 700px;
   }
   justify-content: space-between;
