@@ -1,7 +1,7 @@
 import React, {
   useMemo, useRef, useLayoutEffect, useState, createRef,
 } from 'react';
-import { withTheme } from 'styled-components';
+import { useTheme } from '@chakra-ui/react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 import * as d3 from 'd3';
@@ -26,7 +26,6 @@ const propTypes = {
   steps: PropTypes.number,
   color: PropTypes.string,
   emptyColor: PropTypes.string,
-  theme: PropTypes.instanceOf(Object),
   cellGap: PropTypes.number,
   primaryLabel: PropTypes.string,
   secondaryLabel: PropTypes.string,
@@ -39,7 +38,6 @@ const defaultProps = {
   steps: 5,
   color: null,
   emptyColor: '#F2F2F2',
-  theme: {},
   cellGap: 4,
   primaryLabel: 'something',
   secondaryLabel: 'something else',
@@ -75,8 +73,9 @@ const Heatmap = ({
   primaryLabel,
   secondaryLabel,
   showLegend,
-  theme,
 }) => {
+  const { colors } = useTheme();
+
   const monthTextRef = useRef(null);
   const groupRef = useRef(null);
   const svgRef = createRef(null);
@@ -110,7 +109,7 @@ const Heatmap = ({
   const colorScale = useMemo(() => d3
     .scaleLinear()
     .domain([0, steps - 1])
-    .range([theme.ruby50 || 'white', color || theme.ruby800]), [color, steps, theme.ruby50, theme.ruby800]);
+    .range([colors?.ruby?.['50'] || 'white', color || colors?.ruby?.['800']]), [color, steps, colors]);
 
   const legendCategories = useMemo(() => [...Array(steps)].map((_, i) => {
     const upperBound = (maxValue / steps) * (i + 1);
@@ -201,4 +200,4 @@ const Heatmap = ({
 Heatmap.propTypes = propTypes;
 Heatmap.defaultProps = defaultProps;
 
-export default withTheme(Heatmap);
+export default Heatmap;

@@ -1,5 +1,6 @@
 import React, { useMemo } from 'react';
 import PropTypes from 'prop-types';
+import { useTheme } from '@chakra-ui/react';
 import * as C from './MarkerLine.styled';
 
 const propTypes = {
@@ -13,6 +14,8 @@ const defaultProps = {
 };
 
 const MarkerLine = ({ yScale, markerLines, dimensions }) => {
+  const { colors } = useTheme();
+
   const threasholdLines = useMemo(() => {
     if (Array.isArray(markerLines)) {
       const filtered = markerLines
@@ -43,6 +46,7 @@ const MarkerLine = ({ yScale, markerLines, dimensions }) => {
     <>
       {threasholdLines.map(({ y0, color, key }) => (
         <C.MarkerLine
+          colors={colors}
           key={key}
           y1={y0}
           y2={y0}
