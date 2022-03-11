@@ -58,14 +58,8 @@ const Story = {
 export default Story;
 
 const DateSpanTemplate = (args) => {
-  const sw = {
-    ...args,
-    serviceWindow: {
-      ...args.serviceWindow,
-      dyn_is_passed: args.dyn_is_passed,
-    },
-  };
-  return <TimeComponents.DateSpan {...sw} />;
+  Object.assign(args.serviceWindow, { dyn_is_passed: args.dyn_is_passed });
+  return <TimeComponents.DateSpan {...args} />;
 };
 
 export const DateSpan = DateSpanTemplate.bind({});
