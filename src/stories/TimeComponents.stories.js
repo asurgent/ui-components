@@ -57,12 +57,21 @@ const Story = {
 };
 export default Story;
 
-const DateSpanTemplate = (args) => <TimeComponents.DateSpan {...args} />;
+const DateSpanTemplate = (args) => {
+  const sw = {
+    ...args,
+    serviceWindow: {
+      ...args.serviceWindow,
+      dyn_is_passed: args.dyn_is_passed,
+    },
+  };
+  return <TimeComponents.DateSpan {...sw} />;
+};
 
 export const DateSpan = DateSpanTemplate.bind({});
 DateSpan.args = {
   serviceWindow,
-  hasExpired: false,
+  dyn_is_passed: false,
 };
 
 const RepeatTemplate = (args) => <TimeComponents.Repeat {...args} />;
