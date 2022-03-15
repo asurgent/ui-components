@@ -9,6 +9,7 @@ import DropdownMenu from '../DropdownMenu';
 import DropdownCreate from '../DropdownCreate';
 import * as C from './Layout.styled';
 import Navigation from '../Navigation';
+import MdiIcon from '@mdi/react';
 import translation from './Layout.translation';
 
 const propTypes = {
@@ -41,7 +42,7 @@ const CreateList = ({ createList }) => {
     <>
       <Button
         onClick={() => setCreateOpen(true)}
-        rightIcon={createOpen ? mdiChevronLeft : mdiChevronDown}
+        rightIcon={createOpen ? <MdiIcon path={mdiChevronLeft} size={0.75} /> : <MdiIcon path={mdiChevronDown} size={0.75} />}
       >
         { t('create', 'ui') }
       </Button>
