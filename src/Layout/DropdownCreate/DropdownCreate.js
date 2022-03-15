@@ -1,12 +1,12 @@
-/* eslint-disable */
 import React from 'react';
 import PropTypes from 'prop-types';
 import MdiIcon from '@mdi/react';
 import { mdiClose } from '@mdi/js';
 import {
-  Button, Collapse, useDisclosure, useTheme,
+   Collapse, useTheme,
 } from '@chakra-ui/react';
 import * as U from './DropdownCreate.styled';
+import { Button } from '../../Button'
 
 const btnPropTypes = {
   onClick: PropTypes.func,
@@ -35,9 +35,13 @@ const CreateItemButton = ({
   const { colors } = useTheme();
   return (
     <Button
-      variant="ghost"
+      variant="unstyled"
       internalLink={link}
       onClick={() => { onClick(); onClose(); }}
+      textAlign="left"
+      justifyContent="flex-start"
+      p={0}
+      height="auto"
     >
       <U.CreateItem colors={colors}>
         <MdiIcon path={icon} className="create-icon" size={0.875} />
@@ -94,7 +98,7 @@ const DropdownCreate = ({
                 variant="ghost"
                 className="close"
                 onClick={onClose}
-                rightIcon={<MdiIcon path={mdiClose} size={0.75} />}
+                rightIcon={mdiClose}
               />
               <U.MobileContent>
                 {
