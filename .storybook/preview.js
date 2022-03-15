@@ -16,7 +16,7 @@ i18next
   .init({
     // we init with resources
     resources: {},
-    fallbackLng: 'en',
+    fallbackLng: 'en', // change to 'sv' to use swedish
     debug: false,
     defaultNS: 'translations',
     keySeparator: false, // we use content as keys
