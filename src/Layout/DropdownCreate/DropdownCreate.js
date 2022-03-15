@@ -94,7 +94,7 @@ const DropdownCreate = ({
                 variant="ghost"
                 className="close"
                 onClick={onClose}
-                rightIcon={mdiClose}
+                rightIcon={<MdiIcon path={mdiClose} size={0.75} />}
               />
               <U.MobileContent>
                 {
