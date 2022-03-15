@@ -1,13 +1,25 @@
-import * as i18n from '../lib/i18n';
+import i18next from 'i18next';
+import addTranslation from './addTranslation';
+import findTranslations from './findTranslations';
 
-const { i18next, findTranslations } = i18n;
-
-const context = require.context('./../', true, /\.translation.js$/);
+/**
+ * Find and build all our translations
+ */
+const context = require.context('../../', true, /\.translation.js$/);
 const resources = findTranslations(context, 'ui');
 
-export const addComponentTranslations = () => {
+/**
+ * Run after i18n has been initated
+ */
+const addComponentTranslations = () => {
   i18next.addResourceBundle('sv', 'ui', resources.sv.ui);
   i18next.addResourceBundle('en', 'ui', resources.en.ui);
 };
 
-export { i18next };
+export {
+  i18next,
+  resources,
+  addTranslation,
+  findTranslations,
+  addComponentTranslations,
+};
