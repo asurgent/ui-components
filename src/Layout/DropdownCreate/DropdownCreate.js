@@ -3,10 +3,10 @@ import PropTypes from 'prop-types';
 import MdiIcon from '@mdi/react';
 import { mdiClose } from '@mdi/js';
 import {
-   Collapse, useTheme,
+  Collapse, useTheme,
 } from '@chakra-ui/react';
 import * as U from './DropdownCreate.styled';
-import { Button } from '../../Button'
+import { Button } from '../../Button';
 
 const btnPropTypes = {
   onClick: PropTypes.func,
@@ -57,6 +57,8 @@ CreateItemButton.defaultProps = btnDefaultProps;
 
 const dropdownPropTypes = {
   createActionList: PropTypes.instanceOf(Array).isRequired,
+  onClose: PropTypes.func.isRequired,
+  isOpen: PropTypes.bool.isRequired,
 };
 
 const dropdownDefaultProps = {};
@@ -64,9 +66,8 @@ const dropdownDefaultProps = {};
 const DropdownCreate = ({
   createActionList,
   onClose,
-  isOpen
+  isOpen,
 }) => {
-
   const { colors, breakpoints } = useTheme();
   return (
     <>

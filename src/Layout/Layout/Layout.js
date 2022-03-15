@@ -1,4 +1,3 @@
-/* eslint-disable */
 import React, { useState, useMemo } from 'react';
 import PropTypes from 'prop-types';
 import { mdiChevronDown, mdiChevronLeft } from '@mdi/js';
@@ -10,7 +9,6 @@ import DropdownMenu from '../DropdownMenu';
 import DropdownCreate from '../DropdownCreate';
 import * as C from './Layout.styled';
 import Navigation from '../Navigation';
-import MdiIcon from '@mdi/react';
 import translation from './Layout.translation';
 
 const propTypes = {
@@ -84,7 +82,7 @@ const Layout = ({ provider, children }) => {
   return (
     <C.Main colors={colors} breakpoints={breakpoints}>
       <C.Left colors={colors}>
-        <Navigation navigationList={sideNavList}/>
+        <Navigation navigationList={sideNavList} />
       </C.Left>
 
       <C.Content>
