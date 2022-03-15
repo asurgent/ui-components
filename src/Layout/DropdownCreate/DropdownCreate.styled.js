@@ -3,6 +3,7 @@ import styled from 'styled-components';
 export const MenuWrapper = styled.div`
     background: white;
     position: relative;
+    z-index: 2;
 `;
 
 export const DesktopMenu = styled.div`
@@ -19,7 +20,7 @@ export const DesktopMenu = styled.div`
     right: -1px;
     border-radius: 5px;
     background: ${({ colors }) => colors?.white};
-    border: 1px solid ${({ colors }) => colors?.gray?.['200']};
+    border: 1px solid ${({ colors }) => colors?.gray?.['100']};
     box-shadow: 0 6px 10px -5px ${({ colors }) => colors?.gray?.['200']};
 
     small {
@@ -85,6 +86,8 @@ export const CreateItem = styled.div`
 
 export const MobileContent = styled.div`
     margin-top: 4rem;
+    display: flex;
+    flex-direction: column;
 `;
 
 export const Mobile = styled.div`

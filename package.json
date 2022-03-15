@@ -13,7 +13,9 @@
     "start": "start-storybook -p 6006",
     "build-storybook": "build-storybook",
     "build": "rm -rf dist && mkdir dist &&  babel ./src -d dist --ignore ./src/stories --copy-files --no-copy-ignored",
-    "copy": "npm run build && rsync -av ./dist/ ./../cloudops-portal/node_modules/@asurgent/ui-components/dist/",
+    "copy": "npm run build && npm run remove:portal && npm run add:portal",
+    "add:portal": "cp -r ./dist/. ./../cloudops-portal/node_modules/@asurgent/ui-components/dist",
+    "remove:portal": "rm -r ./../cloudops-portal/node_modules/@asurgent/ui-components/dist/*",
     "version:patch": "npm run build && npm version patch && npm publish && git push && git push --tags",
     "version:minor": "npm run build && npm version minor && npm publish && git push && git push --tags",
     "version:major": "npm run build && npm version major && npm publish && git push && git push --tags"

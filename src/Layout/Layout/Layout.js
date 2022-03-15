@@ -2,7 +2,8 @@
 import React, { useState, useMemo } from 'react';
 import PropTypes from 'prop-types';
 import { mdiChevronDown, mdiChevronLeft } from '@mdi/js';
-import { Button, useTheme } from '@chakra-ui/react';
+import { useTheme } from '@chakra-ui/react';
+import { Button } from '../../Button';
 import IconAsurget from '../../Icons/IconAsurget';
 import CurrentUser from '../CurrentUser';
 import DropdownMenu from '../DropdownMenu';
@@ -41,13 +42,13 @@ const CreateList = ({ createList }) => {
   return (
     <>
       <Button
-        onClick={() => setCreateOpen(true)}
-        rightIcon={createOpen ? <MdiIcon path={mdiChevronLeft} size={0.75} /> : <MdiIcon path={mdiChevronDown} size={0.75} />}
+        onClick={() => setCreateOpen(!createOpen)}
+        rightIcon={createOpen ? mdiChevronLeft : mdiChevronDown}
       >
         { t('create', 'ui') }
       </Button>
       <DropdownCreate
-        onClose={() => setCreateOpen(false)}
+        onClose={() => setCreateOpen(!createOpen)}
         isOpen={createOpen}
         createActionList={createList}
       />
