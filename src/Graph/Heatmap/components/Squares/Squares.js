@@ -4,7 +4,6 @@ import React, {
 import PropTypes from 'prop-types';
 import moment from 'moment';
 import * as d3 from 'd3';
-import { withTheme } from 'styled-components';
 import * as C from './Squares.styled';
 import translation from './Squares.translation';
 import { getColor } from '../../helpers';
@@ -292,4 +291,4 @@ const Squares = ({
 Squares.propTypes = propTypes;
 Squares.defaultProps = defaultProps;
 
-export default withTheme(Squares);
+export default Squares;
