@@ -50,7 +50,7 @@ const useSvgGroupSize = (ref) => {
   useLayoutEffect(() => {
     const updateSize = () => {
       if (ref?.current) {
-        const { width } = ref?.current.getBoundingClientRect();
+        const { width } = ref?.current.getBoundingClientRect() || { width: 0 };
         setSize(width);
       }
     };

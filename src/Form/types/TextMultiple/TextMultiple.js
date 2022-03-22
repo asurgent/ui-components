@@ -72,53 +72,51 @@ const TextMultiple = forwardRef((props, ref) => {
   const addNew = () => setValue([...value, '']);
 
   return (
-    <>
-      <C.Container>
-        <C.HiddenInput
-          ref={input}
-          value={value}
-          name={name}
-          readOnly
-        />
-        {value.map((entry, index) => (
+
+    <C.Container>
+      <C.HiddenInput
+        ref={input}
+        value={value}
+        name={name}
+        readOnly
+      />
+      {value.map((entry, index) => (
         /* eslint-disable-next-line react/no-array-index-key */
-          <C.Entry key={index} colors={colors}>
-            <input
-              type="text"
-              placeholder={placeholder}
-              value={entry}
-              onChange={({ target }) => handleChange({ target, index })}
-            />
-            <IconButton
-              variant="unstyled"
-              style={{ color: '#EF6461' }}
-              icon={<MdiIcon path={mdiTrashCan} size={0.75} />}
-              onClick={() => handleRemove({ index })}
-            >
-              {t('remove', 'ui')}
-            </IconButton>
-          </C.Entry>
-        ))}
-
-        <Block.Center style={{
-          minHeight: '2.63rem', padding: '1rem', justifyContent: 'center',
-        }}
-        >
-          <Button
+        <C.Entry key={index} colors={colors}>
+          <input
+            type="text"
+            placeholder={placeholder}
+            value={entry}
+            onChange={({ target }) => handleChange({ target, index })}
+          />
+          <IconButton
             variant="unstyled"
-            style={{ color: '#133A5D' }}
-            disabled={!canAddNew}
-            onClick={addNew}
-            rightIcon={<MdiIcon path={mdiPlus} size={0.75} />}
+            style={{ color: '#EF6461' }}
+            icon={<MdiIcon path={mdiTrashCan} size={0.75} />}
+            onClick={() => handleRemove({ index })}
           >
-            {value.length === 0
-              ? t('addNew', 'ui')
-              : t('addAnother', 'ui')}
-          </Button>
-        </Block.Center>
-      </C.Container>
+            {t('remove', 'ui')}
+          </IconButton>
+        </C.Entry>
+      ))}
 
-    </>
+      <Block.Center style={{
+        minHeight: '2.63rem', padding: '1rem', justifyContent: 'center',
+      }}
+      >
+        <Button
+          variant="unstyled"
+          style={{ color: '#133A5D' }}
+          disabled={!canAddNew}
+          onClick={addNew}
+          rightIcon={<MdiIcon path={mdiPlus} size={0.75} />}
+        >
+          {value.length === 0
+            ? t('addNew', 'ui')
+            : t('addAnother', 'ui')}
+        </Button>
+      </Block.Center>
+    </C.Container>
   );
 });
 

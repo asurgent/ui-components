@@ -1,5 +1,6 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable no-unused-vars */
+/* eslint-disable react/jsx-no-constructed-context-values */
 import React, {
   useContext,
   useEffect,

@@ -55,32 +55,30 @@ const InputWrapper = (props) => {
 
   if (render()) {
     return (
-      <>
-        <C.InputContainer type={type} tooltip={tooltip} error={error || false} label={label}>
-          {type === 'select' ? (
-            <select
-              value={value}
-              name={name}
-              onChange={onChange}
-              disabled={disabled()}
-            >
-              <option disabled value="">
-                {placeholder}
-              </option>
-              {options.map((opt) => <option value={opt.value} key={`${opt.value}-${opt.label}`}>{opt.label}</option>)}
-            </select>
-          ) : (
-            <input
-              value={value || ''}
-              name={name}
-              type={type}
-              onChange={onChange}
-              disabled={disabled()}
-            />
-          )}
-          {error && <C.Error colors={colors}>{error}</C.Error>}
-        </C.InputContainer>
-      </>
+      <C.InputContainer type={type} tooltip={tooltip} error={error || false} label={label}>
+        {type === 'select' ? (
+          <select
+            value={value}
+            name={name}
+            onChange={onChange}
+            disabled={disabled()}
+          >
+            <option disabled value="">
+              {placeholder}
+            </option>
+            {options.map((opt) => <option value={opt.value} key={`${opt.value}-${opt.label}`}>{opt.label}</option>)}
+          </select>
+        ) : (
+          <input
+            value={value || ''}
+            name={name}
+            type={type}
+            onChange={onChange}
+            disabled={disabled()}
+          />
+        )}
+        {error && <C.Error colors={colors}>{error}</C.Error>}
+      </C.InputContainer>
     );
   }
   return null;

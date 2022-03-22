@@ -199,7 +199,8 @@ const Squares = ({
   // Place today
   useEffect(() => {
     if (daysGroup) {
-      placeToday(data,
+      placeToday(
+        data,
         cellSize,
         startDate,
         cellGap,
@@ -208,7 +209,8 @@ const Squares = ({
         tooltip,
         primaryLabel,
         secondaryLabel,
-        todayRef?.current);
+        todayRef?.current,
+      );
     }
   }, [data,
     cellGap,

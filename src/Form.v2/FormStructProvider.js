@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-no-constructed-context-values */
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Flex } from '@chakra-ui/react';

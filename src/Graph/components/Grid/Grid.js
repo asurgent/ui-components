@@ -39,17 +39,21 @@ const Grid = ({
   const refY = createRef();
   const { boundedWidth, boundedHeight } = dimensions;
 
-  const xLines = useMemo(() => d3.axisBottom(xScale)
-    .ticks(lines)
-    .tickSize(-boundedWidth)
-    .tickFormat(''),
-  [boundedWidth, lines, xScale]);
+  const xLines = useMemo(
+    () => d3.axisBottom(xScale)
+      .ticks(lines)
+      .tickSize(-boundedWidth)
+      .tickFormat(''),
+    [boundedWidth, lines, xScale],
+  );
 
-  const yLines = useMemo(() => d3.axisLeft(yScale)
-    .ticks(lines)
-    .tickSize(-boundedWidth)
-    .tickFormat(''),
-  [boundedWidth, lines, yScale]);
+  const yLines = useMemo(
+    () => d3.axisLeft(yScale)
+      .ticks(lines)
+      .tickSize(-boundedWidth)
+      .tickFormat(''),
+    [boundedWidth, lines, yScale],
+  );
 
   useEffect(() => {
     d3.select(refY.current).call(yLines);

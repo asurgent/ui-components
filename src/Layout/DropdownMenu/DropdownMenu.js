@@ -99,7 +99,7 @@ const DropdownMenu = ({
                 </div>
 
                 { mobileMenuTab === MENU_TAB && (
-                <>
+
                   <div className="menu">
                     {Array.isArray(navigationList) && (
                     <Navigation
@@ -117,7 +117,7 @@ const DropdownMenu = ({
                       </Button>
                     </div>
                   </div>
-                </>
+
                 )}
 
                 { mobileMenuTab === SETTINGS_TAB && (
