@@ -33,11 +33,13 @@ const XDateAxis = ({
 }) => {
   const ref = createRef();
 
-  const ticks = useMemo(() => {
-    const format = customTick(translation.t);
-    return d3.axisBottom(xScale).tickFormat(format);
-  },
-  [xScale]);
+  const ticks = useMemo(
+    () => {
+      const format = customTick(translation.t);
+      return d3.axisBottom(xScale).tickFormat(format);
+    },
+    [xScale],
+  );
 
   useEffect(() => {
     // On first update-tick we dont want any duration/transition

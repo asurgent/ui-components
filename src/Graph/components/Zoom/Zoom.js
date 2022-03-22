@@ -49,9 +49,11 @@ const Zoom = ({
 
   const { boundedWidth, boundedHeight } = dimensions;
 
-  const brush = useMemo(() => d3.brushX()
-    .extent([[0, 0], [boundedWidth, boundedHeight]]),
-  [boundedHeight, boundedWidth]);
+  const brush = useMemo(
+    () => d3.brushX()
+      .extent([[0, 0], [boundedWidth, boundedHeight]]),
+    [boundedHeight, boundedWidth],
+  );
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const timeout = useMemo(timer((extent) => {
@@ -122,7 +124,8 @@ const Zoom = ({
   return (
     <>
       {
-        React.Children.map(children,
+        React.Children.map(
+          children,
           (child) => child && React.cloneElement(child, {
             /*
              The "update" state will be passed as "updateTick"-prop to
@@ -132,7 +135,8 @@ const Zoom = ({
              I think, some kind of dark-magic makes it work anyway ¯\_(ツ)_/¯
             */
             updateTick: update || 0,
-          }))
+          }),
+        )
       }
       { tooltip && (
         <line

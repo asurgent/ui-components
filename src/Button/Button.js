@@ -1,4 +1,5 @@
 /* eslint-disable react/forbid-prop-types */
+/* eslint-disable react/no-unstable-nested-components */
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Button as ChakraBtn, Link } from '@chakra-ui/react';

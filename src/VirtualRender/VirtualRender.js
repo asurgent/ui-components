@@ -1,3 +1,4 @@
+/* eslint-disable react/no-array-index-key */
 import React, { createRef, useState, useLayoutEffect } from 'react';
 import { Box } from '@chakra-ui/react';
 import PropTypes from 'prop-types';

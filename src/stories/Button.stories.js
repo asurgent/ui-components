@@ -1,6 +1,7 @@
 /* eslint-disable react/destructuring-assignment */
 import React from 'react';
 import { mdiCalendar, mdiAlertDecagram } from '@mdi/js';
+import { Tooltip } from '@chakra-ui/react';
 import { Button } from '../Button';
 
 const Story = {
@@ -41,7 +42,9 @@ const Story = {
 export default Story;
 
 const ButtonTemplate = (args) => (
-  <Button {...args}>{ args.children}</Button>
+  <Tooltip label="tooltip">
+    <Button {...args}>{args.children}</Button>
+  </Tooltip>
 );
 
 export const Btn = ButtonTemplate.bind({});

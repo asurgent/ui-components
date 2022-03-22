@@ -11,11 +11,13 @@ const defaultProps = {};
 const YLinearAxis = ({ yScale }) => {
   const ref = createRef();
 
-  const ticks = useMemo(() => d3.axisLeft(yScale)
-    .tickFormat((tickVal) => (
-      tickVal >= 1000 ? `${tickVal / 1000}K` : tickVal
-    )),
-  [yScale]);
+  const ticks = useMemo(
+    () => d3.axisLeft(yScale)
+      .tickFormat((tickVal) => (
+        tickVal >= 1000 ? `${tickVal / 1000}K` : tickVal
+      )),
+    [yScale],
+  );
 
   useEffect(() => {
     d3.select(ref.current)

@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-no-constructed-context-values */
 import React, { useState, useEffect, createContext } from 'react';
 import PropTypes from 'prop-types';
 import { useTheme } from '@chakra-ui/react';

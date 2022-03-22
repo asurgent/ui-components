@@ -31,7 +31,7 @@ const defaultPropsNavGroup = {
 const NavGroup = ({ page }) => {
   if (!page) { return null; }
   if (page.row) {
-    return <>{page.row}</>;
+    return page.row;
   }
 
   const {
