@@ -28,14 +28,20 @@ const Ring = ({
 }) => {
   const { colors } = useTheme();
 
-  const normalizedRadius = useMemo(() => radius - stroke * 0.5,
-    [radius, stroke]);
+  const normalizedRadius = useMemo(
+    () => radius - stroke * 0.5,
+    [radius, stroke],
+  );
 
-  const circumference = useMemo(() => (normalizedRadius * 2 * Math.PI),
-    [normalizedRadius]);
+  const circumference = useMemo(
+    () => (normalizedRadius * 2 * Math.PI),
+    [normalizedRadius],
+  );
 
-  const strokeDashoffset = useMemo(() => circumference - (progress / 100) * circumference,
-    [circumference, progress]);
+  const strokeDashoffset = useMemo(
+    () => circumference - (progress / 100) * circumference,
+    [circumference, progress],
+  );
 
   return (
     <C.Container>

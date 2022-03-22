@@ -5,9 +5,11 @@ import { TableBodyContext } from './data/context';
 
 export const TableGrid = ({ children, ...gridProps }) => {
   const columns = useContext(TableBodyContext);
-  const templateColumns = useMemo(() => columns
-    .map(({ size }) => size || 'minmax(5rem, 1fr)').join(' '),
-  [columns]);
+  const templateColumns = useMemo(
+    () => columns
+      .map(({ size }) => size || 'minmax(5rem, 1fr)').join(' '),
+    [columns],
+  );
 
   return (
     <Grid templateColumns={templateColumns} {...gridProps}>

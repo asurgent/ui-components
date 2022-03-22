@@ -9,9 +9,7 @@ export const withDelayTimer = (action, timeout = 500) => {
 };
 
 export const dispatchEvent = (value, ref) => {
-  const nativeInputValueSetter = Object.getOwnPropertyDescriptor(
-    window.HTMLInputElement.prototype, 'value',
-  ).set;
+  const nativeInputValueSetter = Object.getOwnPropertyDescriptor(window.HTMLInputElement.prototype, 'value').set;
   nativeInputValueSetter.call(ref.current, value);
   const inputEvent = new Event('input', { bubbles: true });
   ref.current.dispatchEvent(inputEvent);

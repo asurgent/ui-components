@@ -9,17 +9,13 @@ const StackComp = ({ horizontal, children }) => {
   if (horizontal) {
     return (
       <Stack display="flex" direction="row-reverse" alignItems="center">
-        <>
-          {children}
-        </>
+        {children}
       </Stack>
     );
   }
   return (
     <Stack>
-      <>
-        {children}
-      </>
+      {children}
     </Stack>
   );
 };

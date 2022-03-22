@@ -38,8 +38,10 @@ const Permission = ({
   withFeature,
 }) => {
   const permissions = useContext(PermissionContext);
-  const render = useMemo(() => hasPermission(permissions, withRoles, withFeature),
-    [permissions, withFeature, withRoles]);
+  const render = useMemo(
+    () => hasPermission(permissions, withRoles, withFeature),
+    [permissions, withFeature, withRoles],
+  );
 
   if (render) {
     const renderChildren = () => (typeof children === 'function' ? children() : children);

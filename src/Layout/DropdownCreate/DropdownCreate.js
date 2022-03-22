@@ -70,12 +70,12 @@ const DropdownCreate = ({
 }) => {
   const { colors, breakpoints } = useTheme();
   return (
-    <>
-      <U.MenuWrapper>
-        <U.Desktop breakpoints={breakpoints}>
-          <Collapse in={isOpen} animateOpacity>
-            <U.DesktopMenu colors={colors}>
-              {
+
+    <U.MenuWrapper>
+      <U.Desktop breakpoints={breakpoints}>
+        <Collapse in={isOpen} animateOpacity>
+          <U.DesktopMenu colors={colors}>
+            {
               createActionList
                 .map((action) => (
                   <CreateItemButton
@@ -89,20 +89,20 @@ const DropdownCreate = ({
                   />
                 ))
             }
-            </U.DesktopMenu>
-          </Collapse>
-        </U.Desktop>
-        <U.Mobile breakpoints={breakpoints}>
-          <Collapse in={isOpen} animateOpacity>
-            <U.MobileMenu colors={colors}>
-              <Button
-                variant="ghost"
-                className="close"
-                onClick={onClose}
-                rightIcon={mdiClose}
-              />
-              <U.MobileContent>
-                {
+          </U.DesktopMenu>
+        </Collapse>
+      </U.Desktop>
+      <U.Mobile breakpoints={breakpoints}>
+        <Collapse in={isOpen} animateOpacity>
+          <U.MobileMenu colors={colors}>
+            <Button
+              variant="ghost"
+              className="close"
+              onClick={onClose}
+              rightIcon={mdiClose}
+            />
+            <U.MobileContent>
+              {
                   createActionList
                     .map((action) => (
                       <CreateItemButton
@@ -116,12 +116,11 @@ const DropdownCreate = ({
                       />
                     ))
               }
-              </U.MobileContent>
-            </U.MobileMenu>
-          </Collapse>
-        </U.Mobile>
-      </U.MenuWrapper>
-    </>
+            </U.MobileContent>
+          </U.MobileMenu>
+        </Collapse>
+      </U.Mobile>
+    </U.MenuWrapper>
 
   );
 };

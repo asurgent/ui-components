@@ -40,24 +40,26 @@ export const useRepeatGroup = (initialize) => {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [numberOfGroups, parent.state.resetCount]);
 
-  const appendRepeatGroup = useCallback(() => {
-    const group = parent.state.values?.[name];
-    const newGroup = [...(group || []), {}];
+  const appendRepeatGroup = useCallback(
+    () => {
+      const group = parent.state.values?.[name];
+      const newGroup = [...(group || []), {}];
 
-    const message = {
-      type: 'UPDATE_VALUE',
-      payload: { name, value: newGroup },
-    };
+      const message = {
+        type: 'UPDATE_VALUE',
+        payload: { name, value: newGroup },
+      };
 
-    if (typeof max === 'number' && group) {
-      if (max > group.length) {
+      if (typeof max === 'number' && group) {
+        if (max > group.length) {
+          parent.dispatch(message);
+        }
+      } else {
         parent.dispatch(message);
       }
-    } else {
-      parent.dispatch(message);
-    }
-  },
-  [max, name, parent]);
+    },
+    [max, name, parent],
+  );
 
   const clearRepeatGroup = useCallback((index) => {
     const group = parent.state.values?.[name];
