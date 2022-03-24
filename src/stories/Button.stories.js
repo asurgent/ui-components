@@ -1,7 +1,6 @@
 /* eslint-disable react/destructuring-assignment */
 import React from 'react';
 import { mdiCalendar, mdiAlertDecagram } from '@mdi/js';
-import { Tooltip } from '@chakra-ui/react';
 import { Button } from '../Button';
 
 const Story = {
@@ -9,16 +8,20 @@ const Story = {
   component: Button,
   argTypes: {
     colorScheme: {
-      control: { type: 'select', options: ['asurgent', 'gold', 'ruby', 'green'] },
+      control: { type: 'select' },
+      options: ['asurgent', 'gold', 'ruby', 'green'],
     },
     variant: {
-      control: { type: 'select', options: ['solid', 'outline', 'ghost', 'link', 'block'] },
+      control: { type: 'select' },
+      options: ['solid', 'outline', 'ghost', 'link', 'block'],
     },
     type: {
-      control: { type: 'select', options: ['submit', 'button'] },
+      control: { type: 'select' },
+      options: ['submit', 'button'],
     },
     size: {
-      control: { type: 'select', options: ['xs', 'sm', 'md', 'lg'] },
+      control: { type: 'select' },
+      options: ['xs', 'sm', 'md', 'lg'],
     },
     leftIcon: {
       options: [null, mdiCalendar, mdiAlertDecagram],
@@ -36,16 +39,16 @@ const Story = {
       options: [true, false],
       control: { type: 'radio' },
     },
+    tooltipOrientation: {
+      control: { type: 'select' },
+      options: ['left', 'top', 'bottom', 'right', 'auto'],
+    },
   },
 };
 
 export default Story;
 
-const ButtonTemplate = (args) => (
-  <Tooltip label="tooltip">
-    <Button {...args}>{args.children}</Button>
-  </Tooltip>
-);
+const ButtonTemplate = (args) => (<Button {...args}>{args.children}</Button>);
 
 export const Btn = ButtonTemplate.bind({});
 Btn.args = {
@@ -60,7 +63,9 @@ Btn.args = {
   size: 'md',
   internalLink: null,
   externalLink: null,
-  mailto: 'mailman@mailcompany.mail',
-  type: null,
+  mailto: null,
+  type: 'button',
+  tooltip: 'Jag är ett tooltip',
+  tooltipOrientation: 'right',
   onClick: () => console.log(123),
 };
