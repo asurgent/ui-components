@@ -44,16 +44,23 @@ export const decorators = [
     <QueryClientProvider client={queryClient}>
       <BrowserRouter>
         <ColorModeScript/>
-        <ChakraProvider theme={theme}>
           <I18nextProvider i18n={i18next}>
             <Story/>
           </I18nextProvider>
-        </ChakraProvider>
       </BrowserRouter>
     </QueryClientProvider>
   ),
 ];
 
 export const parameters = {
-  actions: { argTypesRegex: "^on[A-Z].*" }
+  actions: { argTypesRegex: "^on[A-Z].*" },
+  controls: {
+    matchers: {
+      color: /(background|color)$/i,
+      date: /Date$/,
+    },
+  },
+  chakra: {
+    theme,
+  },
 }

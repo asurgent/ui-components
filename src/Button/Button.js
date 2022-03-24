@@ -2,7 +2,9 @@
 /* eslint-disable react/no-unstable-nested-components */
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Button as ChakraBtn, Link } from '@chakra-ui/react';
+import {
+  Button as ChakraBtn, Link, Tooltip,
+} from '@chakra-ui/react';
 import MdiIcon from '@mdi/react';
 import { NavLink, useLocation } from 'react-router-dom';
 import {
@@ -43,6 +45,8 @@ const propTypes = {
   saveToFilename: PropTypes.string,
   size: PropTypes.string,
   style: PropTypes.instanceOf(Object),
+  tooltip: PropTypes.string,
+  tooltipOrientation: PropTypes.string,
   type: PropTypes.string,
   variant: PropTypes.string,
 };
@@ -66,6 +70,8 @@ const defaultProps = {
   size: 'md',
   style: {},
   type: null,
+  tooltip: null,
+  tooltipOrientation: 'auto',
   variant: 'solid',
 };
 
@@ -88,6 +94,8 @@ const Button = ({
   size,
   style,
   type,
+  tooltip,
+  tooltipOrientation,
   variant,
   ...rest
 }) => {
@@ -141,6 +149,29 @@ const Button = ({
   };
 
   const extraStyling = variant === 'block' ? { ...blockStyle, ...style } : { ...style };
+
+  if (tooltip) {
+    return (
+      <Tooltip label={tooltip} hasArrow placement={tooltipOrientation}>
+        <ChakraBtn
+          leftIcon={leftIcon && <MdiIcon size={0.7} path={leftIcon} />}
+          rightIcon={rightIcon && <MdiIcon size={0.7} path={rightIcon} />}
+          variant={variant}
+          isLoading={isLoading}
+          loadingText={loadingText}
+          colorScheme={colorScheme}
+          disabled={disabled}
+          size={size}
+          onClick={handleClick}
+          type={type}
+          style={{ ...extraStyling }}
+          {...rest}
+        >
+          <Children />
+        </ChakraBtn>
+      </Tooltip>
+    );
+  }
 
   return (
     <ChakraBtn
