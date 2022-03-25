@@ -102,10 +102,6 @@ const Button = ({
   const location = useLocation();
 
   const handleClick = async (event) => {
-    if (type?.toLowerCase() === 'submit') {
-      event.preventDefault();
-    }
-
     if (!disabled) {
       if (saveToFile && typeof saveToFile === 'function') {
         const result = await saveToFile();
@@ -115,6 +111,9 @@ const Button = ({
       if (onClick) {
         onClick(event);
       }
+    } else {
+      event.preventDefault();
+      event.stopPropagation();
     }
   };
 
@@ -166,9 +165,10 @@ const Button = ({
             onClick={handleClick}
             type={type}
             style={{ ...extraStyling }}
+            onMouseDown={(e) => e.preventDefault()}
             {...rest}
           >
-            { textContent}
+            {textContent}
           </ChakraBtn>
         </Tooltip>
       ) : (
@@ -184,9 +184,10 @@ const Button = ({
           onClick={handleClick}
           type={type}
           style={{ ...extraStyling }}
+          onMouseDown={(e) => e.preventDefault()}
           {...rest}
         >
-          { textContent}
+          {textContent}
         </ChakraBtn>
       )}
     </LinkHandler>
