@@ -76,7 +76,7 @@ const defaultProps = {
 };
 
 const Button = ({
-  children,
+  children: textContent,
   clearStateKeys,
   colorScheme,
   disabled,
@@ -118,7 +118,7 @@ const Button = ({
     }
   };
 
-  const Children = () => {
+  const LinkHandler = ({ children }) => {
     if (internalLink) {
       const to = {
         pathname: internalLink,
@@ -139,20 +139,39 @@ const Button = ({
     }
 
     if (externalLink) {
-      return <Link href={externalLink} target="_blank" rel="noopener noreferrer">{ children}</Link>;
+      return <Link href={externalLink} target="_blank" rel="noopener noreferrer">{children}</Link>;
     }
 
     if (mailto) {
-      return <Link href={`mailto:${mailto}`}>{ children}</Link>;
+      return <Link href={`mailto:${mailto}`}>{children}</Link>;
     }
     return children;
   };
 
   const extraStyling = variant === 'block' ? { ...blockStyle, ...style } : { ...style };
 
-  if (tooltip) {
-    return (
-      <Tooltip label={tooltip} hasArrow placement={tooltipOrientation}>
+  return (
+    <LinkHandler>
+      {tooltip ? (
+        <Tooltip label={tooltip} hasArrow placement={tooltipOrientation}>
+          <ChakraBtn
+            leftIcon={leftIcon && <MdiIcon size={0.7} path={leftIcon} />}
+            rightIcon={rightIcon && <MdiIcon size={0.7} path={rightIcon} />}
+            variant={variant}
+            isLoading={isLoading}
+            loadingText={loadingText}
+            colorScheme={colorScheme}
+            disabled={disabled}
+            size={size}
+            onClick={handleClick}
+            type={type}
+            style={{ ...extraStyling }}
+            {...rest}
+          >
+            { textContent}
+          </ChakraBtn>
+        </Tooltip>
+      ) : (
         <ChakraBtn
           leftIcon={leftIcon && <MdiIcon size={0.7} path={leftIcon} />}
           rightIcon={rightIcon && <MdiIcon size={0.7} path={rightIcon} />}
@@ -167,29 +186,10 @@ const Button = ({
           style={{ ...extraStyling }}
           {...rest}
         >
-          <Children />
+          { textContent}
         </ChakraBtn>
-      </Tooltip>
-    );
-  }
-
-  return (
-    <ChakraBtn
-      leftIcon={leftIcon && <MdiIcon size={0.7} path={leftIcon} />}
-      rightIcon={rightIcon && <MdiIcon size={0.7} path={rightIcon} />}
-      variant={variant}
-      isLoading={isLoading}
-      loadingText={loadingText}
-      colorScheme={colorScheme}
-      disabled={disabled}
-      size={size}
-      onClick={handleClick}
-      type={type}
-      style={{ ...extraStyling }}
-      {...rest}
-    >
-      <Children />
-    </ChakraBtn>
+      )}
+    </LinkHandler>
   );
 };
 
