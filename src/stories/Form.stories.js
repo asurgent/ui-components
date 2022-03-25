@@ -2,7 +2,7 @@
 /* eslint-disable react/destructuring-assignment */
 import React, { useEffect } from 'react';
 import moment from 'moment';
-import { Button } from '@chakra-ui/react';
+import { Button } from '../Button';
 import * as Form from '../Form';
 import * as Block from '../Block';
 
@@ -291,11 +291,14 @@ const DefaultTemplate = () => {
               <Button disabled={!isDirty} onClick={onResetAction}>
                 Reset
               </Button>
-              <Button disabled={!isDirty} onClick={onSubmitAction}>Submit</Button>
+              <Button tooltip="tip" onClick={onSubmitAction}>asdf</Button>
+
             </Block.SpaceBetween>
           </>
         )}
+
       </Form.Primary>
+
     </div>
   );
 };
@@ -329,7 +332,7 @@ const AdvancedTemplate = () => {
             }
           <Block.SpaceBetween>
             <Button>Cancel</Button>
-            <Button onClick={onSubmitAction}>Submit</Button>
+            <Button type="submit" onClick={onSubmitAction}>Submit</Button>
           </Block.SpaceBetween>
         </>
       )}
@@ -474,7 +477,7 @@ const DynamicMinMaxTemplate = () => {
               <Button disabled={!isDirty} onClick={onResetAction}>
                 Reset
               </Button>
-              <Button onClick={onSubmitAction}>Submit</Button>
+              <Button type="submit" onClick={onSubmitAction}>Submit</Button>
             </Block.SpaceBetween>
           </>
         )}
