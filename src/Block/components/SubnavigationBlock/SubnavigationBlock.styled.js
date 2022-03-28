@@ -57,6 +57,8 @@ export const Navigation = styled.div`
 export const Label = styled.div``;
 
 export const Button = styled(Btn)`
+    width: 100%;
+    
     &:hover {
         background: #f8f8f8;
     }
