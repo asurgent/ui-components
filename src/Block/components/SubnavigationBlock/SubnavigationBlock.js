@@ -2,6 +2,7 @@ import React, { useMemo } from 'react';
 import PropTypes from 'prop-types';
 import { Heading, useTheme } from '@chakra-ui/react';
 import * as C from './SubnavigationBlock.styled';
+import { Button } from '../../../Button';
 
 const propTypes = {
   children: PropTypes.oneOfType([
@@ -37,13 +38,13 @@ const NavGroup = ({ page }) => {
   const {
     path,
     label,
-    labelStyle,
     clearStateKeys = [],
     isActive,
   } = page;
 
   return (
-    <C.Button
+    <Button
+      width="100%"
       bg={isActive ? '#f2f2f2' : 'transparent'}
       fontWeight={isActive ? 'bold' : 'normal'}
       justifyContent="flex-start"
@@ -51,9 +52,10 @@ const NavGroup = ({ page }) => {
       internalLink={path}
       clearStateKeys={clearStateKeys}
       borderRadius={0}
+      _hover={{ bg: ' #f8f8f8' }}
     >
-      <C.Label style={labelStyle}>{label}</C.Label>
-    </C.Button>
+      {label}
+    </Button>
   );
 };
 

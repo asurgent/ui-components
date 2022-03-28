@@ -1,5 +1,4 @@
 import styled from 'styled-components';
-import { Button as Btn } from '../../../Button';
 
 export const Wrapper = styled.div`
     display: grid;
@@ -55,11 +54,3 @@ export const Navigation = styled.div`
 `;
 
 export const Label = styled.div``;
-
-export const Button = styled(Btn)`
-    width: 100%;
-    
-    &:hover {
-        background: #f8f8f8;
-    }
-`;
