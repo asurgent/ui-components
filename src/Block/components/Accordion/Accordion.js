@@ -39,7 +39,6 @@ const Accordion = ({
   const { t } = translation;
   return (
     <C.Wrapper
-      onClick={() => onToggle(true)}
       compact={compact}
       colors={colors}
       breakpoints={breakpoints}
