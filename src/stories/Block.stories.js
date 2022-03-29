@@ -7,8 +7,6 @@ const Story = {
   component: Block,
   argTypes: {
     content: { control: 'text' },
-    withMargins: { control: 'boolean' },
-    renderTransparent: { control: 'boolean' },
   },
 };
 export default Story;
@@ -32,6 +30,7 @@ export const Bordered = (args) => (<Block.Bordered {...args}>{args.content}</Blo
 Bordered.args = {
   noShadow: true,
   content: 'hejhej',
+  withPadding: false,
 };
 
 export const Plain = (args) => <Block.Plain {...args}>{args.content}</Block.Plain>;
@@ -106,6 +105,7 @@ Info.args = {
   title: 'title',
   content: 'hejhej',
   withBottomMargin: false,
+  withPadding: false,
 };
 
 export const Emptystate = (args) => <Block.Emptystate {...args}>{args.content}</Block.Emptystate>;

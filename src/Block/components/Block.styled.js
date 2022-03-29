@@ -59,7 +59,7 @@ export const Bordered = styled(BaseBlock)`
     }
     border-radius: 5px;
     background: ${({ colors }) => colors.white};
-    filter: ${({ noShadow }) => (noShadow ? 'none' : 'drop-shadow(0 1px 6px rgba(#000, 0.2))')};
+    filter: ${({ noShadow }) => (noShadow ? 'none' : 'drop-shadow(0px 3px 6px rgba(0, 0, 0, 0.2))')};
     border: ${({ colors, noShadow }) => (noShadow ? `1px solid ${colors?.gray?.['300']}` : 'none')};
 `;
 
