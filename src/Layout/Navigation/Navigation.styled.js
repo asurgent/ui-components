@@ -52,6 +52,9 @@ export const DropdownNavigationItem = styled(NavigationItem)`
     &:first-child {
         margin-top: 0.5rem;
     }
+    &.active {
+         background: ${({ colors }) => colors?.gray?.['100']};
+    }
     @media screen and (min-width: ${({ breakpoints }) => breakpoints.lg}) {
         &:hover {
             background: ${({ colors }) => colors?.gray?.['50']};
