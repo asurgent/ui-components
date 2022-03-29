@@ -33,6 +33,7 @@ const CreateItemButton = ({
   link,
 }) => {
   const { colors } = useTheme();
+
   return (
     <Button
       variant="unstyled"
@@ -42,6 +43,7 @@ const CreateItemButton = ({
       justifyContent="flex-start"
       p={0}
       height="auto"
+      width="100%"
     >
       <U.CreateItem colors={colors}>
         <MdiIcon path={icon} className="create-icon" size={0.875} />
