@@ -62,6 +62,7 @@ export const CreateItem = styled.div`
         "logo title"
         "logo desc";
     padding: 0.5rem 1.5rem;
+    width: 100%;
 
     &:hover {
         background: ${({ colors }) => colors?.gray?.['50']};
