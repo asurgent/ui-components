@@ -47,7 +47,7 @@ const Duration = ({ hook }) => (
 
     </C.Row>
 
-    <Block.Info style={{ maxWidth: '700px', marginTop: '1.5rem' }}>
+    <Block.Info style={{ maxWidth: '992px', marginTop: '1.5rem' }}>
       {t('noteUtc', 'ui')}
     </Block.Info>
   </>

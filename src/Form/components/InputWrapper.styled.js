@@ -13,7 +13,7 @@ export const Wrapper = styled.div`
   margin: 0;
   display: flex;
   @media screen and (min-width: ${({ breakpoints }) => breakpoints.lg}) {
-    max-width: 700px;
+    max-width: 992px;
   }
   align-items: center;
   border: 0.0625rem solid;
@@ -64,7 +64,7 @@ export const Wrapper = styled.div`
   }
   
   textarea { 
-    resize: vertical; 
+    resize: vertical;
   }
 
   select {
@@ -93,7 +93,7 @@ export const Header = styled.div`
   margin-bottom: 0.5rem;
   display: flex;
   @media screen and (min-width: ${({ breakpoints }) => breakpoints.lg}) {
-    max-width: 700px;
+    max-width: 992px;
   }
   justify-content: space-between;
 `;
