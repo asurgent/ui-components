@@ -51,7 +51,7 @@ export const MonthSlector = styled(WeekSelector)`
 export const Editor = styled.div`
     width: 100%;
     @media screen and (min-width: 1024px) {
-        max-width: 992px;
+        max-width: 700px;
     }
 `;
 
