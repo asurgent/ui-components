@@ -14,6 +14,7 @@ const propTypes = {
   withBottomMargin: PropTypes.bool,
   autoWidth: PropTypes.bool,
   withPadding: PropTypes.bool,
+  style: PropTypes.instanceOf(Object),
 };
 const defaultProps = {
   children: null,
@@ -22,11 +23,12 @@ const defaultProps = {
   withBottomMargin: false,
   autoWidth: false,
   withPadding: false,
+  style: {},
 };
 
 export const Center = ({
   children, renderTransparent, withMargins, withBottomMargin, autoWidth,
-  withPadding,
+  withPadding, style,
 }) => {
   const { breakpoints } = useTheme();
   return (
@@ -37,6 +39,7 @@ export const Center = ({
       renderTransparent={renderTransparent}
       withMargins={withMargins}
       withBottomMargin={withBottomMargin}
+      style={style}
     >
       {children}
     </C.Center>
@@ -47,7 +50,7 @@ Center.defaultProps = defaultProps;
 
 export const Left = ({
   children, renderTransparent, withMargins, withBottomMargin, autoWidth,
-  withPadding,
+  withPadding, style,
 }) => {
   const { breakpoints } = useTheme();
   return (
@@ -58,6 +61,7 @@ export const Left = ({
       renderTransparent={renderTransparent}
       withMargins={withMargins}
       withBottomMargin={withBottomMargin}
+      style={style}
     >
       {children}
     </C.Left>
@@ -68,7 +72,7 @@ Left.defaultProps = defaultProps;
 
 export const Right = ({
   children, renderTransparent, withMargins, withBottomMargin, autoWidth,
-  withPadding,
+  withPadding, style,
 }) => {
   const { breakpoints } = useTheme();
   return (
@@ -79,6 +83,7 @@ export const Right = ({
       renderTransparent={renderTransparent}
       withMargins={withMargins}
       withBottomMargin={withBottomMargin}
+      style={style}
     >
       {children}
     </C.Right>
@@ -95,6 +100,7 @@ export const Bordered = ({
   autoWidth,
   withPadding,
   noShadow,
+  style,
 }) => {
   const { colors, breakpoints } = useTheme();
   return (
@@ -107,6 +113,7 @@ export const Bordered = ({
       withMargins={withMargins}
       withBottomMargin={withBottomMargin}
       noShadow={noShadow}
+      style={style}
     >
       {children}
     </C.Bordered>
@@ -117,7 +124,7 @@ Bordered.defaultProps = { ...defaultProps, noShadow: false };
 
 export const Plain = ({
   children, renderTransparent, withMargins, withBottomMargin, autoWidth,
-  withPadding,
+  withPadding, style,
 }) => {
   const { breakpoints } = useTheme();
   return (
@@ -128,6 +135,7 @@ export const Plain = ({
       renderTransparent={renderTransparent}
       withMargins={withMargins}
       withBottomMargin={withBottomMargin}
+      style={style}
     >
       {children}
     </C.Plain>
@@ -138,7 +146,7 @@ Plain.defaultProps = defaultProps;
 
 export const SpaceBetween = ({
   children, renderTransparent, withMargins, withBottomMargin, autoWidth,
-  withPadding,
+  withPadding, style,
 }) => {
   const { breakpoints } = useTheme();
   return (
@@ -149,6 +157,7 @@ export const SpaceBetween = ({
       renderTransparent={renderTransparent}
       withMargins={withMargins}
       withBottomMargin={withBottomMargin}
+      style={style}
     >
       {children}
     </C.SpaceBetween>
@@ -159,7 +168,7 @@ SpaceBetween.defaultProps = defaultProps;
 
 export const Stretch = ({
   children, renderTransparent, withMargins, withBottomMargin, autoWidth,
-  withPadding,
+  withPadding, style,
 }) => {
   const { breakpoints } = useTheme();
   return (
@@ -170,6 +179,7 @@ export const Stretch = ({
       renderTransparent={renderTransparent}
       withMargins={withMargins}
       withBottomMargin={withBottomMargin}
+      style={style}
     >
       {children}
     </C.Stretch>
@@ -180,7 +190,7 @@ Stretch.defaultProps = defaultProps;
 
 export const Wrap = ({
   children, renderTransparent, withMargins, withBottomMargin, wrapReverse, autoWidth,
-  withPadding,
+  withPadding, style,
 }) => {
   const { breakpoints } = useTheme();
   return (
@@ -192,6 +202,7 @@ export const Wrap = ({
       renderTransparent={renderTransparent}
       withMargins={withMargins}
       withBottomMargin={withBottomMargin}
+      style={style}
     >
       {children}
     </C.Wrap>
@@ -210,6 +221,7 @@ export const WrapGrid = ({
   stretchColumns,
   autoWidth,
   withPadding,
+  style,
 }) => {
   const { breakpoints } = useTheme();
   return (
@@ -223,6 +235,7 @@ export const WrapGrid = ({
       columnMinWidth={columnMinWidth}
       gridGap={gridGap}
       stretchColumns={stretchColumns}
+      style={style}
     >
       {children}
     </C.WrapGrid>
