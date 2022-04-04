@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import {
   mdiChevronDown, mdiMenu, mdiClose, mdiChevronUp,
@@ -9,30 +9,29 @@ import * as U from './CurrentUser.styled';
 import * as UserImage from '../../UserImage';
 
 const propTypes = {
-  children: PropTypes.func,
   imageLink: PropTypes.string,
   name: PropTypes.string,
   email: PropTypes.string,
   customerName: PropTypes.string,
+  isOpen: PropTypes.bool,
 };
 
 const defaultProps = {
-  children: (() => {}),
   imageLink: '',
   name: '',
   email: '',
   customerName: '',
+  isOpen: false,
 };
 
 const UserDropdown = ({
   name,
   email,
   imageLink,
-  children,
   customerName,
+  isOpen,
 }) => {
   const { colors, breakpoints } = useTheme();
-  const [open, setOpen] = useState(false);
 
   return (
     <U.Wrapper>
@@ -51,8 +50,7 @@ const UserDropdown = ({
           <IconButton
             variant="ghost"
             style={{ margin: '0 0.25rem' }}
-            icon={<MdiIcon path={open ? mdiChevronUp : mdiChevronDown} size={0.75} />}
-            onClick={() => setOpen(!open)}
+            icon={<MdiIcon path={isOpen ? mdiChevronUp : mdiChevronDown} size={0.75} />}
           />
         </>
 
@@ -60,11 +58,9 @@ const UserDropdown = ({
       <U.Mobile breakpoints={breakpoints}>
         <IconButton
           variant="ghost"
-          onClick={() => setOpen(true)}
-          icon={<MdiIcon path={open ? mdiClose : mdiMenu} size={0.75} />}
+          icon={<MdiIcon path={isOpen ? mdiClose : mdiMenu} size={0.75} />}
         />
       </U.Mobile>
-      {(children({ isOpen: open, onClose: () => { setOpen(false); } }))}
     </U.Wrapper>
   );
 };

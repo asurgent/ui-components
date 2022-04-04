@@ -2,9 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import MdiIcon from '@mdi/react';
 import { mdiClose } from '@mdi/js';
-import {
-  Collapse, useTheme,
-} from '@chakra-ui/react';
+import { useTheme } from '@chakra-ui/react';
 import * as U from './DropdownCreate.styled';
 import { Button } from '../../Button';
 
@@ -60,67 +58,57 @@ CreateItemButton.defaultProps = btnDefaultProps;
 const dropdownPropTypes = {
   createActionList: PropTypes.instanceOf(Array).isRequired,
   onClose: PropTypes.func.isRequired,
-  isOpen: PropTypes.bool.isRequired,
 };
 
 const dropdownDefaultProps = {};
 
-const DropdownCreate = ({
-  createActionList,
-  onClose,
-  isOpen,
-}) => {
+const DropdownCreate = ({ createActionList, onClose }) => {
   const { colors, breakpoints } = useTheme();
   return (
 
     <U.MenuWrapper>
       <U.Desktop breakpoints={breakpoints}>
-        <Collapse in={isOpen} animateOpacity>
-          <U.DesktopMenu colors={colors}>
-            {
-              createActionList
-                .map((action) => (
-                  <CreateItemButton
-                    key={action.title}
-                    icon={action.icon}
-                    title={action.title}
-                    description={action.description}
-                    link={action.link}
-                    onClick={action.onClick}
-                    onClose={onClose}
-                  />
-                ))
-            }
-          </U.DesktopMenu>
-        </Collapse>
+
+        <U.DesktopMenu colors={colors}>
+          {createActionList
+            .map((action) => (
+              <CreateItemButton
+                key={action.title}
+                icon={action.icon}
+                title={action.title}
+                description={action.description}
+                link={action.link}
+                onClick={action.onClick}
+                onClose={onClose}
+              />
+            ))}
+        </U.DesktopMenu>
+
       </U.Desktop>
       <U.Mobile breakpoints={breakpoints}>
-        <Collapse in={isOpen} animateOpacity>
-          <U.MobileMenu colors={colors}>
-            <Button
-              variant="ghost"
-              className="close"
-              onClick={onClose}
-              rightIcon={mdiClose}
-            />
-            <U.MobileContent>
-              {
-                  createActionList
-                    .map((action) => (
-                      <CreateItemButton
-                        icon={action.icon}
-                        key={action.title}
-                        title={action.title}
-                        description={action.description}
-                        link={action.link}
-                        onClick={action.onClick}
-                        onClose={onClose}
-                      />
-                    ))
-              }
-            </U.MobileContent>
-          </U.MobileMenu>
-        </Collapse>
+
+        <U.MobileMenu colors={colors}>
+          <Button
+            variant="ghost"
+            className="close"
+            onClick={onClose}
+            rightIcon={mdiClose}
+          />
+          <U.MobileContent>
+            {createActionList
+              .map((action) => (
+                <CreateItemButton
+                  icon={action.icon}
+                  key={action.title}
+                  title={action.title}
+                  description={action.description}
+                  link={action.link}
+                  onClick={action.onClick}
+                  onClose={onClose}
+                />
+              ))}
+          </U.MobileContent>
+        </U.MobileMenu>
       </U.Mobile>
     </U.MenuWrapper>
 
