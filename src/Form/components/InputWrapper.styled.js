@@ -12,8 +12,8 @@ export const Main = styled.div`
 export const Wrapper = styled.div`
   margin: 0;
   display: flex;
-  @media screen and (min-width: ${({ breakpoints }) => breakpoints.lg}) {
-    max-width: 992px;
+  @media screen and (min-width: 1024px) {
+    max-width: 700px;
   }
   align-items: center;
   border: 0.0625rem solid;
@@ -92,8 +92,8 @@ export const Error = styled.div`
 export const Header = styled.div`
   margin-bottom: 0.5rem;
   display: flex;
-  @media screen and (min-width: ${({ breakpoints }) => breakpoints.lg}) {
-    max-width: 992px;
+  @media screen and (min-width: 1024px) {
+    max-width: 700px;
   }
   justify-content: space-between;
 `;
