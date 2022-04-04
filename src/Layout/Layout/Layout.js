@@ -56,11 +56,13 @@ const CreateList = ({ createList }) => {
       onClose={onClose}
     >
       <PopoverTrigger>
-        <Button rightIcon={isOpen ? mdiChevronLeft : mdiChevronDown}>
-          { t('create', 'ui') }
-        </Button>
+        <span>
+          <Button rightIcon={isOpen ? mdiChevronLeft : mdiChevronDown}>
+            { t('create', 'ui') }
+          </Button>
+        </span>
       </PopoverTrigger>
-      <PopoverContent>
+      <PopoverContent border="none">
         <DropdownCreate createActionList={createList} onClose={onClose} />
       </PopoverContent>
     </Popover>

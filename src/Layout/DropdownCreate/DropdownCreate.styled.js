@@ -14,9 +14,7 @@ export const DesktopMenu = styled.div`
     min-width: 17.5rem;
     height: auto;
     padding: 0.5rem 0;
-    margin-top: 0.5rem;
     top: 5px;
-    transform: translateY(10px);
     right: -1px;
     border-radius: 5px;
     background: ${({ colors }) => colors?.white};

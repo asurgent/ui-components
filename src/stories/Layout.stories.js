@@ -90,6 +90,7 @@ const MainLayoutTemplate = () => {
 
   useEffect(() => {
     provider.setNavigationList(navigationList());
+    provider.setCreateList(createList);
     provider.setCurrentLanguage('sv');
     provider.setCustomerId('1234');
     provider.setCustomerName('Asurgent AB');
