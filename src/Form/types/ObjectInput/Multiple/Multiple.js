@@ -148,7 +148,7 @@ const Multiple = forwardRef((props, ref) => {
       ))}
 
       <Block.Center style={{
-        minHeight: '2.63rem', padding: '1rem', justifyContent: 'center',
+        minHeight: '2.63rem', padding: '.2rem', justifyContent: 'center',
       }}
       >
         <Button
@@ -156,6 +156,7 @@ const Multiple = forwardRef((props, ref) => {
           rightIcon={<MdiIcon path={mdiPlus} size={0.75} />}
           onClick={handleAdd}
           style={{ color: '#133A5D' }}
+          display="flex"
         >
           {value.length === 0
             ? t('addNew', 'ui')

@@ -101,7 +101,7 @@ const TextMultiple = forwardRef((props, ref) => {
       ))}
 
       <Block.Center style={{
-        minHeight: '2.63rem', padding: '1rem', justifyContent: 'center',
+        minHeight: '2.63rem', padding: '.2rem', justifyContent: 'center',
       }}
       >
         <Button
@@ -110,6 +110,7 @@ const TextMultiple = forwardRef((props, ref) => {
           disabled={!canAddNew}
           onClick={addNew}
           rightIcon={<MdiIcon path={mdiPlus} size={0.75} />}
+          display="flex"
         >
           {value.length === 0
             ? t('addNew', 'ui')
