@@ -20,6 +20,7 @@ const propTypes = {
   description: PropTypes.string,
   compact: PropTypes.bool,
   btnTooltip: PropTypes.string,
+  noHorizontalBorder: PropTypes.bool,
 };
 
 const defaultProps = {
@@ -28,10 +29,11 @@ const defaultProps = {
   compact: false,
   override: null,
   btnTooltip: null,
+  noHorizontalBorder: false,
 };
 
 const Accordion = ({
-  title, description, children, compact, override, btnTooltip,
+  title, description, children, compact, override, btnTooltip, noHorizontalBorder,
 }) => {
   const { isOpen, onToggle } = useDisclosure();
   const { breakpoints, colors } = useTheme();
@@ -42,6 +44,7 @@ const Accordion = ({
       compact={compact}
       colors={colors}
       breakpoints={breakpoints}
+      noHorizontalBorder={noHorizontalBorder}
     >
       <C.Text isOpen={isOpen} hasOverride={override}>
         {!override ? (
