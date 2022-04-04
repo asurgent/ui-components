@@ -7,7 +7,7 @@ import PropTypes from 'prop-types';
 import MdiIcon from '@mdi/react';
 import { mdiMenuDown } from '@mdi/js';
 import {
-  Tag, Wrap, useTheme, Collapse,
+  Tag, Wrap, useTheme, Popover, PopoverContent, PopoverTrigger, useDisclosure,
 } from '@chakra-ui/react';
 import { VirtualRender } from '../../../VirtualRender';
 import translation from './FilterSelect.translation';
@@ -62,6 +62,9 @@ const FilterInput = forwardRef((props, ref) => {
     props: inputProps,
     disabled,
   } = props;
+  const {
+    onOpen, onClose, isOpen,
+  } = useDisclosure();
 
   const { colors, breakpoints } = useTheme();
   const placeholdeOutput = placeholder || t('selectPlaceholder', 'ui');
@@ -99,25 +102,38 @@ const FilterInput = forwardRef((props, ref) => {
     ?.map((tag) => tag.value);
 
   return (
-    <C.SelectFilter>
-      <C.Input type="text" name={name} ref={filterSelectHook.inputRef} disabled {...inputProps} />
-      <C.Output onClick={() => !disabled() && filterSelectHook.setOpen(true)}>
-        <C.Value
-          colors={colors}
-          disabled={disabled()}
-          asPlaceholder={filterSelectHook.showPlaceHolder()}
-        >
-          {filterSelectHook.showTags() && (
-          <Wrap spacing={2}>
-            {handleTags({ items: tags, maxLength: 3 }).map((tag) => <Tag key={tag} bg="#f5edd8">{tag}</Tag>)}
-          </Wrap>
-          )}
-          { filterSelectHook.showPlaceHolder() && placeholdeOutput}
-          {!filterSelectHook.showTags() && (filterSelectHook.getOutput())}
-        </C.Value>
-        <MdiIcon path={mdiMenuDown} size={0.75} className="down-arrow" />
-      </C.Output>
-      <Collapse in={filterSelectHook.isOpen} animateOpacity>
+    <Popover
+      variant="responsive"
+      onOpen={onOpen}
+      onClose={onClose}
+      isOpen={isOpen}
+      matchWidth
+    >
+      <PopoverTrigger>
+        <C.SelectFilter>
+          <C.Input type="text" name={name} ref={filterSelectHook.inputRef} disabled {...inputProps} />
+
+          <C.Output onClick={() => !disabled() && filterSelectHook.setOpen(true)}>
+            <C.Value
+              colors={colors}
+              disabled={disabled()}
+              asPlaceholder={filterSelectHook.showPlaceHolder()}
+            >
+              {filterSelectHook.showTags() && (
+              <Wrap spacing={2}>
+                {handleTags({ items: tags, maxLength: 3 }).map((tag) => <Tag key={tag} bg="#f5edd8">{tag}</Tag>)}
+              </Wrap>
+              )}
+              { filterSelectHook.showPlaceHolder() && placeholdeOutput}
+              {!filterSelectHook.showTags() && (filterSelectHook.getOutput())}
+            </C.Value>
+            <MdiIcon path={mdiMenuDown} size={0.75} className="down-arrow" />
+          </C.Output>
+
+        </C.SelectFilter>
+      </PopoverTrigger>
+
+      <PopoverContent width="inherit">
         <C.Dropdown colors={colors} breakpoints={breakpoints}>
           <C.SearchWrapper colors={colors} breakpoints={breakpoints}>
             <C.Search
@@ -137,26 +153,26 @@ const FilterInput = forwardRef((props, ref) => {
           </C.SearchWrapper>
           <C.ListWrapper>
             {
-                  filterSelectHook.hasOptions() && (
-                    <VirtualRender
-                      rowHeight={48}
-                      items={filterSelectHook.getOptions()}
-                      style={{ flex: 1 }}
-                    >
-                      {(item, key) => (
-                        <FilterSelectItem
-                          key={key}
-                          onChange={handleChange}
-                          filterItem={item}
-                        />
-                      )}
-                    </VirtualRender>
-                  )
-              }
+              filterSelectHook.hasOptions() && (
+                <VirtualRender
+                  rowHeight={48}
+                  items={filterSelectHook.getOptions()}
+                  style={{ flex: 1 }}
+                >
+                  {(item, key) => (
+                    <FilterSelectItem
+                      key={key}
+                      onChange={handleChange}
+                      filterItem={item}
+                    />
+                  )}
+                </VirtualRender>
+              )
+            }
           </C.ListWrapper>
         </C.Dropdown>
-      </Collapse>
-    </C.SelectFilter>
+      </PopoverContent>
+    </Popover>
   );
 });
 
