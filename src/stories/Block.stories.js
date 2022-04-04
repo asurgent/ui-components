@@ -115,14 +115,24 @@ Emptystate.args = {
 };
 
 export const Accordion = (args) => (
-  <Block.Accordion {...args} title="Hello" description="Desc">
-    {() => (
-      <>
-        <p>hej</p>
-        <p>hej igen</p>
-      </>
-    )}
-  </Block.Accordion>
+  <div>
+    <Block.Accordion noHorizontalBorder {...args} title="Hello" description="Desc">
+      {() => (
+        <>
+          <p>hej</p>
+          <p>hej igen</p>
+        </>
+      )}
+    </Block.Accordion>
+    <Block.Accordion {...args} title="Hello" description="Desc">
+      {() => (
+        <>
+          <p>hej</p>
+          <p>hej igen</p>
+        </>
+      )}
+    </Block.Accordion>
+  </div>
 );
 Accordion.args = {
   content: 'hejhej',

@@ -33,6 +33,8 @@ export const Content = styled.div`
 export const Wrapper = styled.div`
     background: ${({ colors }) => colors?.white};
     border: 1px solid ${({ colors }) => colors?.gray?.['100']};
+    border-left-width: ${({ noHorizontalBorder }) => (noHorizontalBorder ? '0px' : '1px')};
+    border-right-width: ${({ noHorizontalBorder }) => (noHorizontalBorder ? '0px' : '1px')};
     box-sizing: border-box;
     box-shadow: ${({ compact }) => (compact ? 'none' : '0px 5px 7px rgba(0, 0, 0, 0.1)')};
     margin-bottom: ${({ compact }) => (compact ? '0' : '1rem')};
