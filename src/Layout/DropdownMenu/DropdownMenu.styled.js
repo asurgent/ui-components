@@ -1,4 +1,4 @@
-import styled from 'styled-components/macro';
+import styled from 'styled-components';
 
 export const MenuWrapper = styled.div`
     @media screen and (min-width: ${({ breakpoints }) => breakpoints.lg}) {

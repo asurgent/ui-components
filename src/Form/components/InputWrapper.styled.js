@@ -1,4 +1,4 @@
-import styled from 'styled-components/macro';
+import styled from 'styled-components';
 import MdiIcon from '@mdi/react';
 
 export const Main = styled.div`
