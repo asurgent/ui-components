@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled from 'styled-components/macro';
 import { KeyboardDatePicker } from '@material-ui/pickers';
 
 export const DatePicker = styled(KeyboardDatePicker)`

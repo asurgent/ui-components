@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled from 'styled-components/macro';
 import githubMarkdownCss from 'github-markdown-css';
 
 export const Markdown = styled.div`

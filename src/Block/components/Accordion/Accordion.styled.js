@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled from 'styled-components/macro';
 
 export const Text = styled.div`
     padding: ${({ hasOverride }) => !hasOverride && '2rem'};

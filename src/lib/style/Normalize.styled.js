@@ -1,5 +1,5 @@
 // @import '../node_modules/mapbox-gl/dist/mapbox-gl.css';
-import { createGlobalStyle } from 'styled-components';
+import { createGlobalStyle } from 'styled-components/macro';
 
 const Normalize = createGlobalStyle`
     html {
