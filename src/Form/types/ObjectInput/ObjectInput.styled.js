@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled from 'styled-components/macro';
 import Input from '../../components/InputWrapper';
 
 export const ButtonContainer = styled.div`

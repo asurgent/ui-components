@@ -1,8 +1,8 @@
-import styled from 'styled-components';
+import styled from 'styled-components/macro';
 import { theme } from '@chakra-ui/react';
 
 export const Scene = styled.div`
-    background: ${() => theme?.colors?.white};
+    background: #fff;
     position: relative;
     overflow-y: auto;
     overflow-x: hidden;
