@@ -73,7 +73,7 @@
     "react-scripts": "5.0.0",
     "search-query-parser": "^1.5.5",
     "showdown": "^1.9.1",
-    "styled-components": "^5.3.5"
+    "styled-components": "5.3.3"
   },
   "devDependencies": {
     "@asurgent/eslint-config-asurgent": "^1.2.1",
