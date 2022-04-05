@@ -1,5 +1,4 @@
-import styled from 'styled-components/macro';
-import { keyframes } from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 
 const blinkAnim = () => keyframes`
     0% {

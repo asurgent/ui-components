@@ -4,7 +4,7 @@ import React, {
   useMemo,
 } from 'react';
 import PropTypes from 'prop-types';
-import styled from 'styled-components/macro';
+import styled from 'styled-components';
 import * as d3 from 'd3';
 import translation from './Axis.translation';
 import ClipPath from '../ClipPath';

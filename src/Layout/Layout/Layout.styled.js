@@ -1,4 +1,4 @@
-import styled from 'styled-components/macro';
+import styled from 'styled-components';
 import * as User from '../CurrentUser/CurrentUser.styled';
 import { Omnibar } from '../Omnibar/Omnibar.styled';
 import { Scene } from '../Scene/Scene.styled';

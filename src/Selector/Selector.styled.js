@@ -1,4 +1,4 @@
-import styled from 'styled-components/macro';
+import styled from 'styled-components';
 import { Text } from '@chakra-ui/react';
 
 export const Container = styled.div`

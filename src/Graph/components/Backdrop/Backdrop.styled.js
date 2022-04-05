@@ -1,4 +1,4 @@
-import styled from 'styled-components/macro';
+import styled from 'styled-components';
 
 export const Backdrop = styled.rect`
     height: ${({ dimensions }) => `${dimensions.boundedHeight}px`};

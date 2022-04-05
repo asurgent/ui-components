@@ -1,4 +1,4 @@
-import styled from 'styled-components/macro';
+import styled from 'styled-components';
 
 export const TextSmall = styled.p`
     font-size: 10px;
