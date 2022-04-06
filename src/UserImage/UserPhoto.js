@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import PropTypes from 'prop-types';
 import { useTheme } from '@chakra-ui/react';
 import { Wrapper, Picture } from './UserPhoto.styled';
@@ -35,6 +35,24 @@ const defaultProps = {
   className: '',
 };
 
+// skip alpha variants & custom colors without nuances
+const getValidBackgroundColors = ({ colors }) => Object.keys(colors).reduce((acc, cur) => {
+  const col = colors[cur]['600'];
+
+  // skip alphaColors containing rgba values
+  if (col && !col.includes('rgb')) {
+    return [...acc, col];
+  }
+  return [...acc];
+}, []);
+
+const getUserColor = ({ email, bgColors }) => {
+  const firstLetter = email[0] || 'a';
+  const colorIndex = (firstLetter.toLowerCase().charCodeAt(0) - 97) % bgColors.length;
+  const absColorIndex = Math.abs(colorIndex); // for numbers etc
+  return bgColors[absColorIndex];
+};
+
 const UserPhoto = (props) => {
   const {
     size,
@@ -47,6 +65,14 @@ const UserPhoto = (props) => {
   const [url, setUrl] = useState('');
   const [imageExists, setImageExists] = useState(false);
   const { colors } = useTheme();
+
+  const bgColor = useMemo(() => {
+    const bgColors = getValidBackgroundColors({ colors });
+    const userColor = getUserColor({ email, bgColors });
+    console.log(userColor);
+
+    return userColor;
+  }, [colors, email]);
 
   useEffect(() => {
     setUrl(href);
@@ -62,11 +88,11 @@ const UserPhoto = (props) => {
 
   return (
     <Wrapper
-      colors={colors}
       size={size}
       square={square}
       email={email}
       className={className}
+      bgColor={bgColor}
     >
       <Picture
         alt="user-photo"
@@ -76,7 +102,7 @@ const UserPhoto = (props) => {
         src={url}
       />
       {imageExists === false && (
-        <small>{GetUserInitials(name)}</small>
+      <small>{GetUserInitials(name)}</small>
       )}
     </Wrapper>
   );
