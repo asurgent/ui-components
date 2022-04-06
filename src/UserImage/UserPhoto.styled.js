@@ -12,8 +12,9 @@ export const Wrapper = styled.div`
   justify-content: center;
   border: 1px solid;
   border-color: #fff;
-  box-shadow:${({ colors }) => `0 0 0 2px ${colors?.blue?.['900']}`};
-  background: ${({ colors }) => colors?.blue?.['900']};
+  color: #fff;
+  box-shadow:${({ bgColor }) => `0 0 0 2px ${bgColor}`};
+  background: ${({ bgColor }) => bgColor};
 
   small {
     font-size: .4em;
