@@ -34,7 +34,7 @@ You have basically 3 ways of increasing the version number (full explanation in 
 
 [Read more](https://docs.npmjs.com/cli/version)
 
-Whenever the tag is pushed, simply go under releases, edit the pushed tag. Give it a title and description, then publish it.
+Whenever the tag is pushed, simply go under releases, edit the pushed tag. Give it a title and description, then publish it. 
 
 
 ## Installing @asugent packages
