@@ -88,14 +88,3 @@ This repo uses [github-actions](https://help.github.com/en/actions/automating-yo
 [Read more](https://docs.npmjs.com/cli/version)
 
 Whenever the tag is pushed, simply go under releases, edit the pushed tag. Give it a title and description, then publish it. 
-
-
-## Installing @asugent packages
-1. Create a `personal access token` (Find out more [here](https://help.github.com/en/github/authenticating-to-github/creating-a-personal-access-token-for-the-command-line))
-    * Give it access to `repo`, `write:packages`, `read:packages`
-2. Create a `.npmrc` file in your home directory with the following content
-    ```
-    registry=https://registry.npmjs.org/
-    @asurgent:registry=https://npm.pkg.github.com/
-    //npm.pkg.github.com/:_authToken=YOUR_PERONAL_ACCESS_TOKEN
-    ```
