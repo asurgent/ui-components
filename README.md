@@ -78,8 +78,6 @@ We support two languages in the portal - swedish and english - using 'i18next'. 
 
 ![Screenshot 2022-04-08 at 11 37 12](https://user-images.githubusercontent.com/8748007/162409404-fe893fca-b17a-41d9-9792-1c9a181b2941.png)
 
-The translation functionality in the portal is imported from the UI-library (https://github.com/asurgent/ui-components/tree/main/src/translations): 
-
 ```
 MyComponent.translation.js
 import addTranslation from '../../../translations/addTranslation';
