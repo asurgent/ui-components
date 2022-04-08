@@ -1,6 +1,6 @@
 # Asurgent UI components v2
 
-This library contains the basic set of asurgent's components. It exposes React API compatible components. Latest is deployed to [github pages](https://asurgent.github.io/ui)
+This library contains the basic set of asurgent's components. It exposes React API compatible components. Latest is deployed to [github pages](https://asurgent.github.io/ui-components)
 
 ## Getting started
 
@@ -111,8 +111,6 @@ the difference on how to use it in the Portal vs. UI-components is that in the p
 
 
 ## Relase a package update
-This repo uses [github-actions](https://help.github.com/en/actions/automating-your-workflow-with-github-actions/configuring-workflows) that automatically publish a new package whenever there a new release is published at.
-
 1. Branch out from main
 2. Create a pull request
 3. Merge it
