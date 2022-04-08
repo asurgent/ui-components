@@ -6,18 +6,19 @@ This library contains the basic set of asurgent's components. It exposes React A
 
 1. Download NodeJS (https://nodejs.org), which comes bundled with npm
 2. Clone the repo in the same folder as you clone the portal (needed for copying UI-components changes to the portal without merging by running "npm run copy"): git clone https://github.com/asurgent/ui-components.git
-3. Create a personal access token in Github with the permission `read:packages` at https://github.com/settings/tokens
-4. Create a `personal access token` (Find out more [here](https://help.github.com/en/github/authenticating-to-github/creating-a-personal-access-token-for-the-command-line))
+3. Create a `personal access token` in GitHub (Find out more [here](https://help.github.com/en/github/authenticating-to-github/creating-a-personal-access-token-for-the-command-line))
     * Give it access to `repo`, `write:packages`, `read:packages`
-5. Create a `.npmrc` file in your home directory with the following content
-    ```
-    registry=https://registry.npmjs.org/
-    @asurgent:registry=https://npm.pkg.github.com/
-    //npm.pkg.github.com/:_authToken=YOUR_PERONAL_ACCESS_TOKEN
-    ```
-6. Open VS Code and open up a terminal
-7. Run: 'npm install'
-8. Run: 'npm start'
+4. Create a `.npmrc` file in your home directory with the following content
+```
+registry=https://registry.npmjs.org/
+@asurgent:registry=https://npm.pkg.github.com/
+//npm.pkg.github.com/:_authToken=GITHUBTOKEN
+//registry.npmjs.org/:_authToken=NPMTOKEN
+```
+
+5. Open VS Code and open up a terminal
+6. Run: 'npm install'
+7. Run: 'npm start'
 
 ## Tip when you start
 Add 'babel-plugin-macros' to the dependecies and change 
