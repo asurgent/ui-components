@@ -17,9 +17,9 @@
     "copy": "npm run build && npm run remove:portal && npm run add:portal",
     "add:portal": "cp -r ./dist/. ./../cloudops-portal/node_modules/@asurgent/ui-components/dist",
     "remove:portal": "rm -r ./../cloudops-portal/node_modules/@asurgent/ui-components/dist/*",
-    "version:patch": "npm run build && npm version patch && npm publish && git push && git push --tags && build-storybook && deploy-storbook",
-    "version:minor": "npm run build && npm version minor && npm publish && git push && git push --tags && build-storybook && deploy-storbook",
-    "version:major": "npm run build && npm version major && npm publish && git push && git push --tags && build-storybook && deploy-storbook"
+    "version:patch": "npm run build && npm version patch && npm publish && git push && git push --tags && build-storybook && deploy-storybook",
+    "version:minor": "npm run build && npm version minor && npm publish && git push && git push --tags && build-storybook && deploy-storybook",
+    "version:major": "npm run build && npm version major && npm publish && git push && git push --tags && build-storybook && deploy-storybook"
   },
   "repository": {
     "type": "git",
