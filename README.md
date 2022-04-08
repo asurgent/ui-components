@@ -73,6 +73,45 @@ const Story = {
 ![Screenshot 2022-04-08 at 12 21 19](https://user-images.githubusercontent.com/8748007/162417076-d67723f1-871e-448c-a578-1d919fa0a167.png)
 
 
+## Translations
+We support two languages in the portal - swedish and english - using 'i18next'. The translation file is placed next to the component it's supposed to be used in, and named the same as the component but with a '.translation.js' file ending:
+
+![Screenshot 2022-04-08 at 11 37 12](https://user-images.githubusercontent.com/8748007/162409404-fe893fca-b17a-41d9-9792-1c9a181b2941.png)
+
+The translation functionality in the portal is imported from the UI-library (https://github.com/asurgent/ui-components/tree/main/src/translations): 
+
+```
+MyComponent.translation.js
+import addTranslation from '../../../translations/addTranslation';
+
+export default addTranslation({
+  id: 'MyComponent',
+  sv: {
+    someTranslation: 'Någon översättning',
+  },
+  en: {
+    someTranslation: 'Some translation',
+  },
+});
+```
+
+and in the component is then used like 
+```
+MyComponent.js
+import translation from './MyComponent.translation';
+...
+const { t } = translation; // the translate-function
+
+<Text> { t('someTranslation', 'ui') } </Text>
+
+```
+
+the difference on how to use it in the Portal vs. UI-components is that in the portal it does not need the key 'ui' when translating:
+```
+<Text> { t('someTranslation') } </Text>
+```
+
+
 ## Relase a package update
 This repo uses [github-actions](https://help.github.com/en/actions/automating-your-workflow-with-github-actions/configuring-workflows) that automatically publish a new package whenever there a new release is published at.
 
