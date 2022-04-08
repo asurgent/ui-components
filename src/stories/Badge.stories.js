@@ -32,7 +32,7 @@ export const Status = (args) => (
   </div>
 );
 Status.args = {
-  status: 'on hold',
+  status: 'executing',
   scale: 1.0,
   useIcon: true,
 };
