@@ -28,7 +28,7 @@ const Status = ({ status, scale, useIcon }) => {
   const { colors } = useTheme();
 
   const color = getColor(status, colors);
-  const bg = colors?.gray?.['50'];
+  const bg = colors?.gray?.['100'];
 
   return (
     <C.Status color={color} bg={bg} scale={scale}>
