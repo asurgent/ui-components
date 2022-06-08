@@ -1,6 +1,7 @@
 const resultPool = {
   customer_display_name: ['Ikea AB', 'Ica', 'COOP'],
   type: ['Typ 1', 'Typ 2', 'Typ 3', 'Typ 4'],
+  tags: ['Typ 1', 'Typ 2', 'Typ 3', 'Typ 4'],
 };
 
 export const mockDBRes = (length) => Array.from({ length })

@@ -1,7 +1,15 @@
 /* eslint-disable no-unused-vars */
 import React from 'react';
+import { useRouteMatch } from 'react-router-dom';
 import {
-  Box, Flex,
+  Flex,
+  Wrap,
+  Text,
+  Box,
+  Tooltip,
+  Tag,
+  TagLabel,
+  Link,
 } from '@chakra-ui/react';
 import {
   TableSort,
@@ -28,6 +36,8 @@ const mockService = mockAzureSearch([
   { key: 'customer_display_name' },
   { key: 'type' },
 ]);
+
+const tags = ['Typ 1', 'Typ 2', 'Typ 3', 'Typ 4'];
 
 export default {
   title: 'Components/Table',
@@ -123,6 +133,7 @@ const Template = (args) => (
     <TableBody columns={[
       { label: 'Customer', size: '10rem' },
       { label: 'Type', size: '1fr' },
+      { label: 'Tags', size: '1fr' },
     ]}
     >
       <TableBodyHeader />
@@ -131,6 +142,32 @@ const Template = (args) => (
           <RowComponent key={idx}>
             <Flex p={2} alignItems="center">{data.customer_display_name}</Flex>
             <Flex p={2} alignItems="center">{data.type}</Flex>
+            <Box overflow="hidden" p={2}>
+              <Wrap p={2} spacing=".4rem">
+                {tags.length ? (
+                  tags.map((label, index) => (
+                    index === 0 ? (
+                      <Tag key={label} bg="#f5edd8" position="relative" style={{ marginRight: '20px' }}>
+                        <Tooltip hasArrow placement="top" label={tags.map((el) => `${el}`).join(', ')}>
+                          <TagLabel isTruncated>
+                            {tags[0]}
+                          </TagLabel>
+                        </Tooltip>
+                        { tags.length > 1 && (
+                          <span style={{ position: 'absolute', right: '-20px', fontSize: '12px' }}>
+                            {(' +')}
+                            {tags.length - 1}
+                          </span>
+                        )}
+                      </Tag>
+                    )
+                      : null
+                  ))
+                ) : (
+                  <Text padding="2px">-</Text>
+                )}
+              </Wrap>
+            </Box>
           </RowComponent>
         )}
       </TableRows>

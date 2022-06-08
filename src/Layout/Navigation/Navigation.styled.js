@@ -6,7 +6,7 @@ export const Wrapper = styled.div`
     flex-direction: column;
     align-items: stretch;
     width: 100%;
-    border-bottom: 1px solid ${({ colors }) => colors?.gray?.['50']};
+    border-bottom: 1px solid ${({ colors }) => colors?.gray?.['300']};
     @media screen and (min-width: ${({ breakpoints }) => breakpoints.lg}) {
         border-bottom: none;
     }
