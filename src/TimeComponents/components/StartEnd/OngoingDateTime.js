@@ -12,15 +12,18 @@ const { t } = translation;
 const propTypes = {
   timestamp: PropTypes.string.isRequired,
   hasExpired: PropTypes.bool.isRequired,
+  isEndTime: PropTypes.bool,
 };
 
-const OngoingDateTime = ({ timestamp, hasExpired }) => {
+const OngoingDateTime = ({ timestamp, hasExpired, isEndTime }) => {
   const { colors } = useTheme();
+  const labelKey = isEndTime ? 'ends' : 'started';
+
   return (
     <Tooltip hasArrow label={`${t('utcTime', 'ui')} ${moment.utc(timestamp).format('HH:mm')}`}>
       <C.Container colors={colors} marginRight>
 
-        <C.TextSmall withBottomMargin>{t('started', 'ui')}</C.TextSmall>
+        <C.TextSmall withBottomMargin>{t(labelKey, 'ui')}</C.TextSmall>
         <MdiIcon style={{ display: 'initial' }} size={0.875} path={hasExpired ? mdiStop : mdiPlay} color={colors?.blue?.['900']} />
 
         <C.FlexCol>
@@ -38,5 +41,9 @@ const OngoingDateTime = ({ timestamp, hasExpired }) => {
 };
 
 OngoingDateTime.propTypes = propTypes;
+
+OngoingDateTime.defaultProps = {
+  isEndTime: false,
+};
 
 export default OngoingDateTime;

@@ -74,7 +74,11 @@ const StartEnd = ({ serviceWindow }) => {
           serviceWindow={serviceWindow}
         />
 
-        <OngoingDateTime timestamp={moment(dates.to).toISOString()} hasExpired={hasExpired} />
+        <OngoingDateTime
+          isEndTime
+          timestamp={moment(dates.to).toISOString()}
+          hasExpired={hasExpired}
+        />
 
       </C.Dates>
     );
