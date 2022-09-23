@@ -6,22 +6,22 @@ const locales = (t) => ({
   time: '%HH:%M:%S',
   periods: [],
   days: [
+    t('sunday', 'ui'),
     t('monday', 'ui'),
     t('tuesday', 'ui'),
     t('wednesday', 'ui'),
     t('thursday', 'ui'),
     t('friday', 'ui'),
     t('saturday', 'ui'),
-    t('sunday', 'ui'),
   ],
   shortDays: [
+    t('sun', 'ui'),
     t('mon', 'ui'),
     t('tue', 'ui'),
     t('wed', 'ui'),
     t('thu', 'ui'),
     t('fri', 'ui'),
     t('sat', 'ui'),
-    t('sun', 'ui'),
   ],
   months:
   [
