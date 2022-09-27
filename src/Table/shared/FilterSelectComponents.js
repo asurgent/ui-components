@@ -1,5 +1,6 @@
 import React, {
   useContext,
+  useCallback,
   useEffect,
   useMemo,
   useState,
@@ -33,6 +34,7 @@ import {
   mdiCheck,
   mdiClose,
   mdiChevronDown,
+  mdiUnfoldMoreVertical,
 } from '@mdi/js';
 import { TableFilterTagGroup } from '../FilterTagGroup';
 import { VirtualRender } from '../../VirtualRender';
@@ -185,10 +187,16 @@ export const FilterSelectComponent = ({
   const { state } = useContext(TableContext);
   const hasAppliedFilter = !!state.getKey(FILTER_KEY)?.[filterKey]?.length;
 
-  const handleClearFilter = () => {
+  const [isExpanded, setIsExpanded] = useState(false);
+
+  const handleClearFilter = useCallback(() => {
     const { [filterKey]: target, ...current } = state.getKey(FILTER_KEY);
     state.setKey(FILTER_KEY, { ...current });
-  };
+  }, [state]);
+
+  const handleExpandList = useCallback(() => {
+    setIsExpanded((prev) => !prev);
+  }, []);
 
   return (
     <Stack>
@@ -215,6 +223,7 @@ export const FilterSelectComponent = ({
                   iconSpacing
                   rightIcon={<MdiIcon path={mdiChevronDown} size={0.8} />}
                 >
+
                   {label}
                 </Button>
               </PopoverTrigger>
@@ -229,7 +238,7 @@ export const FilterSelectComponent = ({
               ) }
             </ButtonGroup>
 
-            <PopoverContent maxWidth="500px">
+            <PopoverContent transitionProperty="all" transitionDuration="200ms" transitionTimingFunction="ease-in" width={isExpanded ? '80vw' : '60vw'} maxWidth={isExpanded ? '600px' : '400px'}>
               <PopoverHeader fontWeight="semibold">
                 {t('changeFilter', 'ui')}
                 {' '}
@@ -241,6 +250,17 @@ export const FilterSelectComponent = ({
                 {isOpen && children({
                   searchPlaceholder: `${t('search', 'ui')} ${label.toLowerCase()}...`,
                 })}
+
+                <Flex justifyContent="flex-end">
+                  <Button
+                    onClick={handleExpandList}
+                    variant="ghost"
+                    justifyContent="space-between"
+                    iconSpacing
+                    aria-label={t('expandRows', 'ui')}
+                    rightIcon={<MdiIcon path={mdiUnfoldMoreVertical} size={0.8} />}
+                  />
+                </Flex>
               </PopoverBody>
             </PopoverContent>
           </>
