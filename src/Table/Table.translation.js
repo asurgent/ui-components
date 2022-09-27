@@ -12,6 +12,7 @@ export default addTranslation({
     removeFilter: 'Ta bort filter',
     clearAppliedFilters: 'Ta bort alla filter för',
     changeFilter: 'Ändra filter',
+    expandRows: 'Expandera rader',
   },
   en: {
     close: 'Close',
@@ -23,5 +24,6 @@ export default addTranslation({
     removeFilter: 'Remove filter',
     clearAppliedFilters: 'Clear applied filters for',
     changeFilter: 'Change filter',
+    expandRows: 'Expand rows',
   },
 });
