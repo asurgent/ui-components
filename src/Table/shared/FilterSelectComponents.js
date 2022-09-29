@@ -252,14 +252,17 @@ export const FilterSelectComponent = ({
                 })}
 
                 <Flex justifyContent="flex-end">
-                  <Button
-                    onClick={handleExpandList}
-                    variant="ghost"
-                    justifyContent="space-between"
-                    iconSpacing
-                    aria-label={t('expandRows', 'ui')}
-                    rightIcon={<MdiIcon path={mdiUnfoldMoreVertical} size={0.8} />}
-                  />
+                  <Tooltip hasArrow label={isExpanded ? t('shrinkRows', 'ui') : t('expandRows', 'ui')} placement="auto">
+
+                    <Button
+                      onClick={handleExpandList}
+                      variant="ghost"
+                      justifyContent="space-between"
+                      iconSpacing
+                      aria-label={isExpanded ? t('shrinkRows', 'ui') : t('expandRows', 'ui')}
+                      rightIcon={<MdiIcon path={mdiUnfoldMoreVertical} size={0.8} />}
+                    />
+                  </Tooltip>
                 </Flex>
               </PopoverBody>
             </PopoverContent>
