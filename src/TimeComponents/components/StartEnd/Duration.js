@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { Tooltip, useTheme } from '@chakra-ui/react';
 import { formatTextNumber } from './helpers';
@@ -25,12 +25,13 @@ const Duration = ({ serviceWindow, duration }) => {
 
   const { colors } = useTheme();
 
-  const text = useMemo(() => {
-    if (isOnGoing) {
-      return t('remaining', 'ui');
-    }
-    return hasExpired ? t('lasted', 'ui') : t('duration', 'ui');
-  }, [hasExpired, isOnGoing]);
+  let text = '';
+
+  if (isOnGoing) {
+    text = t('remaining', 'ui');
+  } else {
+    text = hasExpired ? t('lasted', 'ui') : t('duration', 'ui');
+  }
 
   return (
     <Tooltip hasArrow label={`${duration} ${t('seconds', 'ui')}`}>
