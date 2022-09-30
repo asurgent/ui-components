@@ -34,7 +34,6 @@ import {
   mdiCheck,
   mdiClose,
   mdiChevronDown,
-  mdiUnfoldMoreVertical,
 } from '@mdi/js';
 import { TableFilterTagGroup } from '../FilterTagGroup';
 import { VirtualRender } from '../../VirtualRender';
@@ -175,6 +174,36 @@ export const FilterContentComponent = ({
   );
 };
 
+const getStyleFromMaxLength = (titleLength) => {
+  const small = {
+    width: '275px',
+    minWidth: '275px',
+    maxWidth: '275px',
+  };
+
+  const medium = {
+    width: ['95vw', '60vw'],
+    minWidth: ['95vw', '350px'],
+    maxWidth: '400px',
+  };
+
+  const large = {
+    width: ['95vw', '60vw'],
+    minWidth: ['95vw', '420px'],
+    maxWidth: '500px',
+  };
+
+  if (!titleLength || titleLength <= 20) {
+    return small;
+  }
+
+  if (titleLength < 30) {
+    return medium;
+  }
+
+  return large;
+};
+
 export const FilterSelectComponent = ({
   title,
   label,
@@ -184,19 +213,19 @@ export const FilterSelectComponent = ({
   children,
 }) => {
   const { t } = translation;
-  const { state } = useContext(TableContext);
-  const hasAppliedFilter = !!state.getKey(FILTER_KEY)?.[filterKey]?.length;
+  const { state, filtersTitleLength } = useContext(TableContext);
 
-  const [isExpanded, setIsExpanded] = useState(false);
+  const hasAppliedFilter = !!state.getKey(FILTER_KEY)?.[filterKey]?.length;
 
   const handleClearFilter = useCallback(() => {
     const { [filterKey]: target, ...current } = state.getKey(FILTER_KEY);
     state.setKey(FILTER_KEY, { ...current });
   }, [state]);
 
-  const handleExpandList = useCallback(() => {
-    setIsExpanded((prev) => !prev);
-  }, []);
+  const popOverWidth = useMemo(
+    () => getStyleFromMaxLength(filtersTitleLength?.[filterKey]),
+    [filtersTitleLength, filterKey],
+  );
 
   return (
     <Stack>
@@ -238,7 +267,11 @@ export const FilterSelectComponent = ({
               ) }
             </ButtonGroup>
 
-            <PopoverContent transitionProperty="all" transitionDuration="200ms" transitionTimingFunction="ease-in" width={isExpanded ? '80vw' : '60vw'} maxWidth={isExpanded ? '600px' : '400px'}>
+            <PopoverContent
+              minWidth={popOverWidth?.minWidth}
+              width={popOverWidth?.width}
+              maxWidth={popOverWidth?.maxWidth}
+            >
               <PopoverHeader fontWeight="semibold">
                 {t('changeFilter', 'ui')}
                 {' '}
@@ -250,20 +283,6 @@ export const FilterSelectComponent = ({
                 {isOpen && children({
                   searchPlaceholder: `${t('search', 'ui')} ${label.toLowerCase()}...`,
                 })}
-
-                <Flex justifyContent="flex-end">
-                  <Tooltip hasArrow label={isExpanded ? t('shrinkRows', 'ui') : t('expandRows', 'ui')} placement="auto">
-
-                    <Button
-                      onClick={handleExpandList}
-                      variant="ghost"
-                      justifyContent="space-between"
-                      iconSpacing
-                      aria-label={isExpanded ? t('shrinkRows', 'ui') : t('expandRows', 'ui')}
-                      rightIcon={<MdiIcon path={mdiUnfoldMoreVertical} size={0.8} />}
-                    />
-                  </Tooltip>
-                </Flex>
               </PopoverBody>
             </PopoverContent>
           </>
