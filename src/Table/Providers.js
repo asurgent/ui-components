@@ -1,5 +1,5 @@
 /* eslint-disable react/jsx-no-constructed-context-values */
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { useMutation } from 'react-query';
 import { Box, Spinner, useBoolean } from '@chakra-ui/react';
@@ -56,6 +56,7 @@ export const TableSearchProvider = ({
   const [rows, setRows] = useState(null);
   const [itemCount, setItemCount] = useState(0);
   const [pageCount, setPageCount] = useState(0);
+  const [filtersTitleLength, setFiltersTitleLength] = useState(null);
 
   const azureSearch = useAzureSeachPayload(pageSize);
   const preFetch = (state) => fetcher(payload(state, azureSearch), state);
@@ -98,6 +99,22 @@ export const TableSearchProvider = ({
   }, azureSearch);
   const downloadSource = useAzureSearchGetAllResults(fetcher, downloadPayload);
 
+  useEffect(() => {
+    if (!filtersTitleLength && dataSource?.data?.facets) {
+      const obj = {};
+      const filters = dataSource?.data?.facets ?? {};
+
+      Object.keys(filters).forEach((filterName) => {
+        obj[filterName] = filters[filterName].reduce((acc, curr) => (curr?.value?.length > acc
+          ? curr?.value?.length : acc), 0);
+      });
+
+      if (Object.keys(obj).length > 0) {
+        setFiltersTitleLength(obj);
+      }
+    }
+  }, [dataSource?.data, filtersTitleLength]);
+
   return (
     <TableContext.Provider
       value={{
@@ -109,6 +126,7 @@ export const TableSearchProvider = ({
         pageCount,
         dataSource,
         downloadSource,
+        filtersTitleLength,
         isError: rowsQuery.isError,
         isLoading: rowsQuery.isLoading,
         isInitializing: (rowsQuery.isLoading && rows === null),

@@ -34,6 +34,7 @@ import mockAzureSearch from './mocks/mockAzureSearch';
 
 const mockService = mockAzureSearch([
   { key: 'customer_display_name' },
+  { key: 'entity_types' },
   { key: 'type' },
 ]);
 
@@ -91,6 +92,21 @@ const Template = (args) => (
           color="orange"
           renderTags
         />
+
+        <TableFilterSelect
+          title="changeEntityType"
+          label="entity types"
+          filterKey="entity_types"
+          renderTags
+        />
+
+        <TableFilterSelect
+          title="changeType"
+          label="type"
+          filterKey="type"
+          color="green"
+          renderTags
+        />
         <TableFilterSelect
           title="changeType"
           label="type"
@@ -111,12 +127,24 @@ const Template = (args) => (
           subtitle: `${filter.count} types`,
         })}
       />
+
+      <TableFilterSelectSingle
+        renderTags={false}
+        label="Entity types"
+        filterKey="entity_types"
+        configuration={(filter) => ({
+          title: filter.value,
+          value: filter.value,
+          subtitle: `${filter.count} types`,
+        })}
+      />
       <TableFilterSelect
         renderTags={false}
         label="Type"
         filterKey="type"
         color="green"
       />
+
       <TableFilterBool
         title="some bool"
         label="some boole"
@@ -126,12 +154,20 @@ const Template = (args) => (
 
     </TableFilterStack>
     <TableFilterTags
-      configurations={{ customer_display_name: (_, value) => `Val: ${value}`, type: (_, value) => `Special type: ${value}` }}
-      colors={{ customer_display_name: 'blue', container_name: 'green', is_mapped: 'ruby' }}
+      configurations={{
+        customer_display_name: (_, value) => `Val: ${value}`,
+        entity_types: (_, value) => `Val: ${value}`,
+        type: (_, value) => `Special type: ${value}`,
+      }}
+      colors={{
+        customer_display_name: 'blue', entity_types: 'orange', container_name: 'green', is_mapped: 'ruby',
+      }}
     />
+
     <TableResultCount />
     <TableBody columns={[
       { label: 'Customer', size: '10rem' },
+      { label: 'Entity types', size: '10rem' },
       { label: 'Type', size: '1fr' },
       { label: 'Tags', size: '1fr' },
     ]}
@@ -141,6 +177,7 @@ const Template = (args) => (
         {(data, idx, RowComponent) => (
           <RowComponent key={idx}>
             <Flex p={2} alignItems="center">{data.customer_display_name}</Flex>
+            <Flex p={2} alignItems="center">{data.entity_types}</Flex>
             <Flex p={2} alignItems="center">{data.type}</Flex>
             <Box overflow="hidden" p={2}>
               <Wrap p={2} spacing=".4rem">
