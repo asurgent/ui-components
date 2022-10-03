@@ -100,7 +100,7 @@ export const TableSearchProvider = ({
   const downloadSource = useAzureSearchGetAllResults(fetcher, downloadPayload);
 
   useEffect(() => {
-    if (!filtersTitleLength && dataSource?.data?.facets) {
+    if (dataSource?.data?.facets) {
       const obj = {};
       const filters = dataSource?.data?.facets ?? {};
 
@@ -113,7 +113,7 @@ export const TableSearchProvider = ({
         setFiltersTitleLength(obj);
       }
     }
-  }, [dataSource?.data, filtersTitleLength]);
+  }, [dataSource?.data]);
 
   return (
     <TableContext.Provider
