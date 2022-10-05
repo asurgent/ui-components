@@ -77,11 +77,13 @@ export const TableSearchProvider = ({
 
   const trigger = stateHandler(rowsQuery.mutate, sort);
 
+  const { filter: initialFilter, ...restInitialValues } = initialValues || {};
   const initialStateWithValues = {
     ...initialState,
+    ...restInitialValues,
     filter: {
       ...initialState.filter,
-      ...(initialValues || {}),
+      ...(initialFilter || {}),
     },
   };
 

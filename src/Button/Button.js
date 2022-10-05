@@ -43,6 +43,7 @@ const propTypes = {
   rightIcon: PropTypes.string,
   saveToFile: PropTypes.oneOfType([PropTypes.func, PropTypes.bool]),
   saveToFilename: PropTypes.string,
+  searchParams: PropTypes.string, // Expects a query string like this: '?list=eyJxdWVyeS'
   size: PropTypes.string,
   style: PropTypes.instanceOf(Object),
   tooltip: PropTypes.string,
@@ -67,6 +68,7 @@ const defaultProps = {
   rightIcon: null,
   saveToFile: false,
   saveToFilename: '',
+  searchParams: '',
   size: 'md',
   style: {},
   type: null,
@@ -97,6 +99,7 @@ const Button = ({
   tooltip,
   tooltipOrientation,
   variant,
+  searchParams,
   ...rest
 }) => {
   const location = useLocation();
@@ -121,7 +124,7 @@ const Button = ({
     if (internalLink) {
       const to = {
         pathname: internalLink,
-        search: cleanUpSearchString(clearStateKeys, location),
+        search: searchParams ?? cleanUpSearchString(clearStateKeys, location),
         state: {
           prev: {
             pathname: window.location.pathname,
