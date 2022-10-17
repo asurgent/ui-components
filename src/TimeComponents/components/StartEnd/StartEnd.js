@@ -19,7 +19,7 @@ const StartEnd = ({ serviceWindow }) => {
     dyn_is_ongoing_now: isOnGoing,
     dyn_is_ongoing_from: onGoingFrom,
     dyn_is_ongoing_to: onGoingTo,
-    dyn_cron_category: cronExpression,
+    cron_expression: cronExpression,
   } = serviceWindow;
 
   const { colors } = useTheme();
