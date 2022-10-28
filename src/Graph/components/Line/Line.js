@@ -13,10 +13,12 @@ const propTypes = {
   xProp: PropTypes.string.isRequired,
   duration: PropTypes.number.isRequired,
   updateTick: PropTypes.number, // Passed from Zoom.js
+  color: PropTypes.string,
 };
 
 const defaultProps = {
   updateTick: 0,
+  color: '',
 };
 
 const Line = ({
@@ -28,6 +30,7 @@ const Line = ({
   dimensions,
   duration,
   updateTick,
+  color,
 }) => {
   const ref = createRef();
   const line = useMemo(
@@ -57,7 +60,7 @@ const Line = ({
 
   return (
     <ClipPath dimensions={dimensions} inner>
-      <C.Line ref={ref} />
+      <C.Line color={color} ref={ref} />
     </ClipPath>
   );
 };
