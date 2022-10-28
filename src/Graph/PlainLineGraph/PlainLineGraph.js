@@ -10,6 +10,7 @@ const propTypes = {
   yProp: PropTypes.string,
   xProp: PropTypes.string,
   duration: PropTypes.number,
+  color: PropTypes.string,
 };
 
 const defaultProps = {
@@ -17,6 +18,7 @@ const defaultProps = {
   yProp: 'value',
   duration: 350,
   customDimensions: {},
+  color: '',
 };
 
 const LineGraph = ({
@@ -25,6 +27,7 @@ const LineGraph = ({
   xProp,
   duration,
   customDimensions,
+  color,
 }) => {
   if (!data && data.length === 0) {
     return null;
@@ -44,6 +47,7 @@ const LineGraph = ({
       }) => (
         <ClipPath dimensions={dimensions} outer>
           <Line
+            color={color}
             duration={duration}
             xScale={xScale}
             yScale={yScale}
