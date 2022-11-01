@@ -266,6 +266,13 @@ const DefaultTemplate = () => {
       label: 'Some date',
       value: '2020-12-24',
     },
+
+    file: {
+      type: 'file',
+      description: 'Upload one or more files description',
+      label: 'Upload label',
+      value: [],
+    },
   });
 
   return (
@@ -335,17 +342,17 @@ const AdvancedTemplate = () => {
       {({ fields, onSubmitAction }) => (
         <>
           {
-              Object
-                .keys(fields)
-                .map((key) => (
-                  <div key={key}>
-                    <p>
-                      {`Im a paragagrah for: ${key}`}
-                    </p>
-                    {fields[key]}
-                  </div>
-                ))
-            }
+            Object
+              .keys(fields)
+              .map((key) => (
+                <div key={key}>
+                  <p>
+                    {`Im a paragagrah for: ${key}`}
+                  </p>
+                  {fields[key]}
+                </div>
+              ))
+          }
           <Block.SpaceBetween>
             <Button>Cancel</Button>
             <Button type="submit" onClick={onSubmitAction}>Submit</Button>
