@@ -14,6 +14,8 @@ import Email from '../types/Email/index';
 import DatePicker from '../types/DatePicker/index';
 import RadioGroup from '../types/RadioGroup/index';
 import TextMultiple from '../types/TextMultiple/index';
+import File from '../types/File/index';
+
 import * as ObjectInput from '../types/ObjectInput/index';
 
 const getInputComponent = (type) => {
@@ -46,7 +48,8 @@ const getInputComponent = (type) => {
       return Email;
     case 'switch':
       return Switch;
-
+    case 'file':
+      return File;
     default:
       return Text;
   }
