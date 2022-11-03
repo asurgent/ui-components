@@ -8,7 +8,7 @@ export const DropZone = styled.div`
   width: 100%;
   min-height: 150px;
   border-radius: 4px;
-  border: 1px dashed ${({ colors }) => colors?.blue?.['500']}};
+  border: 1px dashed ${({ colors }) => colors?.blue?.['500']};
   cursor: pointer;
   padding: 2rem 0;
   transition: background 0.2s ease-in-out;
