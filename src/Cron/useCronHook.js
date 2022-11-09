@@ -36,7 +36,16 @@ const useFormBuilder = ({
   const [endDate, setEndDate] = useState(moment().local());
   const [duration, setDuration] = useState(60);
   const [durationType, setDurationType] = useState(DURATION_MINUTES);
-  const [occurrence, setOccurrence] = useState(OCCURRENCES_ONCE);
+  const [occurrence, setOccurrence] = useState(() => {
+    if (props.end && typeof props.end === 'string' && props?.end?.includes('9999')) {
+      return OCCURRENCES_FOREVER;
+    }
+
+    if (props.expression) {
+      return OCCURRENCES_UNTILL_DATE;
+    }
+    return OCCURRENCES_ONCE;
+  });
   const [repeatType, setRepeatType] = useState(REPEAT_WEEK);
   const [cronExpression, setCronExpression] = useState('');
 
