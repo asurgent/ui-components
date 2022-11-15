@@ -20,26 +20,25 @@ import PreviewList from './PreviewList';
 
 const propTyps = {
   value: PropTypes.string,
-  label: PropTypes.string,
   name: PropTypes.string.isRequired,
-  placeholder: PropTypes.string,
   props: PropTypes.instanceOf(Object),
   acceptedFiles: PropTypes.arrayOf(PropTypes.string),
   disabled: PropTypes.func,
+  limit: PropTypes.number,
 };
 
 const defaultProps = {
   value: '',
-  label: '',
   props: {},
-  placeholder: '',
   disabled: () => false,
   acceptedFiles: ['image/*'],
+  limit: 1,
 };
 
 const File = forwardRef((props, ref) => {
   const {
     name,
+    limit,
   } = props;
   const input = createRef();
 
@@ -62,7 +61,7 @@ const File = forwardRef((props, ref) => {
     setInputFiles(props.value || '');
   }, [props.value]);
 
-  const limitReached = inputFiles.length === 3;
+  const limitReached = inputFiles.length === limit;
 
   const handleFileDrop = useCallback((droppedAcceptedFiles) => {
     if (droppedAcceptedFiles.length === 0 || limitReached) { return; }
@@ -96,7 +95,6 @@ const File = forwardRef((props, ref) => {
           }) => (
             <C.DropZone
               {...getRootProps()}
-              accept="image/*"
               isDragActive={isDragActive}
               isDragReject={fileRejections?.length}
               limitReached={limitReached}
