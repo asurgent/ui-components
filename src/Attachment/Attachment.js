@@ -77,7 +77,7 @@ const Attachment = ({ file }) => {
   return (
     <>
       <C.Container colors={colors}>
-        <HStack spacing={4} width="100%">
+        <HStack spacing={2} width="100%">
 
           <div style={{ position: 'relative' }}>
 
