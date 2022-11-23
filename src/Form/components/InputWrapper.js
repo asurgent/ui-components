@@ -26,6 +26,7 @@ const propTyps = {
   style: PropTypes.instanceOf(Object),
   wrapperStyle: PropTypes.instanceOf(Object),
   description: PropTypes.string,
+  noWrapperBorder: PropTypes.bool,
 };
 
 const defaultProps = {
@@ -39,6 +40,7 @@ const defaultProps = {
   style: {},
   wrapperStyle: {},
   description: '',
+  noWrapperBorder: false,
 };
 
 const InputWrapper = (props) => {
@@ -56,6 +58,7 @@ const InputWrapper = (props) => {
     wrapperStyle,
     style,
     description,
+    noWrapperBorder,
   } = props;
 
   const { colors, breakpoints } = useTheme();
@@ -74,6 +77,7 @@ const InputWrapper = (props) => {
       )}
       { description && <Text>{description}</Text> }
       <C.Wrapper
+        noBorder={noWrapperBorder}
         breakpoints={breakpoints}
         colors={colors}
         style={wrapperStyle}

@@ -16,7 +16,7 @@ export const Wrapper = styled.div`
     max-width: 700px;
   }
   align-items: center;
-  border: 0.0625rem solid;
+  border: ${(props) => (props.noBorder ? 'none' : ' 0.0625rem solid;')};
   border-color: ${({ colors, hasError }) => {
     if (hasError) {
       return colors?.ruby?.['800'];
@@ -33,14 +33,17 @@ export const Wrapper = styled.div`
     }
     return colors?.white;
   }};
-  
+
+
+
+
   input,textarea,select {
     font-size: 1rem;
     width: 100%;
-    max-width: 100%; 
+    max-width: 100%;
     border: none;
     outline: none;
-    appearance: none; 
+    appearance: none;
     text-overflow: ellipsis;
     padding: ${({ type }) => {
     if (type === 'radiogroup') {
@@ -48,7 +51,7 @@ export const Wrapper = styled.div`
     }
     return '0.75rem';
   }};
-    
+
     &:disabled {
         color: ${({ colors }) => colors?.gray?.['400']};
     }
@@ -56,14 +59,14 @@ export const Wrapper = styled.div`
     &::placeholder {
       opacity: 0.4
     }
-    
+
     &:focus,
     &.hasValue {
       outline: none;
     }
   }
-  
-  textarea { 
+
+  textarea {
     resize: vertical;
   }
 
@@ -85,7 +88,7 @@ export const Error = styled.div`
   font-size: 0.6875rem;
   letter-spacing: 0.0625rem;
   color: ${({ colors }) => colors?.ruby?.['800']};
-  position: absolute; 
+  position: absolute;
   top: 100%;
 `;
 
