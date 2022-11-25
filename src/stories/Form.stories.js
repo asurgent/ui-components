@@ -273,6 +273,12 @@ const DefaultTemplate = () => {
       label: 'Upload label',
       value: [],
     },
+    inputTags: {
+      type: 'tags',
+      description: 'Add tags description',
+      label: 'Add tag label',
+      value: ['BillingUsageStandardConnector', 'RunsCompleted'],
+    },
   });
 
   return (

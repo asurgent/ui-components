@@ -15,6 +15,7 @@ import DatePicker from '../types/DatePicker/index';
 import RadioGroup from '../types/RadioGroup/index';
 import TextMultiple from '../types/TextMultiple/index';
 import File from '../types/File/index';
+import Tags from '../types/Tags/index';
 
 import * as ObjectInput from '../types/ObjectInput/index';
 
@@ -50,6 +51,8 @@ const getInputComponent = (type) => {
       return Switch;
     case 'file':
       return File;
+    case 'tags':
+      return Tags;
     default:
       return Text;
   }
@@ -87,6 +90,8 @@ export const generateReferences = (inputs) => {
 
   return referenceList;
 };
+
+const typesWithoutWrapperBorder = ['tags'];
 
 export const generateFieldComponents = (inputs, referenceList, errors, keepInputValue, self) => {
   const original = {};
@@ -143,6 +148,7 @@ export const generateFieldComponents = (inputs, referenceList, errors, keepInput
           classNameWrapper={classNameWrapper}
           disabled={disabled}
           showContainerError={showContainerError}
+          noWrapperBorder={typesWithoutWrapperBorder.includes(type)}
         >
           <RequestedComponent
             hook={self}
