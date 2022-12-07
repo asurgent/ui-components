@@ -26,11 +26,12 @@ export const TableSearch = ({ placeholder }) => {
   };
 
   const handleSearch = ({ target, key }) => {
+    const value = target.value.replace(/\u00B4/g, "'").replace(/\u2019/g, "'");
     if (key === 'Enter') {
       cancel();
-      updateState(target.value);
+      updateState(value);
     } else {
-      trigger(() => updateState(target.value));
+      trigger(() => updateState(value));
     }
   };
 
