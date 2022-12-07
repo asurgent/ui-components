@@ -86,6 +86,15 @@ const useFilterSelectHook = (values, options, multiSelect, outputParser, hasPlac
   }, [values, options, multiSelect, selectedOptions, isReady, hasPlaceholder]);
 
   useEffect(() => {
+    // When options are changed, any selected options that is not in the new list will be cleared
+
+    setSelected((currentSelectedOptions) => {
+      const filteredOptions = currentSelectedOptions.filter((option) => options.includes(option));
+      return filteredOptions || [];
+    });
+  }, [options]);
+
+  useEffect(() => {
     // close option window when selecting new option
     if (!multiSelect) {
       setOpen(false);
