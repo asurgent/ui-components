@@ -26,7 +26,8 @@ export const TableSearch = ({ placeholder }) => {
   };
 
   const handleSearch = ({ target, key }) => {
-    const value = target.value.replace(/\u00B4/g, "'").replace(/\u2019/g, "'");
+    const value = target.value.replace(/\u00B4/g, '\u0022').replace(/\u2019/g, '\u0022');
+
     if (key === 'Enter') {
       cancel();
       updateState(value);
