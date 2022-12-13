@@ -13,6 +13,7 @@ import MdiIcon from '@mdi/react';
 import {
   Button, useTheme, Text, VStack,
 } from '@chakra-ui/react';
+import { dispatchEvent } from '../../helpers';
 
 import translation from './File.translation';
 import * as C from './File.styled';
@@ -81,14 +82,35 @@ const File = forwardRef((props, ref) => {
       setInputFiles((prevState) => prevState.filter((v, ind) => ind !== numVaule));
     }
   }, []);
+
+  const handleAddClick = useCallback(() => {
+    input.current.click();
+  }, []);
+
+  const hiddenInputRef = React.useRef(null);
+  useEffect(() => {
+    /*
+    file drop on drop-zone is not triggering the onChange so we need
+    to trigger it by manually dispatch an event to a hidden input
+    */
+    const value = inputFiles.length ? JSON.stringify(inputFiles) : '';
+    dispatchEvent(value, hiddenInputRef);
+  }, [inputFiles]);
+
   return (
     <C.Container>
 
       <C.DropOuterWrapper>
+
+        <input
+          style={{ display: 'none' }}
+          type="text"
+          ref={hiddenInputRef}
+        />
         <Dropzone
-          ref={input}
           onDrop={handleFileDrop}
           maxSize={4000000}
+
         >
           {({
             getRootProps, getInputProps, isDragActive, fileRejections,
@@ -100,10 +122,12 @@ const File = forwardRef((props, ref) => {
               limitReached={limitReached}
               colors={colors}
             >
+
               <input
                 {...getInputProps({
                   name,
                   disabled: limitReached,
+                  ref: input,
                 })}
               />
               <VStack spacing={5} align="center">
@@ -116,6 +140,7 @@ const File = forwardRef((props, ref) => {
                     rightIcon={<MdiIcon path={mdiPlus} size={0.75} />}
                     style={{ color: colors?.blue?.[900] }}
                     display="flex"
+                    onClick={handleAddClick}
                   >
                     {t('addButton', 'ui')}
                   </Button>

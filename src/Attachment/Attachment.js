@@ -1,5 +1,7 @@
 import React, {
-  useMemo, useCallback,
+  useState,
+  useMemo, useCallback, useEffect,
+
 } from 'react';
 import PropTypes from 'prop-types';
 import MdiIcon from '@mdi/react';
@@ -19,15 +21,35 @@ import * as C from './Attachment.styles';
 import translation from './Attachment.translation';
 import { formatBytes, downloadFileFromSrc } from '../utils';
 
-const Attachment = ({ file }) => {
-  const {
-    attachment_url: src, name, size,
-  } = file || {};
-  const { colors } = useTheme();
+const propTypes = {
+  file: PropTypes.instanceOf(Object).isRequired,
+};
 
+const Attachment = ({ file }) => {
+  const { t } = translation;
+  const { colors } = useTheme();
   const { isOpen, onOpen, onClose } = useDisclosure();
 
-  const { t } = translation;
+  const [fileState, setFileState] = useState(
+    { src: file.attachment_url, name: file.name, size: file.size },
+  );
+
+  useEffect(() => {
+    if (!file.attachment_url) {
+      const reader = new FileReader();
+      reader.addEventListener('load', () => {
+        setFileState({ src: reader.result, name: file.name, size: file.size });
+      }, false);
+
+      if (file) {
+        reader.readAsDataURL(file);
+      }
+    }
+  }, []);
+
+  const {
+    src, name, size,
+  } = fileState || {};
 
   const fileType = useMemo(() => {
     if (!src) return null;
@@ -62,7 +84,7 @@ const Attachment = ({ file }) => {
       typeGroup,
       extension,
     };
-  }, [name]);
+  }, [src, name]);
 
   const isImage = fileType?.typeGroup === 'IMAGE';
 
@@ -135,16 +157,6 @@ const Attachment = ({ file }) => {
   );
 };
 
-Attachment.propTypes = {
-  file: PropTypes.shape({
-    attachment_url: PropTypes.string.isRequired,
-    content_type: PropTypes.string.isRequired,
-    created: PropTypes.string.isRequired,
-    id: PropTypes.number.isRequired,
-    name: PropTypes.string.isRequired,
-    size: PropTypes.number.isRequired,
-    updated: PropTypes.string.isRequired,
-  }).isRequired,
-};
+Attachment.propTypes = propTypes;
 
 export default Attachment;

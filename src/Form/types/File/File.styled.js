@@ -18,7 +18,12 @@ export const DropZone = styled.div`
   flex-direction: column;
 
   ${({ isDragActive, colors }) => (isDragActive ? `background: ${colors?.cyan?.[100]};` : '')}
-  ${({ limitReached }) => (limitReached ? 'background: none;' : '')}
+  ${({ limitReached }) => (limitReached ? `
+    background: none;
+    padding: 0;
+    min-height: 0;
+    border: none;
+  ` : '')}
   ${({
     isDragActive, limitReached, colors,
   }) => (isDragActive && limitReached ? `background: ${colors?.red?.[200]};` : '')}
