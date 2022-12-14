@@ -10,6 +10,7 @@ const getDetfaultValue = (values) => {
 
 const getDetfaultSingleValue = (values, options, hasPlaceholder) => {
   const parseValue = getDetfaultValue(values);
+
   if (parseValue.length > 0) {
     return parseValue;
   }
@@ -85,14 +86,15 @@ const useFilterSelectHook = (values, options, multiSelect, outputParser, hasPlac
     }
   }, [values, options, multiSelect, selectedOptions, isReady, hasPlaceholder]);
 
-  useEffect(() => {
-    // When options are changed, any selected options that is not in the new list will be cleared
+  // useEffect(() => {
+  //   // When options are changed, any selected options that is not in the new list will be cleared
 
-    setSelected((currentSelectedOptions) => {
-      const filteredOptions = currentSelectedOptions.filter((option) => options.includes(option));
-      return filteredOptions || [];
-    });
-  }, [options]);
+  //   setSelected((currentSelectedOptions) => {
+  //     const filteredOptions =
+  // currentSelectedOptions.filter((option) => options.includes(option));
+  //     return filteredOptions || [];
+  //   });
+  // }, [options]);
 
   useEffect(() => {
     // close option window when selecting new option
