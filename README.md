@@ -125,4 +125,4 @@ the difference on how to use it in the Portal vs. UI-components is that in the p
 Whenever the tag is pushed, simply go under releases, edit the pushed tag. Give it a title and description, then publish it.
 
 ## pre-relase a package update
-got to terminal
+got to terminal and test
