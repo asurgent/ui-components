@@ -23,9 +23,6 @@
     "version:premajor": "npm run version:run-premajor %npm_config_asurgentpreid%",
     "version:preminor": "npm run version:run-preminor %npm_config_asurgentpreid%",
     "version:prepatch": "npm run version:run-prepatch %npm_config_asurgentpreid%",
-    "version:run-premajor": "npm run build && npm version premajor --preid --asurgentpreid && npm publish && git push && git push --tags && npm run build-storybook && npm run deploy-storybook",
-    "version:run-prepatch": "npm run build && npm version prepatch --preid --asurgentpreid && npm publish && git push && git push --tags && npm run build-storybook && npm run deploy-storybook",
-    "version:run-preminor": "npm run build && npm version preminor --preid --asurgentpreid && npm publish && git push && git push --tags && npm run build-storybook && npm run deploy-storybook",
     "version:dump-preprelease": "npm run build && npm version prerelease && npm publish && git push && git push --tags && npm run build-storybook && npm run deploy-storybook"
   },
   "repository": {

@@ -125,4 +125,18 @@ the difference on how to use it in the Portal vs. UI-components is that in the p
 Whenever the tag is pushed, simply go under releases, edit the pushed tag. Give it a title and description, then publish it.
 
 ## pre-relase a package update
-got to terminal and test
+
+0. Prepare your shell rc file with the following functions
+
+`premajor() {npm run build && npm version premajor --preid $1 && npm publish && git push && git push --tags && npm run build-storybook && npm run deploy-storybook}`
+
+`preminor() {npm run build && npm version preminor --preid $1 && npm publish && git push && git push --tags && npm run build-storybook && npm run deploy-storybook}`
+
+`prepatch() {npm run build && npm version prepatch --preid $1 && npm publish && git push && git push --tags && npm run build-storybook && npm run deploy-storybook}`
+
+1. Make a new temporary branch and merge in the branches you need to pre-release.
+2. Make a pre-release with a given name by running the `prepatch` | `preminor` | `prepatch` function in the terminal with a given prefix name
+  `prepatch alpha`
+3. If you need to bump the verision of the current prerelease, run `npm run version:dump-preprelease`
+4. When you're done, proceed with the original release flow described in the section above (Release a package update). Don't merge this prerelease branch.
+5. After a release, Remove the prerelease branch and all associated prerelease tags in github.
