@@ -21,11 +21,11 @@
     "version:minor": "npm run build && npm version minor && npm publish && git push && git push --tags && npm run build-storybook && npm run deploy-storybook",
     "version:major": "npm run build && npm version major && npm publish && git push && git push --tags && npm run build-storybook && npm run deploy-storybook",
     "version:premajor": "npm run version:run-premajor %npm_config_asurgentpreid%",
-    "version:run-premajor": "npm run build && npm version premajor --asurgentpreid && npm publish && git push && git push --tags && npm run build-storybook && npm run deploy-storybook",
-    "version:prepatch": "npm run version:run-prepatch %npm_config_asurgentpreid%",
-    "version:run-prepatch": "npm run build && npm version prepatch --asurgentpreid && npm publish && git push && git push --tags && npm run build-storybook && npm run deploy-storybook",
     "version:preminor": "npm run version:run-preminor %npm_config_asurgentpreid%",
-    "version:run-preminor": "npm run build && npm version preminor --asurgentpreid && npm publish && git push && git push --tags && npm run build-storybook && npm run deploy-storybook",
+    "version:prepatch": "npm run version:run-prepatch %npm_config_asurgentpreid%",
+    "version:run-premajor": "npm run build && npm version premajor --preid --asurgentpreid && npm publish && git push && git push --tags && npm run build-storybook && npm run deploy-storybook",
+    "version:run-prepatch": "npm run build && npm version prepatch --preid --asurgentpreid && npm publish && git push && git push --tags && npm run build-storybook && npm run deploy-storybook",
+    "version:run-preminor": "npm run build && npm version preminor --preid --asurgentpreid && npm publish && git push && git push --tags && npm run build-storybook && npm run deploy-storybook",
     "version:dump-preprelease": "npm run build && npm version prerelease && npm publish && git push && git push --tags && npm run build-storybook && npm run deploy-storybook"
   },
   "repository": {
