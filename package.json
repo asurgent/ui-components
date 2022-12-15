@@ -19,7 +19,10 @@
     "remove:portal": "rm -r ./../cloudops-portal/node_modules/@asurgent/ui-components/dist/*",
     "version:patch": "npm run build && npm version patch && npm publish && git push && git push --tags && npm run build-storybook && npm run deploy-storybook",
     "version:minor": "npm run build && npm version minor && npm publish && git push && git push --tags && npm run build-storybook && npm run deploy-storybook",
-    "version:major": "npm run build && npm version major && npm publish && git push && git push --tags && npm run build-storybook && npm run deploy-storybook"
+    "version:major": "npm run build && npm version major && npm publish && git push && git push --tags && npm run build-storybook && npm run deploy-storybook",
+    "version:premajor": "npm run version:run-premajor %npm_config_asurgentpreid%",
+    "version:run-premajor": "npm run build && npm version premajor --asurgentpreid && npm publish && git push && git push --tags && npm run build-storybook && npm run deploy-storybook",
+    "version:dump-preprelease": "npm run build && npm version prerelease && npm publish && git push && git push --tags && npm run build-storybook && npm run deploy-storybook"
   },
   "repository": {
     "type": "git",
