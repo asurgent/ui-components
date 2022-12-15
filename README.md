@@ -21,7 +21,7 @@ registry=https://registry.npmjs.org/
 7. Run: 'npm start'
 
 ## Tip when you start
-Add 'babel-plugin-macros' to the dependecies and change 
+Add 'babel-plugin-macros' to the dependecies and change
 ```
 import styled from 'styled-components'
 ```
@@ -29,7 +29,7 @@ to
 ```
 import styled from 'styled-components/macro'
 ```
-everywhere in the project so you get more readable classNames in the inspector like 
+everywhere in the project so you get more readable classNames in the inspector like
 ```
 class="CustomerCardstyled__Wrapper-sc-uqwrgc-9 kRedFw"
 ```
@@ -43,9 +43,9 @@ class="sc-uqwrgc-9 kRedFw"
 This project uses storybook to help view and develop components. All stories are located in the 'src/stories'-folder so
 
 ```
-src/ImagePreview.js 
+src/ImagePreview.js
 ```
-for example has its story in 
+for example has its story in
 
 ```
 src/stories/ImagePreviw.stories.js
@@ -93,7 +93,7 @@ export default addTranslation({
 });
 ```
 
-and in the component is then used like 
+and in the component is then used like
 ```
 MyComponent.js
 import translation from './MyComponent.translation';
@@ -118,8 +118,10 @@ the difference on how to use it in the Portal vs. UI-components is that in the p
 5. Depending on the size of your changes run either:
 - Publishing a small patch? Run - `npm run version:patch`
 - Publishing a minor update? Run - `npm run version:minor`
-- Publishing a major update? Run - `npm run version:major` 
+- Publishing a major update? Run - `npm run version:major`
 
 [Read more](https://docs.npmjs.com/cli/version)
 
-Whenever the tag is pushed, simply go under releases, edit the pushed tag. Give it a title and description, then publish it. 
+Whenever the tag is pushed, simply go under releases, edit the pushed tag. Give it a title and description, then publish it.
+
+## pre-relase a package update
