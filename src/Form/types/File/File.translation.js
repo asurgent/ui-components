@@ -7,8 +7,10 @@ export default addTranslation({
     dropZonePlaceholder: '...eller dra och släpp en fil här',
     limitReached: 'Gränsen för antal bifogade filer har uppnåtts',
     fileToLarge: 'Filen får inte vara tyngre än 4 MB',
+    uploadedTitle: 'Uppladdade files',
   },
   en: {
+    uploadedTitle: 'Uploaded files',
     addButton: 'Choose file',
     dropZonePlaceholder: '...or drag and drop a file here',
     limitReached: 'Maximum files has been reached',

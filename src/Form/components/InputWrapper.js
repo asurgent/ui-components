@@ -67,7 +67,7 @@ const InputWrapper = (props) => {
     <C.Main type={type} className={className} style={style}>
       { noLabel === false && (
         <C.Header breakpoints={breakpoints}>
-          <Text textTransform="capitalize" fontWeight="bold" fontSize="sm">{label}</Text>
+          <Text textTransform="capitalize" marginBottom="0.5rem" fontWeight="bold" fontSize="sm">{label}</Text>
           { tooltip && (
             <Tooltip hasArrow label={tooltip}>
               <C.TooltipIcon colors={colors} path={mdiHelpCircleOutline} size={1} />

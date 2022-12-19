@@ -2,7 +2,7 @@ import React, {
   forwardRef,
   useState,
   useCallback,
-  createRef,
+  useRef,
   useEffect,
   useImperativeHandle,
 } from 'react';
@@ -19,13 +19,14 @@ import translation from './File.translation';
 import * as C from './File.styled';
 import PreviewList from './PreviewList';
 
+const limit = 5;
+
 const propTyps = {
   value: PropTypes.string,
   name: PropTypes.string.isRequired,
   props: PropTypes.instanceOf(Object),
   acceptedFiles: PropTypes.arrayOf(PropTypes.string),
   disabled: PropTypes.func,
-  limit: PropTypes.number,
 };
 
 const defaultProps = {
@@ -33,15 +34,13 @@ const defaultProps = {
   props: {},
   disabled: () => false,
   acceptedFiles: ['image/*'],
-  limit: 1,
 };
 
 const File = forwardRef((props, ref) => {
   const {
     name,
-    limit,
   } = props;
-  const input = createRef();
+  const input = useRef();
 
   const [inputFiles, setInputFiles] = useState(props.value || []);
   const { t } = translation;
@@ -71,7 +70,7 @@ const File = forwardRef((props, ref) => {
       key: `${file.name}-${Date.now()}}`,
     }));
 
-    setInputFiles((files) => [...files, ...filesWithPreviewProp].splice(0, 3));
+    setInputFiles((files) => [...files, ...filesWithPreviewProp].splice(0, limit));
   }, [inputFiles]);
 
   const handleRemove = useCallback((e) => {
@@ -84,8 +83,10 @@ const File = forwardRef((props, ref) => {
   }, []);
 
   const handleAddClick = useCallback(() => {
-    input.current.click();
-  }, []);
+    if (input.current) {
+      input.current.click();
+    }
+  }, [input]);
 
   const hiddenInputRef = React.useRef(null);
   useEffect(() => {
@@ -163,6 +164,7 @@ const File = forwardRef((props, ref) => {
       <C.ListContainer
         colors={colors}
       >
+        <Text marginLeft="1rem" marginBottom="0" textTransform="capitalize" fontWeight="bold" fontSize="sm">{t('uploadedTitle', 'ui')}</Text>
         <PreviewList handleRemove={handleRemove} files={inputFiles} />
       </C.ListContainer>
       )}
