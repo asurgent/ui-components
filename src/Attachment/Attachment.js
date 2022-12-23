@@ -10,7 +10,7 @@ import {
   mdiFileDocumentOutline, mdiFileCodeOutline, mdiFileTableOutline, mdiFileOutline,
 } from '@mdi/js';
 import {
-  useTheme, Tooltip, Text, HStack, Flex,
+  useTheme, Tooltip, Text, HStack, Flex, VStack,
   Modal,
   ModalOverlay,
   ModalContent,
@@ -23,9 +23,14 @@ import { formatBytes, downloadFileFromSrc } from '../utils';
 
 const propTypes = {
   file: PropTypes.instanceOf(Object).isRequired,
+  modalPreview: PropTypes.bool,
 };
 
-const Attachment = ({ file }) => {
+const defaultProps = {
+  modalPreview: false,
+};
+
+const Attachment = ({ file, modalPreview }) => {
   const { t } = translation;
   const { colors } = useTheme();
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -99,53 +104,61 @@ const Attachment = ({ file }) => {
   return (
     <>
       <C.Container colors={colors}>
-        <HStack spacing={2} width="100%">
 
-          <div style={{ position: 'relative' }}>
+        <VStack width="100%">
 
-            <MdiIcon
-              style={{ position: 'relative', zIndex: 5 }}
-              className="thumb-icon"
-              path={fileType?.icon}
-              size={thumbIconSize}
-              color={colors?.blue?.['900']}
-            />
-            { fileType?.extension && (
-            <C.FileExtensionWrapper colors={colors}>
-              <div className="stripe">
-                <span>{fileType?.extension}</span>
-              </div>
-            </C.FileExtensionWrapper>
-            )}
-          </div>
+          <HStack spacing={2} width="100%">
 
-          <Flex flexDirection="column" width="100%">
-            <Text margin={0} fontSize={14}>{name}</Text>
+            <div style={{ position: 'relative' }}>
 
-            <Flex height="100%" width="100%" justifyContent="space-between" alignItems="center">
-              <Text margin={0} color={colors?.gray?.['600']} fontSize={14}>{fileSizeLabel}</Text>
-              <Flex alignItems="center" justifyContent="center">
+              <MdiIcon
+                style={{ position: 'relative', zIndex: 5 }}
+                className="thumb-icon"
+                path={fileType?.icon}
+                size={thumbIconSize}
+                color={colors?.blue?.['900']}
+              />
+              { fileType?.extension && (
+              <C.FileExtensionWrapper colors={colors}>
+                <div className="stripe">
+                  <span>{fileType?.extension}</span>
+                </div>
+              </C.FileExtensionWrapper>
+              )}
+            </div>
 
-                <HStack spacing={2}>
+            <Flex flexDirection="column" width="100%">
+              <Text margin={0} fontSize={14}>{name}</Text>
 
-                  {isImage && (
-                  <Tooltip label={t('preview', 'ui')}>
-                    <MdiIcon className="action-icon" path={mdiEyeOutline} size={1} onClick={onOpen} />
-                  </Tooltip>
-                  )}
-                  <Tooltip label={t('download', 'ui')}>
-                    <MdiIcon className="action-icon" path={mdiCloudDownloadOutline} size={1} onClick={handleDownload} />
-                  </Tooltip>
-                </HStack>
+              <Flex height="100%" width="100%" justifyContent="space-between" alignItems="center">
+                <Text margin={0} color={colors?.gray?.['600']} fontSize={14}>{fileSizeLabel}</Text>
+                <Flex alignItems="center" justifyContent="center">
 
+                  <HStack spacing={2}>
+
+                    {isImage && modalPreview && (
+                    <Tooltip label={t('preview', 'ui')}>
+                      <MdiIcon className="action-icon" path={mdiEyeOutline} size={1} onClick={onOpen} />
+                    </Tooltip>
+                    )}
+                    <Tooltip label={t('download', 'ui')}>
+                      <MdiIcon className="action-icon" path={mdiCloudDownloadOutline} size={1} onClick={handleDownload} />
+                    </Tooltip>
+                  </HStack>
+
+                </Flex>
               </Flex>
-            </Flex>
 
-          </Flex>
-        </HStack>
+            </Flex>
+          </HStack>
+
+          {!modalPreview && isImage && <img src={src} alt="enlarged_img" />}
+
+        </VStack>
 
       </C.Container>
 
+      {modalPreview && (
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent>
@@ -153,10 +166,13 @@ const Attachment = ({ file }) => {
           <img src={src} alt="enlarged_img" />
         </ModalContent>
       </Modal>
+      ) }
+
     </>
   );
 };
 
 Attachment.propTypes = propTypes;
+Attachment.defaultProps = defaultProps;
 
 export default Attachment;
