@@ -11,7 +11,7 @@ import Dropzone from 'react-dropzone';
 import { mdiPlus, mdiFileUploadOutline } from '@mdi/js';
 import MdiIcon from '@mdi/react';
 import {
-  Button, useTheme, Text, VStack,
+  Button, useToast, useTheme, Text, VStack,
 } from '@chakra-ui/react';
 import { dispatchEvent } from '../../helpers';
 
@@ -42,6 +42,8 @@ const File = forwardRef((props, ref) => {
   } = props;
   const input = useRef();
 
+  const toast = useToast();
+
   const [inputFiles, setInputFiles] = useState(props.value || []);
   const { t } = translation;
 
@@ -63,7 +65,7 @@ const File = forwardRef((props, ref) => {
 
   const limitReached = inputFiles.length === limit;
 
-  const handleFileDrop = useCallback((droppedAcceptedFiles) => {
+  const handleFileDrop = useCallback((droppedAcceptedFiles, isPastedFromClipBoard = false) => {
     if (droppedAcceptedFiles.length === 0 || limitReached) { return; }
 
     const filesWithPreviewProp = droppedAcceptedFiles.map((file) => Object.assign(file, {
@@ -71,6 +73,14 @@ const File = forwardRef((props, ref) => {
     }));
 
     setInputFiles((files) => [...files, ...filesWithPreviewProp].splice(0, limit));
+    if (isPastedFromClipBoard) {
+      toast({
+        description: t('pastedFromClipboard', 'ui'),
+        status: 'success',
+        duration: 3000,
+        isClosable: true,
+      });
+    }
   }, [inputFiles]);
 
   const handleRemove = useCallback((e) => {
@@ -113,7 +123,7 @@ const File = forwardRef((props, ref) => {
       const file = getFileFromPasteEvent(event);
 
       if (file) {
-        handleFileDrop([file]);
+        handleFileDrop([file], true);
       }
     };
 
