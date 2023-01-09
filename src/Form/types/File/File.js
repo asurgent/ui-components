@@ -98,6 +98,32 @@ const File = forwardRef((props, ref) => {
     dispatchEvent(value, hiddenInputRef);
   }, [inputFiles]);
 
+  useEffect(() => {
+    function getFileFromPasteEvent(event) {
+      const { items } = event.clipboardData || event.originalEvent.clipboardData;
+
+      if (items) {
+        return Object.values(items).find((item) => item.kind === 'file')?.getAsFile();
+      }
+
+      return null;
+    }
+
+    const handlePasteAnywhere = (event) => {
+      const file = getFileFromPasteEvent(event);
+
+      if (file) {
+        handleFileDrop([file]);
+      }
+    };
+
+    window.addEventListener('paste', handlePasteAnywhere);
+
+    return () => {
+      window.removeEventListener('paste', handlePasteAnywhere);
+    };
+  }, []);
+
   return (
     <C.Container>
 
