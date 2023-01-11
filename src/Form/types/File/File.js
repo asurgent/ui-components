@@ -21,6 +21,18 @@ import PreviewList from './PreviewList';
 
 const limit = 5;
 
+const imageFileExtensionsSwitch = {
+  'image/jpeg': () => '.jpg',
+  'image/png': () => '.png',
+  'image/gif': () => '.gif',
+  default: () => '',
+};
+
+function getImageFileExtension(fileType) {
+  const result = imageFileExtensionsSwitch[fileType] || imageFileExtensionsSwitch.default;
+  return result();
+}
+
 const propTyps = {
   value: PropTypes.string,
   name: PropTypes.string.isRequired,
@@ -79,6 +91,7 @@ const File = forwardRef((props, ref) => {
         status: 'success',
         duration: 3000,
         isClosable: true,
+        position: 'top-right',
       });
     }
   }, [inputFiles]);
@@ -109,14 +122,33 @@ const File = forwardRef((props, ref) => {
   }, [inputFiles]);
 
   useEffect(() => {
+    /*
+      Different browsers handles ClipBoard API in different ways
+      Chrome + Safari doesn't have accesss to the file name from the pasted file in clipboard.
+
+      In Firefox, all files end up as type "image/png" and
+      if it's not a image the file size will be 0
+    */
+
     function getFileFromPasteEvent(event) {
       const { items } = event.clipboardData || event.originalEvent.clipboardData;
 
-      if (items) {
-        return Object.values(items).find((item) => item.kind === 'file')?.getAsFile();
+      const pastedFile = Object.values(items).find((item) => item.kind === 'file')?.getAsFile();
+
+      let file;
+      if (pastedFile) {
+        const fileName = (event.clipboardData || window.clipboardData).getData('text') || 'image';
+
+        const blob = new Blob([pastedFile], { type: pastedFile.type });
+
+        if (blob.size && blob.type?.includes('image')) {
+          const extension = !['jpg', 'jpeg', 'gif', 'png'].includes(fileName.split('.').pop()) ? getImageFileExtension(blob.type) : '';
+          blob.name = `${fileName}${extension}`;
+          file = blob;
+        }
       }
 
-      return null;
+      return file;
     }
 
     const handlePasteAnywhere = (event) => {
