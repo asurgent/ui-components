@@ -290,15 +290,15 @@ const DefaultTemplate = () => {
           console.log('isDirty', isDirty);
           console.log('Submitted', values);
         }}
-        onChange={({
-          values, isDirty, dirtyItems, name, validates,
-        }) => {
-          console.log('Changed', name || 'form');
-          console.log('Form values', values);
-          console.log('Form dirty', isDirty);
-          console.log('Dirty items', dirtyItems);
-          console.log('Validating fields', validates);
-        }}
+        // onChange={({
+        //   values, isDirty, dirtyItems, name, validates,
+        // }) => {
+        //   console.log('Changed', name || 'form');
+        //   console.log('Form values', values);
+        //   console.log('Form dirty', isDirty);
+        //   console.log('Dirty items', dirtyItems);
+        //   console.log('Validating fields', validates);
+        // }}
       >
         {({
           render,
@@ -487,14 +487,14 @@ const DynamicMinMaxTemplate = () => {
           console.log('isDirty', isDirty);
           console.log('Submitted', values);
         }}
-        onChange={({
-          values, isDirty, dirtyItems, name,
-        }) => {
-          console.log('Changed', name || 'form');
-          console.log('Form values', values);
-          console.log('Form dirty', isDirty);
-          console.log('Dirty items', dirtyItems);
-        }}
+        // onChange={({
+        //   values, isDirty, dirtyItems, name,
+        // }) => {
+        //   console.log('Changed', name || 'form');
+        //   console.log('Form values', values);
+        //   console.log('Form dirty', isDirty);
+        //   console.log('Dirty items', dirtyItems);
+        // }}
       >
         {({
           render, onSubmitAction, onResetAction, isDirty,

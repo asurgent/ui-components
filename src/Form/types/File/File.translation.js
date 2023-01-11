@@ -7,7 +7,7 @@ export default addTranslation({
     dropZonePlaceholder: '...eller dra och släpp en fil här',
     limitReached: 'Gränsen för antal bifogade filer har uppnåtts',
     fileToLarge: 'Filen får inte vara tyngre än 4 MB',
-    uploadedTitle: 'Uppladdade files',
+    uploadedTitle: 'Uppladdade filer',
     pastedFromClipboard: 'En fil lades till för uppladdning upp från urklippet',
   },
   en: {
