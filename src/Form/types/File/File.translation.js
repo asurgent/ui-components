@@ -9,6 +9,7 @@ export default addTranslation({
     fileToLarge: 'Filen får inte vara tyngre än 4 MB',
     uploadedTitle: 'Uppladdade filer',
     pastedFromClipboard: 'En fil lades till för uppladdning upp från urklippet',
+    fileAdded: 'En fil lades till för uppladdning',
   },
   en: {
     uploadedTitle: 'Uploaded files',
@@ -17,5 +18,7 @@ export default addTranslation({
     limitReached: 'Maximum files has been reached',
     fileToLarge: 'The file must not be larger than 4 MB',
     pastedFromClipboard: 'A fil was added for uppload from the clipboard',
+    fileAdded: 'A fil was added for uppload',
+
   },
 });
