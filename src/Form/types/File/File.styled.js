@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 
 export const Container = styled.div`
   width: 100%;
@@ -18,7 +18,7 @@ export const DropZone = styled.div`
   flex-direction: column;
 
   ${({ isDragActive, colors }) => (isDragActive ? `background: ${colors?.cyan?.[100]};` : '')}
-  ${({ limitReached }) => (limitReached ? `
+  ${({ limitReached }) => (limitReached ? css`
     background: none;
     padding: 0;
     min-height: 0;
@@ -34,6 +34,7 @@ export const DropOuterWrapper = styled.div`
 `;
 
 export const ListContainer = styled.div`
-  border-top: ${({ colors }) => `1px solid ${colors?.gray?.['100']}`};
+  border-bottom: ${({ colors }) => `1px solid ${colors?.gray?.['100']}`};
   width: 100%;
+  padding: 1rem;
   `;

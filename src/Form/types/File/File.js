@@ -2,7 +2,7 @@ import React, {
   forwardRef,
   useState,
   useCallback,
-  createRef,
+  useRef,
   useEffect,
   useImperativeHandle,
 } from 'react';
@@ -11,7 +11,7 @@ import Dropzone from 'react-dropzone';
 import { mdiPlus, mdiFileUploadOutline } from '@mdi/js';
 import MdiIcon from '@mdi/react';
 import {
-  Button, useTheme, Text, VStack,
+  Box, Button, Collapse, useToast, useTheme, Text, VStack, Alert, AlertIcon,
 } from '@chakra-ui/react';
 import { dispatchEvent } from '../../helpers';
 
@@ -19,13 +19,26 @@ import translation from './File.translation';
 import * as C from './File.styled';
 import PreviewList from './PreviewList';
 
+const limit = 5;
+
+const imageFileExtensionsSwitch = {
+  'image/jpeg': () => '.jpg',
+  'image/png': () => '.png',
+  'image/gif': () => '.gif',
+  default: () => '',
+};
+
+function getImageFileExtension(fileType) {
+  const result = imageFileExtensionsSwitch[fileType] || imageFileExtensionsSwitch.default;
+  return result();
+}
+
 const propTyps = {
   value: PropTypes.string,
   name: PropTypes.string.isRequired,
   props: PropTypes.instanceOf(Object),
   acceptedFiles: PropTypes.arrayOf(PropTypes.string),
   disabled: PropTypes.func,
-  limit: PropTypes.number,
 };
 
 const defaultProps = {
@@ -33,24 +46,24 @@ const defaultProps = {
   props: {},
   disabled: () => false,
   acceptedFiles: ['image/*'],
-  limit: 1,
 };
 
 const File = forwardRef((props, ref) => {
   const {
     name,
-    limit,
   } = props;
-  const input = createRef();
+  const input = useRef();
 
   const [inputFiles, setInputFiles] = useState(props.value || []);
+  const [showAlert, setShowAlert] = useState(false);
+  const [newFileAdded, setNewFileAdded] = useState([]);
   const { t } = translation;
-
-  const fileDropErrors = {
-    'file-too-large': t('fileToLarge', 'ui'),
-  };
-
   const { colors } = useTheme();
+  const toast = useToast();
+
+  const hiddenInputRef = React.useRef(null);
+  const [isInview, setIsInveiw] = useState();
+  const observerRef = useRef(null);
 
   useImperativeHandle(ref, () => ({
     value: () => inputFiles,
@@ -58,21 +71,32 @@ const File = forwardRef((props, ref) => {
     blur: () => input.current.blur(),
   }));
 
-  useEffect(() => {
-    setInputFiles(props.value || '');
-  }, [props.value]);
-
+  const fileDropErrors = {
+    'file-too-large': t('fileToLarge', 'ui'),
+  };
   const limitReached = inputFiles.length === limit;
 
-  const handleFileDrop = useCallback((droppedAcceptedFiles) => {
+  const handleFileDrop = useCallback((droppedAcceptedFiles, isPastedFromClipBoard = false) => {
     if (droppedAcceptedFiles.length === 0 || limitReached) { return; }
 
     const filesWithPreviewProp = droppedAcceptedFiles.map((file) => Object.assign(file, {
       key: `${file.name}-${Date.now()}}`,
     }));
 
-    setInputFiles((files) => [...files, ...filesWithPreviewProp].splice(0, 3));
-  }, [inputFiles]);
+    setInputFiles((files) => [...files, ...filesWithPreviewProp].splice(0, limit));
+    // is used for trigger an effect for setting alert timer. The new value is not important.
+    setNewFileAdded((prev) => [...prev, true]);
+
+    if (isPastedFromClipBoard && !isInview) {
+      toast({
+        description: t('pastedFromClipboard', 'ui'),
+        status: 'success',
+        duration: 3000,
+        isClosable: true,
+        position: 'top-right',
+      });
+    }
+  }, [inputFiles, limitReached, isInview]);
 
   const handleRemove = useCallback((e) => {
     const { value } = e.currentTarget || null;
@@ -84,10 +108,33 @@ const File = forwardRef((props, ref) => {
   }, []);
 
   const handleAddClick = useCallback(() => {
-    input.current.click();
-  }, []);
+    if (input.current) {
+      input.current.click();
+    }
+  }, [input]);
 
-  const hiddenInputRef = React.useRef(null);
+  useEffect(() => {
+    // *** Grab the element related to this callback
+    const { current } = observerRef;
+
+    const scrollCallback = (entries) => {
+      if (entries[0].isIntersecting) {
+        setIsInveiw(true);
+      } else {
+        setIsInveiw(false);
+      }
+    };
+
+    const observer = new IntersectionObserver(scrollCallback, {
+      root: null,
+      threshold: 1,
+    });
+    observer.observe(current);
+    return () => {
+      observer.disconnect(current); // *** Use the same element
+    };
+  }, [observerRef.current]); // *** Note dependency
+
   useEffect(() => {
     /*
     file drop on drop-zone is not triggering the onChange so we need
@@ -97,9 +144,85 @@ const File = forwardRef((props, ref) => {
     dispatchEvent(value, hiddenInputRef);
   }, [inputFiles]);
 
+  useEffect(() => {
+    setInputFiles(props.value || '');
+  }, [props.value]);
+
+  useEffect(() => {
+    if (newFileAdded.length) {
+      setShowAlert(true);
+      setTimeout(() => {
+        setShowAlert(false);
+      }, 5000);
+    }
+  }, [newFileAdded]);
+
+  useEffect(() => {
+    /*
+      Different browsers handles ClipBoard API in different ways
+      Chrome + Safari doesn't have accesss to the file name from the pasted file in clipboard.
+
+      In Firefox, all files end up as type "image/png" and
+      if it's not a image the file size will be 0
+    */
+
+    const getFileFromPasteEvent = (event) => {
+      const { items } = event.clipboardData || event.originalEvent.clipboardData;
+
+      const pastedFile = Object.values(items).find((item) => item.kind === 'file')?.getAsFile();
+
+      let file;
+      if (pastedFile) {
+        const fileName = (event.clipboardData || window.clipboardData).getData('text') || 'image';
+
+        const blob = new Blob([pastedFile], { type: pastedFile.type });
+
+        if (blob.size && blob.type?.includes('image')) {
+          const extension = !['jpg', 'jpeg', 'gif', 'png'].includes(fileName.split('.').pop()) ? getImageFileExtension(blob.type) : '';
+          blob.name = `${fileName}${extension}`;
+          file = blob;
+        }
+      }
+
+      return file;
+    };
+
+    const handlePasteAnywhere = (event) => {
+      const file = getFileFromPasteEvent(event);
+
+      if (file) {
+        handleFileDrop([file], true);
+      }
+    };
+
+    window.addEventListener('paste', handlePasteAnywhere);
+
+    return () => {
+      window.removeEventListener('paste', handlePasteAnywhere);
+    };
+  }, [handleFileDrop]);
+
   return (
     <C.Container>
+      {inputFiles?.length > 0 && (
+        <C.ListContainer
+          colors={colors}
+        >
+          <Text marginBottom="0" textTransform="capitalize" fontWeight="bold" fontSize="sm">{t('uploadedTitle', 'ui')}</Text>
+          <PreviewList handleRemove={handleRemove} files={inputFiles} />
 
+          <Collapse in={showAlert} animateOpacity padding="1rem">
+            <Box mt="1rem">
+              <Alert status="success" variant="subtle">
+                <AlertIcon />
+                {t('fileAdded', 'ui')}
+              </Alert>
+            </Box>
+          </Collapse>
+
+        </C.ListContainer>
+      )}
+      <div ref={observerRef} />
       <C.DropOuterWrapper>
 
         <input
@@ -146,7 +269,10 @@ const File = forwardRef((props, ref) => {
                   </Button>
                 </>
                 )}
-                <Text>
+                <Text
+                  color={limitReached ? colors?.red?.[500] : 'inherit'}
+                  fontWeight={limitReached ? 'bold' : 'normal'}
+                >
                   {limitReached ? t('limitReached', 'ui') : t('dropZonePlaceholder', 'ui') }
                 </Text>
 
@@ -158,14 +284,6 @@ const File = forwardRef((props, ref) => {
           )}
         </Dropzone>
       </C.DropOuterWrapper>
-
-      {inputFiles?.length > 0 && (
-      <C.ListContainer
-        colors={colors}
-      >
-        <PreviewList handleRemove={handleRemove} files={inputFiles} />
-      </C.ListContainer>
-      )}
 
     </C.Container>
   );
