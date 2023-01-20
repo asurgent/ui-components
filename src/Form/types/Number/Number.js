@@ -1,6 +1,7 @@
 import React, {
   useMemo,
   useState,
+  useCallback,
   useEffect,
   createRef,
   forwardRef,
@@ -74,17 +75,18 @@ const NumberInput = forwardRef((props, ref) => {
   }, [minValue, form?.valueState, value]);
 
   useEffect(() => {
-    setValue(parseInt(props.value || 0, 10));
-  }, [props.value]);
+    const initialValue = parseInt(props.value || 0, 10);
 
-  // built in min/max for number inputs only prevents valuechanges by using the buttons
-  useEffect(() => {
-    if ((max && value >= max)) {
-      setValue(max);
-    } else if (min && value <= min) {
+    if (min && initialValue < min) {
       setValue(min);
+      dispatchEvent(min, input);
+    } else if (max && initialValue > max) {
+      setValue(max);
+      dispatchEvent(max, input);
+    } else {
+      setValue(initialValue);
     }
-  }, [props, max, min, value]);
+  }, [props.value]);
 
   useImperativeHandle(ref, () => ({
     value: () => parseOutput(value),
@@ -94,6 +96,27 @@ const NumberInput = forwardRef((props, ref) => {
     blur: () => input.current.blur(),
   }));
 
+  const handleOnBlur = useCallback((e) => {
+    const { target } = e;
+
+    const num = parseInt(target.value, 10);
+
+    if (min && num < min) {
+      setValue(min);
+      dispatchEvent(min, input);
+    } else if (max && num > max) {
+      setValue(max);
+      dispatchEvent(max, input);
+    }
+  }, [min, max, dispatchEvent, input]);
+
+  const handleOnChange = useCallback((e) => {
+    const { target: { value: _value } } = e;
+    const num = parseInt(_value, 10);
+
+    setValue(num);
+  }, [min, max, dispatchEvent, input]);
+
   return (
     <input
       {...props.props}
@@ -102,17 +125,8 @@ const NumberInput = forwardRef((props, ref) => {
       placeholder={placeholder}
       min={min}
       max={max}
-      onBlur={({ target }) => {
-        const num = parseInt(target.value, 10);
-        if (Number.isNaN(num)) {
-          setValue(0);
-          dispatchEvent(0, input);
-        }
-      }}
-      onChange={({ target }) => {
-        const num = parseInt(target.value, 10);
-        setValue(Number.isNaN(num) ? '' : num);
-      }}
+      onBlur={handleOnBlur}
+      onChange={handleOnChange}
       name={name}
       ref={input}
       disabled={disabled()}
