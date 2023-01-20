@@ -1,6 +1,6 @@
 {
   "name": "@asurgent/ui-components",
-  "version": "4.22.1-numbercomp.1",
+  "version": "4.22.1-numbercomp.2",
   "description": "",
   "license": "ISC",
   "main": "dist/index.js",
