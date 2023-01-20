@@ -75,12 +75,18 @@ const NumberInput = forwardRef((props, ref) => {
   }, [minValue, form?.valueState, value]);
 
   useEffect(() => {
+    useEffect(() => {
+      console.log('@ui-components -> 4.22.1-numbercomp.1');
+    }, []);
     const initialValue = parseInt(props.value || 0, 10);
 
-    if (min && initialValue < min) {
+    const hasMin = Number.isInteger(min);
+    const hasMax = Number.isInteger(max);
+
+    if (hasMin && initialValue < min) {
       setValue(min);
       dispatchEvent(min, input);
-    } else if (max && initialValue > max) {
+    } else if (hasMax && initialValue > max) {
       setValue(max);
       dispatchEvent(max, input);
     } else {
@@ -101,10 +107,13 @@ const NumberInput = forwardRef((props, ref) => {
 
     const num = parseInt(target.value, 10);
 
-    if (min && num < min) {
+    const hasMin = Number.isInteger(min);
+    const hasMax = Number.isInteger(max);
+
+    if (hasMin && (num < min || !num)) {
       setValue(min);
       dispatchEvent(min, input);
-    } else if (max && num > max) {
+    } else if (hasMax && num > max) {
       setValue(max);
       dispatchEvent(max, input);
     }
