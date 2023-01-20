@@ -75,9 +75,8 @@ const NumberInput = forwardRef((props, ref) => {
   }, [minValue, form?.valueState, value]);
 
   useEffect(() => {
-    useEffect(() => {
-      console.log('@ui-components -> 4.22.1-numbercomp.1');
-    }, []);
+    console.log('@ui-components -> 4.22.1-numbercomp.2');
+
     const initialValue = parseInt(props.value || 0, 10);
 
     const hasMin = Number.isInteger(min);
