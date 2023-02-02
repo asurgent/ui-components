@@ -1,6 +1,10 @@
 import { useState, useEffect } from 'react';
 import moment from 'moment';
-import { validateToString } from './helpers';
+import { validateToString, getRepeatType } from './helpers';
+
+import {
+  REPEAT_DAY, REPEAT_WEEK, REPEAT_MONTH, REPEAT_CUSTOM,
+} from './constants';
 
 const OCCURRENCES_FOREVER = 'never';
 const OCCURRENCES_UNTILL_DATE = 'date';
@@ -9,11 +13,6 @@ const OCCURRENCES_ONCE = 'once';
 const DURATION_DAYS = 'days';
 const DURATION_HOURS = 'hours';
 const DURATION_MINUTES = 'minutes';
-
-const REPEAT_DAY = 'day';
-const REPEAT_WEEK = 'week';
-const REPEAT_MONTH = 'month';
-const REPEAT_CUSTOM = 'custom';
 
 const getDurationInSeconds = (durationType, duration) => {
   if (durationType === DURATION_MINUTES) {
@@ -46,7 +45,9 @@ const useFormBuilder = ({
     }
     return OCCURRENCES_ONCE;
   });
-  const [repeatType, setRepeatType] = useState(REPEAT_WEEK);
+  const [repeatType, setRepeatType] = useState(
+    () => getRepeatType(props.expression),
+  );
   const [cronExpression, setCronExpression] = useState('');
 
   useEffect(() => {
