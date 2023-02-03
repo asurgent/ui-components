@@ -35,7 +35,6 @@ export const getRepeatType = (cronExpression) => {
   const [minute, hour, dayOfMonth, month, dayOfWeek] = cronExpression.split(' ');
 
   if (
-
     !cronExpression
     || (minute !== '*'
      && hour !== '*'
@@ -46,13 +45,14 @@ export const getRepeatType = (cronExpression) => {
   } if (minute !== '*'
      && hour !== '*'
      && dayOfMonth === '*'
-     && month !== '*'
+     && month === '*'
      && dayOfWeek !== '*') {
     return REPEAT_WEEK;
-  } if (minute !== '*'
-     && hour !== '*'
-     && dayOfMonth !== '*'
-     && month !== '*'
+  } if (
+    minute !== '*'
+    && hour !== '*'
+    && dayOfMonth !== '*'
+     && month === '*'
      && dayOfWeek === '*') {
     return REPEAT_MONTH;
   }
